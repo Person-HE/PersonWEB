@@ -1,0 +1,62 @@
+[
+  {
+    "id": "tool-1",
+    "name": "视频去水印工具",
+    "description": "一键去除短视频平台水印，支持抖音、快手等主流平台",
+    "detail": "支持抖音、快手、小红书等主流短视频平台的视频去水印。只需复制视频链接，粘贴即可获取无水印原视频。操作简单，处理速度快，完全免费使用。适用于内容创作者二次创作、素材收集等场景。",
+    "category": "图片视频",
+    "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=clean%20modern%20watermark%20remover%20tool%20interface%20dark%20theme%20digital%20software&image_size=landscape_16_9",
+    "driveLink": "https://pan.baidu.com/s/example-tool1",
+    "createdAt": "2026-05-20"
+  },
+  {
+    "id": "tool-2",
+    "name": "万能格式转换器",
+    "description": "支持文档、图片、音视频等200+格式互转",
+    "detail": "一款全能格式转换工具，支持PDF/Word/Excel/PPT互转，图片格式转换（JPG/PNG/WebP/SVG等），音视频格式转换（MP4/AVI/MKV/MP3等）。批量转换，保持原质量，转换速度快。无需安装，打开即用。",
+    "category": "格式转换",
+    "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=format%20converter%20software%20interface%20colorful%20file%20types%20dark%20UI&image_size=landscape_16_9",
+    "driveLink": "https://pan.baidu.com/s/example-tool2",
+    "createdAt": "2026-05-18"
+  },
+  {
+    "id": "tool-3",
+    "name": "老手机优化设置检查器",
+    "description": "智能检测手机设置，一键优化让老手机焕然一新",
+    "detail": "专为老旧手机设计的优化检查工具。自动扫描手机中的冗余设置：关闭不必要的动画效果、清理后台自启动应用、优化存储空间、调整电池策略等。提供详细的优化建议和一键执行功能，让2-3年前的老手机也能流畅运行。",
+    "category": "手机优化",
+    "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=phone%20optimizer%20app%20interface%20speed%20boost%20clean%20design&image_size=landscape_16_9",
+    "driveLink": "https://pan.baidu.com/s/example-tool3",
+    "createdAt": "2026-05-15"
+  },
+  {
+    "id": "tool-4",
+    "name": "批量图片压缩工具",
+    "description": "无损压缩图片体积，支持批量处理，保持画质",
+    "detail": "高效的图片压缩工具，采用先进的压缩算法，在保持视觉画质的前提下大幅减小图片体积。支持JPG、PNG、WebP等格式，可批量处理数百张图片。自定义压缩质量，实时预览效果。适用于网站优化、社交媒体发布等场景。",
+    "category": "图片视频",
+    "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=image%20compression%20tool%20interface%20before%20after%20comparison%20dark%20theme&image_size=landscape_16_9",
+    "driveLink": "https://pan.baidu.com/s/example-tool4",
+    "createdAt": "2026-05-12"
+  },
+  {
+    "id": "tool-5",
+    "name": "PDF合并拆分工具",
+    "description": "轻松合并多个PDF或拆分单个PDF，操作简单高效",
+    "detail": "一站式PDF处理工具，支持多个PDF文件合并为一个，也支持将一个PDF按页码范围拆分为多个文件。可预览页面、调整顺序、设置页码范围。处理速度快，保持原始排版和清晰度。完全本地处理，隐私安全。",
+    "category": "格式转换",
+    "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=PDF%20merge%20split%20tool%20document%20management%20clean%20interface&image_size=landscape_16_9",
+    "driveLink": "https://pan.baidu.com/s/example-tool5",
+    "createdAt": "2026-05-10"
+  },
+  {
+    "id": "tool-6",
+    "name": "手机电池健康检测",
+    "description": "检测电池健康状态，延长手机续航时间",
+    "detail": "专业的手机电池健康检测工具，可查看电池实际容量、充电循环次数、电池温度等关键指标。提供电池保养建议，如最佳充电时间段、避免的充电习惯等。帮助用户科学维护电池，延长手机使用寿命。",
+    "category": "手机优化",
+    "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=battery%20health%20checker%20app%20green%20energy%20meter%20interface&image_size=landscape_16_9",
+    "driveLink": "https://pan.baidu.com/s/example-tool6",
+    "createdAt": "2026-05-08"
+  }
+]

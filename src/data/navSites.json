@@ -1,0 +1,74 @@
+[
+  {
+    "id": "nav-1",
+    "name": "GitHub",
+    "description": "全球最大的代码托管平台，开源项目聚集地",
+    "category": "开发工具",
+    "iconUrl": "https://github.githubassets.com/favicons/favicon.svg",
+    "url": "https://github.com",
+    "createdAt": "2026-05-20"
+  },
+  {
+    "id": "nav-2",
+    "name": "Dribbble",
+    "description": "设计师作品展示社区，获取设计灵感",
+    "category": "设计资源",
+    "iconUrl": "https://cdn.dribbble.com/assets/favicon-332b40db134a07613cd38f3f5e1c0f2b2492a59c5bcc6c4057a9a477b498a06a.ico",
+    "url": "https://dribbble.com",
+    "createdAt": "2026-05-18"
+  },
+  {
+    "id": "nav-3",
+    "name": "MDN Web Docs",
+    "description": "Mozilla出品的Web技术权威文档",
+    "category": "学习平台",
+    "iconUrl": "https://developer.mozilla.org/favicon-48x48.png",
+    "url": "https://developer.mozilla.org",
+    "createdAt": "2026-05-16"
+  },
+  {
+    "id": "nav-4",
+    "name": "Figma",
+    "description": "在线协作设计工具，UI/UX设计师首选",
+    "category": "设计资源",
+    "iconUrl": "https://static.figma.com/app/icon/1/favicon.png",
+    "url": "https://www.figma.com",
+    "createdAt": "2026-05-14"
+  },
+  {
+    "id": "nav-5",
+    "name": "Stack Overflow",
+    "description": "程序员问答社区，解决编程难题",
+    "category": "开发工具",
+    "iconUrl": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico",
+    "url": "https://stackoverflow.com",
+    "createdAt": "2026-05-12"
+  },
+  {
+    "id": "nav-6",
+    "name": "Coursera",
+    "description": "世界顶尖大学在线课程平台",
+    "category": "学习平台",
+    "iconUrl": "https://www.coursera.org/favicon.ico",
+    "url": "https://www.coursera.org",
+    "createdAt": "2026-05-10"
+  },
+  {
+    "id": "nav-7",
+    "name": "Unsplash",
+    "description": "免费高质量图片素材库，可商用",
+    "category": "设计资源",
+    "iconUrl": "https://unsplash.com/favicon.ico",
+    "url": "https://unsplash.com",
+    "createdAt": "2026-05-08"
+  },
+  {
+    "id": "nav-8",
+    "name": "Can I Use",
+    "description": "浏览器兼容性查询工具，前端开发必备",
+    "category": "开发工具",
+    "iconUrl": "https://caniuse.com/img/favicon-128.png",
+    "url": "https://caniuse.com",
+    "createdAt": "2026-05-06"
+  }
+]
