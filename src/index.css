@@ -1,42 +1,249 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap');
+/** 手绘风格设计系统 —— 粗黑轮廓 + 纸张质感 + 物理光影 */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@layer base {
+  :root {
+    /* 纸张色系 */
+    --paper: #F5E6D3;
+    --paper-deep: #EAD5B8;
+    --paper-light: #FAF3E7;
+    /* 墨水色 */
+    --ink: #1A1A1A;
+    --ink-soft: #3A3A3A;
+    --ink-mute: #6B6B6B;
+    /* 手绘强调色 */
+    --crimson: #D7263D;
+    --indigo: #1B6CA8;
+    --mustard: #F4A261;
+    --teal: #2A9D8F;
+    --violet: #6A4C93;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Ma Shan Zheng', 'ZCOOL KuaiLe', system-ui, sans-serif;
+    color: var(--ink);
+    background-color: var(--paper);
+    /* 纸张纹理 —— 多层叠加模拟纤维 */
+    background-image:
+      radial-gradient(ellipse at top left, rgba(244, 162, 97, 0.08), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(42, 157, 143, 0.06), transparent 50%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-attachment: fixed;
+    overflow-x: hidden;
+  }
+
+  /* 手绘字体类 */
+  .font-hand-title { font-family: 'ZCOOL KuaiLe', cursive; }
+  .font-hand-body { font-family: 'Ma Shan Zheng', cursive; }
+  .font-hand-en { font-family: 'Caveat', cursive; }
+
+  /* 滚动条手绘风 */
+  ::-webkit-scrollbar { width: 12px; height: 12px; }
+  ::-webkit-scrollbar-track { background: var(--paper-deep); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--ink);
+    border-radius: 6px;
+    border: 2px solid var(--paper-deep);
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--crimson); }
+
+  ::selection { background: var(--mustard); color: var(--ink); }
 }
 
-body {
-  background-color: #020617;
-  color: #e2e8f0;
+@layer components {
+  /* ===== 手绘卡片：粗黑边框 + 不规则阴影 + 轻微旋转 ===== */
+  .hand-card {
+    @apply relative bg-[var(--paper-light)] border-2 border-[var(--ink)] rounded-[18px] transition-all duration-300;
+    /* 手绘不规则阴影：偏移+模糊+双重 */
+    box-shadow: 4px 4px 0 var(--ink), 8px 8px 0 rgba(26, 26, 26, 0.15);
+  }
+  .hand-card:hover {
+    transform: translate(-2px, -2px) rotate(-0.5deg);
+    box-shadow: 6px 6px 0 var(--ink), 12px 12px 0 rgba(26, 26, 26, 0.2);
+  }
+
+  /* 强调卡片：朱红边 */
+  .hand-card-crimson {
+    border-color: var(--crimson);
+    box-shadow: 4px 4px 0 var(--crimson), 8px 8px 0 rgba(215, 38, 61, 0.2);
+  }
+  /* 企业金卡 */
+  .hand-card-gold {
+    border-color: var(--mustard);
+    background: linear-gradient(135deg, var(--paper-light), #FFF1D6);
+    box-shadow: 4px 4px 0 var(--mustard), 8px 8px 0 rgba(244, 162, 97, 0.25);
+  }
+
+  /* ===== 手绘按钮：粗黑边 + 物理按下反馈 ===== */
+  .hand-btn {
+    @apply inline-flex items-center justify-center gap-2 font-hand-title border-2 border-[var(--ink)] rounded-xl px-5 py-2.5 transition-all duration-150;
+    box-shadow: 3px 3px 0 var(--ink);
+    background: var(--paper-light);
+    color: var(--ink);
+  }
+  .hand-btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .hand-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0 0 0 var(--ink);
+  }
+  /* 主要按钮：朱红填充 */
+  .hand-btn-primary {
+    background: var(--crimson);
+    color: var(--paper-light);
+  }
+  /* 金色按钮 */
+  .hand-btn-gold {
+    background: var(--mustard);
+    color: var(--ink);
+  }
+  /* 靛蓝按钮 */
+  .hand-btn-blue {
+    background: var(--indigo);
+    color: var(--paper-light);
+  }
+
+  /* ===== 手绘标签 ===== */
+  .hand-tag {
+    @apply inline-flex items-center gap-1 font-hand-body text-xs border-2 border-[var(--ink)] rounded-md px-2 py-0.5;
+    background: var(--paper-light);
+  }
+
+  /* ===== 手绘分隔线（波浪 SVG）===== */
+  .hand-divider {
+    height: 12px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M0 6 Q 12.5 0 25 6 T 50 6 T 75 6 T 100 6' stroke='%231A1A1A' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    background-size: 100px 12px;
+    background-repeat: repeat-x;
+  }
+
+  /* ===== 章节标题：手绘下划线 ===== */
+  .hand-underline {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M2 8 Q 50 2 100 6 T 198 5' stroke='%23D7263D' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-size: 100% 12px;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    padding-bottom: 14px;
+  }
+
+  /* ===== 手绘方框（标注感）===== */
+  .hand-box {
+    @apply relative;
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+  }
+  .hand-box::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    transform: rotate(-0.8deg);
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  /* ===== 空状态卡片 ===== */
+  .hand-empty {
+    @apply hand-card flex flex-col items-center justify-center text-center px-6 py-16;
+    border-style: dashed;
+    box-shadow: none;
+  }
+  .hand-empty:hover { transform: none; box-shadow: none; }
+
+  /* ===== Hero 大标题：墨水描边 ===== */
+  .ink-title {
+    color: var(--ink);
+    text-shadow:
+      2px 2px 0 var(--crimson),
+      4px 4px 0 rgba(26, 26, 26, 0.15);
+  }
 }
 
-::-webkit-scrollbar {
-  width: 6px;
+@layer utilities {
+  /* 物理质感：纸张轻微弯曲 */
+  .paper-curve {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+      4px 4px 0 var(--ink);
+  }
+
+  /* 前景层：快速掠过的半透明元素 */
+  .layer-front {
+    z-index: 30;
+    filter: drop-shadow(2px 2px 0 rgba(26, 26, 26, 0.3));
+  }
+  /* 中景层：绝对清晰的核心信息 */
+  .layer-mid {
+    z-index: 20;
+  }
+  /* 背景层：缓慢流动的模糊光晕 */
+  .layer-bg {
+    z-index: 0;
+    filter: blur(40px);
+    opacity: 0.5;
+  }
+
+  /* 手绘旋转角度（轻微歪斜增加生气）*/
+  .tilt-l { transform: rotate(-1.2deg); }
+  .tilt-r { transform: rotate(1.2deg); }
+  .tilt-ll { transform: rotate(-2deg); }
+  .tilt-rr { transform: rotate(2deg); }
+
+  /* 墨水扩散 hover */
+  .ink-spread {
+    position: relative;
+    overflow: hidden;
+  }
+  .ink-spread::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(215, 38, 61, 0.15), transparent 40%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .ink-spread:hover::after { opacity: 1; }
+
+  /* 减少动画偏好 */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
+/* ===== 关键帧动画 ===== */
+@keyframes inkDrop {
+  0% { transform: scale(0); opacity: 0.8; }
+  60% { transform: scale(1.2); opacity: 0.6; }
+  100% { transform: scale(2.5); opacity: 0; }
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
+@keyframes wobble {
+  0%, 100% { transform: rotate(-1deg); }
+  50% { transform: rotate(1deg); }
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+@keyframes paperShake {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  25% { transform: translate(-1px, 1px) rotate(-0.3deg); }
+  75% { transform: translate(1px, -1px) rotate(0.3deg); }
 }
 
-::selection {
-  background-color: rgba(6, 214, 160, 0.3);
-  color: white;
-}
+.animate-wobble { animation: wobble 4s ease-in-out infinite; }
+.animate-paper-shake:hover { animation: paperShake 0.4s ease-in-out; }
