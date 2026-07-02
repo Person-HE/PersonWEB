@@ -11,7 +11,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import rateLimit from 'express-rate-limit';
-import { db, flush } from './db.js';
+import { getCollection, setCollection } from './db.js';
 import { logAction } from './logger.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'change-me-in-env-please';
@@ -87,7 +87,8 @@ export async function verifyLogin(username, password, ip, userAgent) {
   }
 
   // 2. 查询用户
-  const user = db.data.users.find((u) => u.username === username);
+  const users = await getCollection('users');
+  const user = users.find((u) => u.username === username);
   if (!user) {
     await logAction({
       action: 'login_failed',
@@ -123,7 +124,7 @@ export async function verifyLogin(username, password, ip, userAgent) {
   // 5. 更新登录信息
   user.lastLoginAt = new Date().toISOString();
   user.lastLoginIp = ip;
-  await flush();
+  await setCollection('users', users);
 
   await logAction({
     action: 'login',
@@ -167,7 +168,8 @@ export function requireAuth(req, res, next) {
  * 修改密码
  */
 export async function changePassword(userId, oldPassword, newPassword, ip, userAgent) {
-  const user = db.data.users.find((u) => u.id === userId);
+  const users = await getCollection('users');
+  const user = users.find((u) => u.id === userId);
   if (!user) return { ok: false, error: '用户不存在' };
 
   const ok = await bcrypt.compare(oldPassword, user.passwordHash);
@@ -188,7 +190,7 @@ export async function changePassword(userId, oldPassword, newPassword, ip, userA
   }
 
   user.passwordHash = await bcrypt.hash(newPassword, 12);
-  await flush();
+  await setCollection('users', users);
 
   await logAction({
     action: 'password_change',

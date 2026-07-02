@@ -1,7 +1,7 @@
 {
   "name": "personweb-server",
   "version": "1.0.0",
-  "description": "阿维的平台 - 后端管理 API（Express + lowdb + JWT）",
+  "description": "阿维的平台 - 后端管理 API（Express + Vercel KV + JWT）",
   "type": "module",
   "main": "src/index.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "express-rate-limit": "^7.4.0",
     "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
-    "lowdb": "^7.0.1",
+    "@vercel/kv": "^2.0.0",
     "morgan": "^1.10.0"
   }
 }

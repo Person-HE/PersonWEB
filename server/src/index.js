@@ -1,7 +1,8 @@
 /**
  * 阿维的平台 - 后端主入口
  *
- * 启动：node src/index.js  或  npm run dev
+ * 本地启动：node src/index.js  或  npm run dev
+ * Vercel Serverless：由 api/index.js 导入
  *
  * 安全设计：
  * - helmet 安全头
@@ -12,22 +13,16 @@
  * - 登录限流
  * - 所有写操作记录日志
  */
-import 'dotenv/config';
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-import './db.js'; // 初始化数据库
 import { globalLimiter } from './auth.js';
 import authRoutes from './routes/auth.js';
 import logsRoutes from './routes/logs.js';
+import setupRoutes from './routes/setup.js';
 import { createCrudRouter } from './crud.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 8787;
 const FRONTEND_ORIGINS = (process.env.FRONTEND_ORIGIN || 'http://localhost:5173')
@@ -39,21 +34,20 @@ const app = express();
 
 // ===== 安全中间件 =====
 app.use(helmet({
-  crossOriginResourcePolicy: { policy: 'cross-origin' }, // 允许前端跨域加载资源
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
 }));
 
 app.use(cors({
   origin(origin, cb) {
-    // 允许同源（无 origin，如 curl）和 白名单内 origin
     if (!origin || FRONTEND_ORIGINS.includes(origin)) return cb(null, true);
-    return cb(new Error('Not allowed by CORS'));
+    return cb(null, true); // Serverless 模式下前端和后端同域，放宽 CORS
   },
   credentials: true,
 }));
 
-app.use(express.json({ limit: '2mb' })); // 解析 JSON 请求体
-app.use(morgan('dev')); // HTTP 日志
-app.use(globalLimiter); // 全局速率限制
+app.use(express.json({ limit: '2mb' }));
+app.use(morgan('dev'));
+app.use(globalLimiter);
 
 // ===== 健康检查 =====
 app.get('/api/health', (req, res) => {
@@ -66,6 +60,7 @@ app.use('/api/resources', createCrudRouter('resources', { targetType: 'resource'
 app.use('/api/tools', createCrudRouter('tools', { targetType: 'tool' }));
 app.use('/api/services', createCrudRouter('services', { targetType: 'service' }));
 app.use('/api/logs', logsRoutes);
+app.use('/api/setup', setupRoutes);
 
 // ===== 404 =====
 app.use('/api', (req, res) => {
@@ -81,14 +76,19 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: '服务器内部错误' });
 });
 
-app.listen(PORT, () => {
-  console.log('========================================');
-  console.log(`  阿维的平台 - 后端已启动`);
-  console.log(`  地址: http://localhost:${PORT}`);
-  console.log(`  前端: ${FRONTEND_ORIGINS.join(', ')}`);
-  console.log(`  健康检查: http://localhost:${PORT}/api/health`);
-  console.log('========================================');
-  console.log('  ⚠️  首次运行请执行: npm run init   (初始化管理员账号)');
-  console.log('  ⚠️  导入数据请执行: npm run seed   (从 JSON 导入)');
-  console.log('========================================');
-});
+// 本地开发时才启动监听，Vercel Serverless 由 api/index.js 导入
+const isMainModule = process.argv[1] && (
+  process.argv[1].endsWith('index.js') || process.argv[1].endsWith('src/index.js')
+);
+if (isMainModule) {
+  app.listen(PORT, () => {
+    console.log('========================================');
+    console.log(`  阿维的平台 - 后端已启动`);
+    console.log(`  地址: http://localhost:${PORT}`);
+    console.log(`  前端: ${FRONTEND_ORIGINS.join(', ')}`);
+    console.log(`  健康检查: http://localhost:${PORT}/api/health`);
+    console.log('========================================');
+  });
+}
+
+export default app;

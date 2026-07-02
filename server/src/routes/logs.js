@@ -8,10 +8,10 @@ import { getRecentLogs } from '../logger.js';
 const router = Router();
 
 /** 获取最近 N 条日志（默认 100，最多 500） */
-router.get('/', requireAuth, (req, res) => {
+router.get('/', requireAuth, async (req, res) => {
   try {
     const limit = parseInt(req.query.limit, 10) || 100;
-    const logs = getRecentLogs(limit);
+    const logs = await getRecentLogs(limit);
     res.json(logs);
   } catch (e) {
     console.error('[logs] list error:', e);

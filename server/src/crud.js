@@ -9,10 +9,10 @@
  * - 删除（鉴权）：DELETE /api/<type>/:id
  * - 排序（鉴权）：POST /api/<type>/reorder
  *
- * 数据存储在 lowdb 的数组中，每条记录结构为 { _order, data }
+ * 数据存储在 Vercel KV 中，每条记录结构为 { _order, data }
  */
 import { Router } from 'express';
-import { db, flush, ordered } from './db.js';
+import { getCollection, setCollection, ordered } from './db.js';
 import { logAction } from './logger.js';
 import { requireAuth, getRequestIp, adminLimiter } from './auth.js';
 
@@ -25,13 +25,11 @@ export function createCrudRouter(collectionName, opts = {}) {
   const router = Router();
   const targetType = opts.targetType || collectionName;
 
-  /** 取集合 */
-  const getColl = () => db.data[collectionName];
-
   /** 列表：公开 */
-  router.get('/', (req, res) => {
+  router.get('/', async (req, res) => {
     try {
-      const list = ordered(getColl()).map((r) => r.data);
+      const coll = await getCollection(collectionName);
+      const list = ordered(coll);
       res.json(list);
     } catch (e) {
       console.error(`[${collectionName}] list error:`, e);
@@ -40,9 +38,10 @@ export function createCrudRouter(collectionName, opts = {}) {
   });
 
   /** 详情：公开 */
-  router.get('/:id', (req, res) => {
+  router.get('/:id', async (req, res) => {
     try {
-      const row = getColl().find((r) => r.data.id === req.params.id);
+      const coll = await getCollection(collectionName);
+      const row = coll.find((r) => r.data.id === req.params.id);
       if (!row) return res.status(404).json({ error: '不存在' });
       res.json(row.data);
     } catch (e) {
@@ -62,7 +61,7 @@ export function createCrudRouter(collectionName, opts = {}) {
         return res.status(400).json({ error: '缺少 id 字段' });
       }
 
-      const coll = getColl();
+      const coll = await getCollection(collectionName);
       if (coll.some((r) => r.data.id === item.id)) {
         return res.status(409).json({ error: `id "${item.id}" 已存在` });
       }
@@ -74,7 +73,7 @@ export function createCrudRouter(collectionName, opts = {}) {
 
       const maxOrder = coll.reduce((m, r) => Math.max(m, r._order || 0), 0);
       coll.push({ _order: maxOrder + 1, data: item });
-      await flush();
+      await setCollection(collectionName, coll);
 
       await logAction({
         action: 'create',
@@ -102,7 +101,7 @@ export function createCrudRouter(collectionName, opts = {}) {
       }
       item.id = id;
 
-      const coll = getColl();
+      const coll = await getCollection(collectionName);
       const idx = coll.findIndex((r) => r.data.id === id);
       if (idx < 0) {
         return res.status(404).json({ error: '不存在' });
@@ -110,7 +109,7 @@ export function createCrudRouter(collectionName, opts = {}) {
 
       if (collectionName !== 'tools') item.updatedAt = new Date().toISOString();
       coll[idx].data = item;
-      await flush();
+      await setCollection(collectionName, coll);
 
       await logAction({
         action: 'update',
@@ -132,7 +131,7 @@ export function createCrudRouter(collectionName, opts = {}) {
   router.delete('/:id', requireAuth, adminLimiter, async (req, res) => {
     try {
       const id = req.params.id;
-      const coll = getColl();
+      const coll = await getCollection(collectionName);
       const idx = coll.findIndex((r) => r.data.id === id);
       if (idx < 0) {
         return res.status(404).json({ error: '不存在' });
@@ -140,7 +139,7 @@ export function createCrudRouter(collectionName, opts = {}) {
 
       const item = coll[idx].data;
       coll.splice(idx, 1);
-      await flush();
+      await setCollection(collectionName, coll);
 
       await logAction({
         action: 'delete',
@@ -165,12 +164,12 @@ export function createCrudRouter(collectionName, opts = {}) {
       if (!Array.isArray(ids)) {
         return res.status(400).json({ error: '需要 ids 数组' });
       }
-      const coll = getColl();
+      const coll = await getCollection(collectionName);
       ids.forEach((id, idx) => {
         const row = coll.find((r) => r.data.id === id);
         if (row) row._order = idx + 1;
       });
-      await flush();
+      await setCollection(collectionName, coll);
 
       await logAction({
         action: 'reorder',

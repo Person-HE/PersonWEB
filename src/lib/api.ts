@@ -1,11 +1,11 @@
 /**
  * 后端 API 客户端 —— 统一封装 fetch，自动携带 JWT
  *
- * 后端地址通过 Vite 环境变量 VITE_API_BASE 配置，默认 http://localhost:8787
+ * 后端地址通过 Vite 环境变量 VITE_API_BASE 配置，默认同源
  */
 import { useAuthStore } from '@/store/useAuthStore';
 
-export const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8787';
+export const API_BASE = import.meta.env.VITE_API_BASE || '';
 
 /** 鉴权失败时清理本地状态并跳转登录 */
 function handleAuthFail() {
