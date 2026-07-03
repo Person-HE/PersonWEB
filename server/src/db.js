@@ -1,60 +1,43 @@
-/**
- * 数据库层 —— ioredis + Upstash Redis
+﻿/**
+ * 数据层 —— 直接导入 JSON 数据，无需外部数据库
  *
- * 设计：
- * - 每个集合（users/resources/tools/services/logs）存为一个 Redis key（JSON 字符串）
- * - 所有操作都是 async
- * - 自增序列用 Redis INCR 命令
- *
- * 环境变量：
- * - REDIS_URL: Upstash Redis 连接字符串 (rediss://:password@host:port)
+ * 数据源：public/data/*.json
+ * Vercel 打包时会自动内联这些 JSON 文件
+ * 数据只读，修改需更新 JSON 文件后重新部署
  */
-import Redis from 'ioredis';
+import resourcesData from '../../public/data/resources.json' assert { type: 'json' };
+import toolsData from '../../public/data/tools.json' assert { type: 'json' };
+import servicesData from '../../public/data/services.json' assert { type: 'json' };
 
-// 单例连接，Vercel Serverless 会复用热连接
-let redis = null;
+const collections = {
+  resources: resourcesData.default || resourcesData,
+  tools: toolsData.default || toolsData,
+  services: servicesData.default || servicesData,
+  users: [],
+  logs: [],
+};
 
-function getRedis() {
-  if (!redis) {
-    const url = process.env.REDIS_URL;
-    if (!url) {
-      throw new Error('REDIS_URL 环境变量未配置');
-    }
-    redis = new Redis(url, {
-      maxRetriesPerRequest: 3,
-      enableReadyCheck: false,
-      tls: {},
-    });
-    redis.on('error', (err) => {
-      console.error('[Redis] 连接错误:', err.message);
-    });
-  }
-  return redis;
-}
-
-/** 读取一个集合（返回数组副本，修改后需 setCollection 写回） */
+/** 读取集合（返回包装为 { _order, data } 格式的数组） */
 export async function getCollection(name) {
-  const r = getRedis();
-  const raw = await r.get(`collection:${name}`);
+  const raw = collections[name];
   if (!raw) return [];
-  try {
-    const data = JSON.parse(raw);
-    return Array.isArray(data) ? data : [];
-  } catch {
-    return [];
-  }
+  if (raw.length > 0 && raw[0]._order !== undefined) return raw;
+  return raw.map((item, idx) => ({
+    _order: idx + 1,
+    data: item,
+  }));
 }
 
-/** 写入整个集合 */
+/** 写入集合（仅运行时有效，Serverless 冷启动后重置） */
 export async function setCollection(name, data) {
-  const r = getRedis();
-  await r.set(`collection:${name}`, JSON.stringify(data));
+  collections[name] = data;
 }
 
-/** 获取下一个自增 ID */
+/** 自增 ID（运行时计数，冷启动后重置） */
+let seqCounters = {};
 export async function nextId(name) {
-  const r = getRedis();
-  return await r.incr(`seq:${name}`);
+  if (!seqCounters[name]) seqCounters[name] = 0;
+  return ++seqCounters[name];
 }
 
 /** 按 _order 升序排列并提取 data 字段 */
