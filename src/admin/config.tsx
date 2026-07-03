@@ -33,6 +33,7 @@ export interface FieldDef {
   /** 嵌套对象的字段路径，如 'delivery.method' */
   path?: string;
   full?: boolean; // 在表单中占整行
+  readOnly?: boolean; // 编辑时只读（不可修改）
 }
 
 export interface CrudConfig<T> {
@@ -55,12 +56,7 @@ export const resourceConfig: CrudConfig<Resource> = {
     category: 'AI资料',
     subCategory: '',
     description: '',
-    icon: '',
-    coverImage: null,
     videoRef: null,
-    fileCount: 0,
-    fileList: [],
-    downloadUrl: null,
     productUrl: null,
     updatedAt: new Date().toISOString().slice(0, 10),
     createdAt: new Date().toISOString().slice(0, 10),
@@ -69,20 +65,15 @@ export const resourceConfig: CrudConfig<Resource> = {
     isNew: true,
   }),
   fields: [
-    { key: 'id', label: 'ID（英文唯一）', type: 'text', required: true, placeholder: '如 sd-local-deploy' },
+    { key: 'id', label: 'ID（英文唯一）', type: 'text', required: true, placeholder: '如 sd-local-deploy', readOnly: true },
     { key: 'title', label: '标题', type: 'text', required: true, full: true },
     { key: 'category', label: '分类', type: 'select', options: ['个人产品', '教程资料', 'AI资料'] as ResourceCategory[], required: true },
     { key: 'subCategory', label: '子分类', type: 'text' },
     { key: 'isHot', label: '热门', type: 'boolean' },
     { key: 'isNew', label: '新', type: 'boolean' },
     { key: 'description', label: '简介', type: 'textarea', full: true, required: true },
-    { key: 'icon', label: '图标 URL', type: 'url', full: true },
-    { key: 'coverImage', label: '封面图 URL', type: 'url', full: true },
-    { key: 'downloadUrl', label: '下载链接', type: 'url', full: true },
     { key: 'productUrl', label: '产品链接（如果是个人产品）', type: 'url', full: true },
     { key: 'tags', label: '标签（逗号分隔）', type: 'tags', full: true },
-    { key: 'fileCount', label: '文件数', type: 'number' },
-    { key: 'fileList', label: '文件清单（每行一个）', type: 'tags', full: true },
     { key: 'videoRef', label: '对应视频（JSON: title/url/platform）', type: 'json', full: true },
     { key: 'createdAt', label: '创建日期', type: 'text' },
     { key: 'updatedAt', label: '更新日期', type: 'text' },

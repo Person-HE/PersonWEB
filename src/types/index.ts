@@ -42,12 +42,7 @@ export interface Resource {
   category: ResourceCategory;
   subCategory: string;
   description: string;
-  icon: string;
-  coverImage: string | null;
   videoRef: VideoRef | null;
-  fileCount: number;
-  fileList: string[];
-  downloadUrl: string | null;
   productUrl: string | null;
   updatedAt: string;
   createdAt: string;

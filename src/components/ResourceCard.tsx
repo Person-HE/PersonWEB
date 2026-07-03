@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Download, ExternalLink, FileText, PlayCircle, ArrowRight } from 'lucide-react';
+import { ExternalLink, FileText, PlayCircle, ArrowRight } from 'lucide-react';
 import type { Resource } from '@/types';
 
 interface ResourceCardProps {
@@ -15,28 +15,13 @@ const categoryColor: Record<string, string> = {
 
 export default function ResourceCard({ resource, compact = false }: ResourceCardProps) {
   const isProduct = resource.category === '个人产品';
-  const actionUrl = isProduct ? resource.productUrl : resource.downloadUrl;
-  const actionLabel = isProduct ? '使用' : '下载';
-  const ActionIcon = isProduct ? ExternalLink : Download;
 
   return (
     <div className="hand-card ink-spread group flex h-full flex-col p-5">
       {/* 顶部：图标 + 标签 */}
       <div className="mb-3 flex items-start gap-3">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl border-2 border-[var(--ink)] bg-[var(--paper)] shadow-[2px_2px_0_var(--ink)]">
-          {resource.icon ? (
-            <img
-              src={resource.icon}
-              alt={resource.title}
-              className="h-full w-full object-cover"
-              loading="lazy"
-              onError={(e) => {
-                (e.currentTarget as HTMLImageElement).style.display = 'none';
-              }}
-            />
-          ) : (
-            <FileText className="h-5 w-5 text-[var(--ink-soft)]" />
-          )}
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 border-[var(--ink)] bg-[var(--paper)] shadow-[2px_2px_0_var(--ink)]">
+          <FileText className="h-5 w-5 text-[var(--ink-soft)]" />
         </div>
         <div className="min-w-0 flex-1">
           <h3 className="line-clamp-1 font-hand-title text-base text-[var(--ink)]">
@@ -83,36 +68,28 @@ export default function ResourceCard({ resource, compact = false }: ResourceCard
         </a>
       ) : null}
 
-      <div className="mt-auto flex items-center justify-between gap-2 font-hand-body text-xs text-[var(--ink-mute)]">
-        <span className="flex items-center gap-1">
-          <FileText className="h-3.5 w-3.5" />
-          {resource.fileCount > 0 ? `${resource.fileCount} 个文件` : '—'}
-        </span>
+      <div className="mt-auto flex items-center justify-end gap-2 font-hand-body text-xs text-[var(--ink-mute)]">
         <span>更新于 {resource.updatedAt || '—'}</span>
       </div>
 
       <div className="mt-4 flex items-center gap-2">
-        {actionUrl ? (
+        {isProduct && resource.productUrl ? (
           <a
-            href={actionUrl}
+            href={resource.productUrl}
             target="_blank"
             rel="noreferrer"
             className="hand-btn hand-btn-primary flex-1 text-sm"
           >
-            <ActionIcon className="h-4 w-4" />
-            {actionLabel}
+            <ExternalLink className="h-4 w-4" />
+            使用
           </a>
-        ) : (
-          <span className="flex-1 rounded-xl border-2 border-dashed border-[var(--ink)]/40 px-4 py-2.5 text-center font-hand-body text-sm text-[var(--ink-mute)]">
-            暂无下载链接
-          </span>
-        )}
+        ) : null}
         <Link
           to={`/resources/${resource.id}`}
-          className="hand-btn text-sm"
+          className="hand-btn text-sm flex-1 text-center"
         >
           详情
-          <ArrowRight className="h-3.5 w-3.5" />
+          <ArrowRight className="ml-1 inline h-3.5 w-3.5" />
         </Link>
       </div>
     </div>

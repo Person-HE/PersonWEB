@@ -307,7 +307,7 @@ function EditDrawer({
         </div>
 
         <div className="space-y-4 p-6">
-          <FormFields config={config} item={item} onChange={onChange} />
+          <FormFields config={config} item={item} isNew={isNew} onChange={onChange} />
         </div>
 
         <div className="sticky bottom-0 flex items-center justify-end gap-2 border-t border-[var(--ink)]/20 bg-[var(--paper-light)] px-6 py-3">
@@ -334,10 +334,12 @@ function EditDrawer({
 function FormFields({
   config,
   item,
+  isNew,
   onChange,
 }: {
   config: CrudConfig<any>;
   item: Item;
+  isNew: boolean;
   onChange: (v: Item) => void;
 }) {
   /** 取值（支持 path 嵌套） */
@@ -372,6 +374,7 @@ function FormFields({
           key={f.key}
           field={f}
           value={getValue(f.key, f.path)}
+          disabled={!!f.readOnly && !isNew}
           onChange={(v) => setValue(f.key, f.path, v)}
         />
       ))}
@@ -382,10 +385,12 @@ function FormFields({
 function FieldRenderer({
   field,
   value,
+  disabled,
   onChange,
 }: {
   field: FieldDef;
   value: any;
+  disabled?: boolean;
   onChange: (v: any) => void;
 }) {
   const colSpan = field.full ? 'col-span-2' : '';
@@ -393,11 +398,13 @@ function FieldRenderer({
     <label className="mb-1 block text-xs font-medium text-[var(--ink-soft)]">
       {field.label}
       {field.required ? <span className="ml-0.5 text-red-500">*</span> : null}
+      {disabled ? <span className="ml-1 text-[10px] text-[var(--ink-mute)]">(不可修改)</span> : null}
     </label>
   );
 
   const inputCls =
     'w-full rounded-lg border border-[var(--ink)]/30 bg-white px-3 py-1.5 text-sm outline-none focus:border-[var(--crimson)]';
+  const disabledCls = disabled ? ' cursor-not-allowed bg-[var(--paper-light)] text-[var(--ink-mute)]' : '';
 
   if (field.type === 'text' || field.type === 'url') {
     return (
@@ -407,8 +414,9 @@ function FieldRenderer({
           type="text"
           value={value ?? ''}
           placeholder={field.placeholder}
-          onChange={(e) => onChange(e.target.value || null)}
-          className={inputCls}
+          readOnly={disabled}
+          onChange={(e) => !disabled && onChange(e.target.value || null)}
+          className={`${inputCls}${disabledCls}`}
         />
       </div>
     );
