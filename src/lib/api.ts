@@ -106,13 +106,13 @@ export const authApi = {
 export function crudApi<T extends { id: string }>(basePath: string) {
   return {
     list: () => apiPublic<T[]>(basePath),
-    get: (id: string) => apiPublic<T>(`${basePath}/${String(id)}`),
+    get: (id: string) => apiPublic<T>(`${basePath}/${encodeURIComponent(String(id))}`),
     create: (item: T) =>
       api<T>(basePath, { method: 'POST', body: JSON.stringify({ ...item, id: String(item.id) }) }),
     update: (id: string, item: T) =>
-      api<T>(`${basePath}/${String(id)}`, { method: 'PUT', body: JSON.stringify({ ...item, id: String(id) }) }),
+      api<T>(`${basePath}/${encodeURIComponent(String(id))}`, { method: 'PUT', body: JSON.stringify({ ...item, id: String(id) }) }),
     remove: (id: string) =>
-      api<{ ok: boolean; id: string }>(`${basePath}/${String(id)}`, { method: 'DELETE' }),
+      api<{ ok: boolean; id: string }>(`${basePath}/${encodeURIComponent(String(id))}`, { method: 'DELETE' }),
     reorder: (ids: string[]) =>
       api<{ ok: boolean; count: number }>(`${basePath}/reorder`, {
         method: 'POST',

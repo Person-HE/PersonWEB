@@ -44,6 +44,9 @@ export interface Resource {
   fileList: string[];
   linkUrl: string | null;
   linkPassword: string | null;
+  /** 旧字段兼容 */
+  productUrl?: string | null;
+  downloadUrl?: string | null;
   updatedAt: string;
   createdAt: string;
   tags: string[];

@@ -7,6 +7,7 @@ import EmptyState from '@/components/EmptyState';
 import ResourceCard from '@/components/ResourceCard';
 import PaperBackground from '@/components/PaperBackground';
 import { useElasticEnter, useStaggerReveal } from '@/hooks/useGsap';
+import { getResourceLink } from '@/lib/resourceLink';
 import type { ResourceCategory } from '@/types';
 
 const categoryColor: Record<ResourceCategory, string> = {
@@ -73,21 +74,13 @@ export default function ResourceDetail() {
   }
 
   const isProduct = resource.category === '个人产品';
-  const hasLink = !!resource.linkUrl && resource.linkUrl.trim() !== '';
+  const { url: linkUrl, password: linkPassword } = useMemo(
+    () => getResourceLink(resource),
+    [resource]
+  );
+  const hasLink = !!linkUrl && linkUrl.trim() !== '';
   const hasFiles = resource.fileList && resource.fileList.length > 0;
   const hasFileCount = resource.fileCount && resource.fileCount > 0;
-
-  const linkPassword = useMemo(() => {
-    if (resource.linkPassword) return resource.linkPassword;
-    if (!resource.linkUrl) return null;
-    try {
-      const url = new URL(resource.linkUrl);
-      const pwd = url.searchParams.get('pwd');
-      return pwd || null;
-    } catch {
-      return null;
-    }
-  }, [resource.linkPassword, resource.linkUrl]);
 
   return (
     <div className="relative min-h-screen overflow-hidden pt-16">
@@ -165,7 +158,7 @@ export default function ResourceDetail() {
                 <div className="space-y-2">
                   <div className="flex flex-wrap items-center gap-2">
                     <a
-                      href={resource.linkUrl!}
+                      href={linkUrl!}
                       target="_blank"
                       rel="noreferrer"
                       className="hand-btn hand-btn-primary inline-flex text-sm"
@@ -181,13 +174,13 @@ export default function ResourceDetail() {
                   </div>
                   <div className="flex items-center gap-2 rounded-lg border-2 border-[var(--ink)]/20 bg-[var(--paper-light)] px-3 py-2">
                     <span className="flex-1 truncate font-hand-body text-xs text-[var(--ink-soft)]">
-                      {resource.linkUrl}
+                      {linkUrl}
                     </span>
                     <button
                       type="button"
                       onClick={() => {
-                        if (resource.linkUrl) {
-                          navigator.clipboard.writeText(resource.linkUrl);
+                        if (linkUrl) {
+                          navigator.clipboard.writeText(linkUrl);
                         }
                       }}
                       className="shrink-0 rounded-md border-2 border-[var(--ink)] bg-[var(--paper)] px-2 py-1 font-hand-body text-xs text-[var(--ink)] shadow-[1px_1px_0_var(--ink)] hover:bg-[var(--paper-light)]"
