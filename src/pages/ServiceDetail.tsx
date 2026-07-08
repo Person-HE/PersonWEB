@@ -6,11 +6,14 @@ import {
   Puzzle,
   Crown,
   Building2,
+  Package,
+  Workflow,
+  Sparkles,
   ArrowLeft,
   ArrowRight,
   Check,
   Clock,
-  Package,
+  ExternalLink,
   type LucideIcon,
 } from 'lucide-react';
 import { useDataStore } from '@/store/useDataStore';
@@ -27,6 +30,9 @@ const iconMap: Record<ServiceType, LucideIcon> = {
   'ai-output': Wand2,
   custom: Puzzle,
   'product-pro': Crown,
+  product: Package,
+  automation: Workflow,
+  skills: Sparkles,
   enterprise: Building2,
 };
 
@@ -128,8 +134,28 @@ export default function ServiceDetail() {
                   {service.priceRange || service.price}
                 </p>
                 <p className="mt-2 font-hand-body text-sm text-[var(--ink-soft)]">{service.description}</p>
+                {service.tags && service.tags.length > 0 ? (
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    {service.tags.map((t) => (
+                      <span key={t} className="hand-tag text-xs">#{t}</span>
+                    ))}
+                  </div>
+                ) : null}
               </div>
             </div>
+
+            {/* 产品链接 */}
+            {service.productUrl ? (
+              <a
+                href={service.productUrl}
+                target="_blank"
+                rel="noreferrer"
+                className={`hand-btn mt-3 inline-flex text-sm ${isEnterprise ? 'hand-btn-gold' : 'hand-btn-primary'}`}
+              >
+                <ExternalLink className="h-4 w-4" />
+                访问产品
+              </a>
+            ) : null}
           </div>
         </section>
 

@@ -12,7 +12,9 @@
     "orderMethod": "微信下单",
     "applicableScene": null,
     "expectedEffect": null,
-    "maintenancePeriod": null
+    "maintenancePeriod": null,
+    "productUrl": null,
+    "tags": ["ChatGPT", "Claude", "Midjourney", "Cursor"]
   },
   {
     "id": "tool-config-sd",
@@ -27,7 +29,9 @@
     "orderMethod": "微信下单",
     "applicableScene": null,
     "expectedEffect": null,
-    "maintenancePeriod": null
+    "maintenancePeriod": null,
+    "productUrl": null,
+    "tags": ["Stable Diffusion", "ControlNet", "LoRA", "本地部署"]
   },
   {
     "id": "tool-config-cursor",
@@ -42,7 +46,9 @@
     "orderMethod": "微信下单",
     "applicableScene": null,
     "expectedEffect": null,
-    "maintenancePeriod": null
+    "maintenancePeriod": null,
+    "productUrl": null,
+    "tags": ["Cursor", "MCP", "AI编程", "代码效率"]
   },
   {
     "id": "ai-output-image",
@@ -57,7 +63,9 @@
     "orderMethod": "微信下单",
     "applicableScene": null,
     "expectedEffect": null,
-    "maintenancePeriod": null
+    "maintenancePeriod": null,
+    "productUrl": null,
+    "tags": ["Midjourney", "Stable Diffusion", "即梦", "海报", "插画"]
   },
   {
     "id": "ai-output-video",
@@ -72,7 +80,9 @@
     "orderMethod": "微信下单",
     "applicableScene": null,
     "expectedEffect": null,
-    "maintenancePeriod": null
+    "maintenancePeriod": null,
+    "productUrl": null,
+    "tags": ["可灵", "即梦", "海螺", "数字人", "短视频"]
   },
   {
     "id": "ai-output-ppt",
@@ -87,7 +97,9 @@
     "orderMethod": "微信下单",
     "applicableScene": null,
     "expectedEffect": null,
-    "maintenancePeriod": null
+    "maintenancePeriod": null,
+    "productUrl": null,
+    "tags": ["Gamma", "AiPPT", "讯飞智文", "PPT", "汇报"]
   },
   {
     "id": "ai-output-writing",
@@ -102,7 +114,9 @@
     "orderMethod": "微信下单",
     "applicableScene": null,
     "expectedEffect": null,
-    "maintenancePeriod": null
+    "maintenancePeriod": null,
+    "productUrl": null,
+    "tags": ["小红书", "公众号", "短视频脚本", "文案"]
   },
   {
     "id": "custom-prompt",
@@ -117,7 +131,9 @@
     "orderMethod": "微信下单",
     "applicableScene": "新媒体运营、文案策划、教育内容创作",
     "expectedEffect": "每天节省2-3小时重复工作",
-    "maintenancePeriod": null
+    "maintenancePeriod": null,
+    "productUrl": null,
+    "tags": ["Prompt", "ChatGPT", "Claude", "豆包"]
   },
   {
     "id": "custom-workflow",
@@ -132,7 +148,9 @@
     "orderMethod": "微信下单",
     "applicableScene": "运营、客服、行政、内容创作",
     "expectedEffect": "重复性工作节省80%时间",
-    "maintenancePeriod": "7 天"
+    "maintenancePeriod": "7 天",
+    "productUrl": null,
+    "tags": ["n8n", "Dify", "Coze", "自动化", "工作流"]
   },
   {
     "id": "custom-agent",
@@ -147,7 +165,9 @@
     "orderMethod": "微信下单",
     "applicableScene": "客服、内部培训、知识管理",
     "expectedEffect": "7x24小时自动答疑",
-    "maintenancePeriod": "30 天"
+    "maintenancePeriod": "30 天",
+    "productUrl": null,
+    "tags": ["RAG", "Agent", "知识库", "客服机器人"]
   },
   {
     "id": "product-pro-templates",
@@ -162,7 +182,9 @@
     "orderMethod": "微信下单",
     "applicableScene": null,
     "expectedEffect": null,
-    "maintenancePeriod": "永久更新"
+    "maintenancePeriod": "永久更新",
+    "productUrl": null,
+    "tags": ["Prompt模板", "写作", "绘画", "视频", "办公"]
   },
   {
     "id": "product-pro-resources",
@@ -177,7 +199,9 @@
     "orderMethod": "微信下单",
     "applicableScene": null,
     "expectedEffect": null,
-    "maintenancePeriod": "1 年"
+    "maintenancePeriod": "1 年",
+    "productUrl": null,
+    "tags": ["教程", "模型包", "LoRA", "视频教程", "会员"]
   },
   {
     "id": "product-pro-tool",
@@ -192,6 +216,127 @@
     "orderMethod": "微信下单",
     "applicableScene": null,
     "expectedEffect": null,
-    "maintenancePeriod": "1 年"
+    "maintenancePeriod": "1 年",
+    "productUrl": null,
+    "tags": ["桌面工具", "ChatGPT", "Claude", "免翻墙"]
+  },
+  {
+    "id": "product-content-studio",
+    "type": "product",
+    "name": "内容创作工作室",
+    "price": "199 元",
+    "priceRange": "199 元",
+    "description": "我自研的AI内容创作系统，一条龙搞定选题、写作、配图、排版，日更不愁。",
+    "details": "不是套壳工具，是我自己用了一年迭代出来的内容生产线。包含：选题雷达（热点追踪+选题推荐）、AI写作引擎（多平台风格适配）、自动配图（MJ/SD接入）、一键排版（小红书/公众号/知乎格式）、数据复盘。适合个人创作者和小团队。",
+    "delivery": { "method": "在线账号+使用指导", "time": "即时开通", "revisions": 0 },
+    "guarantee": "7天无理由退款",
+    "orderMethod": "微信下单",
+    "applicableScene": "自媒体运营、内容创作者、小团队",
+    "expectedEffect": "日产能提升3-5倍，单人可日更",
+    "maintenancePeriod": "1 年",
+    "productUrl": null,
+    "tags": ["内容创作", "自媒体", "日更", "选题", "排版"]
+  },
+  {
+    "id": "product-bigshot-roundtable",
+    "type": "product",
+    "name": "大佬圆桌系统",
+    "price": "299 元",
+    "priceRange": "299 元",
+    "description": "模拟多个AI大佬圆桌讨论，你抛问题，他们辩论给你看，决策不再纠结。",
+    "details": "独创的多Agent圆桌辩论系统。你提一个决策问题，系统会模拟乔布斯、马斯克、巴菲特等不同视角的AI大佬，各自给出观点并互相辩论，最后输出综合建议。适合纠结型选手和需要多视角决策的人。",
+    "delivery": { "method": "在线账号+使用指导", "time": "即时开通", "revisions": 0 },
+    "guarantee": "7天无理由退款",
+    "orderMethod": "微信下单",
+    "applicableScene": "创业决策、职业选择、投资判断",
+    "expectedEffect": "多视角决策，减少决策失误",
+    "maintenancePeriod": "1 年",
+    "productUrl": null,
+    "tags": ["多Agent", "圆桌辩论", "决策", "大佬模拟"]
+  },
+  {
+    "id": "automation-content-pipeline",
+    "type": "automation",
+    "name": "内容流水线自动化",
+    "price": "299 元",
+    "priceRange": "299 - 599 元",
+    "description": "帮你搭建从选题到发布全自动内容流水线，每天自动产出内容，人工只做终审。",
+    "details": "基于n8n/Dify搭建全自动内容生产流水线。包含：热点监控→选题生成→AI写作→配图生成→排版→定时发布→数据回收。对接主流平台API（公众号、小红书、知乎）。一次搭建长期运行。",
+    "delivery": { "method": "源码+部署+文档", "time": "1-2 周", "revisions": 3 },
+    "guarantee": "验收不通过不收尾款",
+    "orderMethod": "微信下单",
+    "applicableScene": "自媒体团队、MCN、内容工厂",
+    "expectedEffect": "日均产出10+篇内容，人工只做终审",
+    "maintenancePeriod": "30 天",
+    "productUrl": null,
+    "tags": ["n8n", "Dify", "内容流水线", "自动发布", "热点监控"]
+  },
+  {
+    "id": "automation-workflow-custom",
+    "type": "automation",
+    "name": "工作流定制自动化",
+    "price": "499 元",
+    "priceRange": "499 - 999 元",
+    "description": "任何重复性工作都能自动化。数据整理、报表生成、邮件处理、跨工具同步。",
+    "details": "告诉我你的重复性工作，我帮你用AI+自动化工具搞定。包括：流程梳理、工具选型（n8n/Make/Zapier/Dify）、工作流开发、测试调优、操作文档、培训交接。例：自动生成周报、自动整理客户反馈、自动同步多平台数据等。",
+    "delivery": { "method": "源码+部署+文档", "time": "1-2 周", "revisions": 3 },
+    "guarantee": "验收不通过不收尾款",
+    "orderMethod": "微信下单",
+    "applicableScene": "运营、行政、财务、客服等重复性工作多的岗位",
+    "expectedEffect": "重复性工作节省80%以上时间",
+    "maintenancePeriod": "30 天",
+    "productUrl": null,
+    "tags": ["n8n", "Make", "Zapier", "Dify", "工作流", "RPA"]
+  },
+  {
+    "id": "skills-douyin-prompt",
+    "type": "skills",
+    "name": "抖音爆款提示词合集",
+    "price": "19.9 元",
+    "priceRange": "19.9 元",
+    "description": "50+实测有效的抖音脚本/文案/选题提示词，覆盖带货、知识、剧情、口播。",
+    "details": "我自己跑了一年抖音账号沉淀下来的提示词库。包含：爆款选题生成器、钩子文案模板、脚本结构模板、带货话术模板、评论区互动模板。每个提示词都附带实测效果案例和使用说明。适合想做抖音但不知道拍什么、怎么写的人。",
+    "delivery": { "method": "在线文档+更新群", "time": "即时", "revisions": 0 },
+    "guarantee": "7天无理由退款",
+    "orderMethod": "微信下单",
+    "applicableScene": "抖音创作者、带货主播、MCN运营",
+    "expectedEffect": "脚本产出效率提升5倍，选题不再卡壳",
+    "maintenancePeriod": "永久更新",
+    "productUrl": null,
+    "tags": ["抖音", "提示词", "脚本", "带货", "爆款"]
+  },
+  {
+    "id": "skills-wechat-prompt",
+    "type": "skills",
+    "name": "公众号爆款提示词合集",
+    "price": "19.9 元",
+    "priceRange": "19.9 元",
+    "description": "40+公众号运营提示词，从选题到排版全流程覆盖，10万+不是梦。",
+    "details": "实测有效的公众号提示词库。包含：热点选题挖掘、标题优化器、文章结构生成、金句生成、排版建议、SEO关键词优化。每个提示词都附带10万+案例参考。适合公众号运营者和内容创作者。",
+    "delivery": { "method": "在线文档+更新群", "time": "即时", "revisions": 0 },
+    "guarantee": "7天无理由退款",
+    "orderMethod": "微信下单",
+    "applicableScene": "公众号运营者、新媒体编辑、内容创作者",
+    "expectedEffect": "文章产出效率提升3倍，打开率提升30%",
+    "maintenancePeriod": "永久更新",
+    "productUrl": null,
+    "tags": ["公众号", "提示词", "选题", "标题", "10万+"]
+  },
+  {
+    "id": "skills-prompt-library",
+    "type": "skills",
+    "name": "全场景提示词库",
+    "price": "39.9 元",
+    "priceRange": "39.9 元",
+    "description": "200+覆盖写作、绘画、视频、办公、编程全场景的提示词，拿来就能用。",
+    "details": "我精心整理和实测的全场景提示词库。按场景分类：写作（小红书/公众号/知乎/短视频脚本）、绘画（人物/风景/海报/Logo）、视频（脚本/分镜/口播）、办公（周报/汇报/邮件/会议纪要）、编程（需求/代码/测试/文档）。每个提示词都附使用案例和效果对比。一次付费永久更新。",
+    "delivery": { "method": "在线文档+更新群", "time": "即时", "revisions": 0 },
+    "guarantee": "7天无理由退款",
+    "orderMethod": "微信下单",
+    "applicableScene": "所有AI用户，尤其是刚入门不知道怎么写提示词的人",
+    "expectedEffect": "AI使用效率提升3-5倍，不再从零写提示词",
+    "maintenancePeriod": "永久更新",
+    "productUrl": null,
+    "tags": ["提示词库", "全场景", "写作", "绘画", "视频", "办公", "编程"]
   }
 ]

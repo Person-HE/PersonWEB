@@ -10,6 +10,9 @@ import {
   Puzzle,
   Crown,
   Building2,
+  Package,
+  Workflow,
+  Sparkles,
   type LucideIcon,
 } from 'lucide-react';
 import { useDataStore } from '@/store/useDataStore';
@@ -28,6 +31,9 @@ const serviceIconMap: Record<ServiceType, LucideIcon> = {
   'ai-output': Wand2,
   custom: Puzzle,
   'product-pro': Crown,
+  product: Package,
+  automation: Workflow,
+  skills: Sparkles,
   enterprise: Building2,
 };
 

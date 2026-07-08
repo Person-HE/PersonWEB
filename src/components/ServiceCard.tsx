@@ -1,4 +1,4 @@
-import { Wrench, Wand2, Puzzle, Crown, ArrowRight, type LucideIcon } from 'lucide-react';
+import { Wrench, Wand2, Puzzle, Crown, Package, Workflow, Sparkles, ArrowRight, type LucideIcon } from 'lucide-react';
 import type { Service, ServiceType } from '@/types';
 import { useWechatModal } from '@/components/WeChatModal';
 
@@ -7,6 +7,9 @@ const iconMap: Record<ServiceType, LucideIcon> = {
   'ai-output': Wand2,
   custom: Puzzle,
   'product-pro': Crown,
+  product: Package,
+  automation: Workflow,
+  skills: Sparkles,
   enterprise: Crown,
 };
 
@@ -45,9 +48,18 @@ export default function ServiceCard({ service, isEnterprise = false }: ServiceCa
         </div>
       </div>
 
-      <p className="mb-4 line-clamp-2 font-hand-body text-sm leading-relaxed text-[var(--ink-soft)]">
+      <p className="mb-3 line-clamp-2 font-hand-body text-sm leading-relaxed text-[var(--ink-soft)]">
         {service.description}
       </p>
+
+      {/* 标签 */}
+      {service.tags && service.tags.length > 0 ? (
+        <div className="mb-4 flex flex-wrap gap-1">
+          {service.tags.slice(0, 4).map((t) => (
+            <span key={t} className="hand-tag text-xs">#{t}</span>
+          ))}
+        </div>
+      ) : null}
 
       {/* 交付信息 */}
       <div className="mb-4 space-y-1.5 font-hand-body text-xs text-[var(--ink-soft)]">

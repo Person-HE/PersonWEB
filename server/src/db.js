@@ -1,13 +1,13 @@
-﻿/**
+/**
  * 数据层 —— 直接导入 JSON 数据，无需外部数据库
  *
  * 数据源：public/data/*.json
  * Vercel 打包时会自动内联这些 JSON 文件
  * 数据只读，修改需更新 JSON 文件后重新部署
  */
-import resourcesData from '../../public/data/resources.json' assert { type: 'json' };
-import toolsData from '../../public/data/tools.json' assert { type: 'json' };
-import servicesData from '../../public/data/services.json' assert { type: 'json' };
+import resourcesData from '../../public/data/resources.json' with { type: 'json' };
+import toolsData from '../../public/data/tools.json' with { type: 'json' };
+import servicesData from '../../public/data/services.json' with { type: 'json' };
 
 const collections = {
   resources: resourcesData.default || resourcesData,

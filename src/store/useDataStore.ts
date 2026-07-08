@@ -60,7 +60,25 @@ export const useDataStore = create<DataState>((set, get) => ({
   source: null,
 
   loadAll: async () => {
-    if (get().loaded || get().loading) return;
+    // 已加载过：静默刷新（后台拉取最新数据，不显示 loading，避免页面闪烁）
+    if (get().loaded) {
+      try {
+        const [r, t, s] = await Promise.all([
+          loadWithFallback(resourcesApi.list, '/data/resources.json'),
+          loadWithFallback(toolsApi.list, '/data/tools.json'),
+          loadWithFallback(servicesApi.list, '/data/services.json'),
+        ]);
+        const source: 'api' | 'static' =
+          r.source === 'api' || t.source === 'api' || s.source === 'api' ? 'api' : 'static';
+        set({ resources: r.data, tools: t.data, services: s.data, source });
+      } catch {
+        // 静默刷新失败时保留旧数据，不打扰用户
+      }
+      return;
+    }
+    // 正在加载中：跳过
+    if (get().loading) return;
+
     set({ loading: true, error: null });
     try {
       const [r, t, s] = await Promise.all([

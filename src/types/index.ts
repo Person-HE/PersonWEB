@@ -26,7 +26,10 @@ export type ServiceType =
   | 'ai-output'
   | 'custom'
   | 'product-pro'
-  | 'enterprise';
+  | 'enterprise'
+  | 'product'
+  | 'automation'
+  | 'skills';
 
 /** 视频引用 */
 export interface VideoRef {
@@ -42,7 +45,12 @@ export interface Resource {
   category: ResourceCategory;
   subCategory: string;
   description: string;
+  icon: string;
+  coverImage: string | null;
   videoRef: VideoRef | null;
+  fileCount: number;
+  fileList: string[];
+  downloadUrl: string | null;
   productUrl: string | null;
   updatedAt: string;
   createdAt: string;
@@ -90,6 +98,10 @@ export interface Service {
   applicableScene: string | null;
   expectedEffect: string | null;
   maintenancePeriod: string | null;
+  /** 自研产品链接（product 类型用） */
+  productUrl: string | null;
+  /** 标签 */
+  tags: string[];
 }
 
 /** AI工具导航分类元数据 */
