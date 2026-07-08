@@ -36,6 +36,11 @@ export default function ResourceDetail() {
       .slice(0, 3);
   }, [resources, resource]);
 
+  const { url: linkUrl, password: linkPassword } = useMemo(
+    () => (resource ? getResourceLink(resource) : { url: null, password: null }),
+    [resource]
+  );
+
   if (loading && !loaded) {
     return (
       <div className="relative min-h-screen overflow-hidden pt-16">
@@ -74,10 +79,6 @@ export default function ResourceDetail() {
   }
 
   const isProduct = resource.category === '个人产品';
-  const { url: linkUrl, password: linkPassword } = useMemo(
-    () => getResourceLink(resource),
-    [resource]
-  );
   const hasLink = !!linkUrl && linkUrl.trim() !== '';
   const hasFiles = resource.fileList && resource.fileList.length > 0;
   const hasFileCount = resource.fileCount && resource.fileCount > 0;
