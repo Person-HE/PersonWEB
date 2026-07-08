@@ -73,8 +73,9 @@ export default function ResourceDetail() {
   }
 
   const isProduct = resource.category === '个人产品';
-  const hasLink = resource.linkUrl;
+  const hasLink = !!resource.linkUrl && resource.linkUrl.trim() !== '';
   const hasFiles = resource.fileList && resource.fileList.length > 0;
+  const hasFileCount = resource.fileCount && resource.fileCount > 0;
 
   return (
     <div className="relative min-h-screen overflow-hidden pt-16">
@@ -147,18 +148,38 @@ export default function ResourceDetail() {
                 </div>
               </div>
 
-              {/* 网盘链接按钮 */}
+              {/* 网盘链接 */}
               {hasLink ? (
-                <a
-                  href={resource.linkUrl!}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hand-btn hand-btn-primary inline-flex text-sm"
-                >
-                  <LinkIcon className="h-4 w-4" />
-                  访问网盘链接
-                </a>
-              ) : null}
+                <div className="space-y-2">
+                  <a
+                    href={resource.linkUrl!}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hand-btn hand-btn-primary inline-flex text-sm"
+                  >
+                    <LinkIcon className="h-4 w-4" />
+                    访问网盘链接
+                  </a>
+                  <div className="flex items-center gap-2 rounded-lg border-2 border-[var(--ink)]/20 bg-[var(--paper-light)] px-3 py-2">
+                    <span className="flex-1 truncate font-hand-body text-xs text-[var(--ink-soft)]">
+                      {resource.linkUrl}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (resource.linkUrl) {
+                          navigator.clipboard.writeText(resource.linkUrl);
+                        }
+                      }}
+                      className="shrink-0 rounded-md border-2 border-[var(--ink)] bg-[var(--paper)] px-2 py-1 font-hand-body text-xs text-[var(--ink)] shadow-[1px_1px_0_var(--ink)] hover:bg-[var(--paper-light)]"
+                    >
+                      复制
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <p className="font-hand-body text-sm text-[var(--ink-mute)]">暂无网盘链接</p>
+              )}
             </div>
           </div>
 
@@ -175,8 +196,8 @@ export default function ResourceDetail() {
             </div>
           </div>
 
-          {/* 文件清单 */}
-          {hasFiles ? (
+          {/* 文件信息 */}
+          {(hasFiles || hasFileCount) ? (
             <div
               className="hand-card mb-6 p-5"
               style={{ transform: 'rotate(-0.3deg)' }}
@@ -186,20 +207,24 @@ export default function ResourceDetail() {
                   <Package className="h-3.5 w-3.5 text-[var(--paper-light)]" />
                 </div>
                 <h2 className="font-hand-title text-base text-[var(--ink)]">
-                  文件清单 <span className="text-xs text-[var(--ink-mute)]">（共 {resource.fileCount || resource.fileList.length} 个）</span>
+                  文件信息 <span className="text-xs text-[var(--ink-mute)]">（共 {resource.fileCount || resource.fileList.length} 个）</span>
                 </h2>
               </div>
-              <ul className="grid gap-1 sm:grid-cols-2">
-                {resource.fileList.map((f, i) => (
-                  <li
-                    key={i}
-                    className="flex items-center gap-2 rounded-md border border-[var(--ink)]/20 bg-[var(--paper-light)] px-3 py-1.5 font-hand-body text-xs text-[var(--ink-soft)]"
-                  >
-                    <FileText className="h-3 w-3 shrink-0 text-[var(--ink-mute)]" />
-                    <span className="truncate">{f}</span>
-                  </li>
-                ))}
-              </ul>
+              {hasFiles ? (
+                <ul className="grid gap-1 sm:grid-cols-2">
+                  {resource.fileList.map((f, i) => (
+                    <li
+                      key={i}
+                      className="flex items-center gap-2 rounded-md border border-[var(--ink)]/20 bg-[var(--paper-light)] px-3 py-1.5 font-hand-body text-xs text-[var(--ink-soft)]"
+                    >
+                      <FileText className="h-3 w-3 shrink-0 text-[var(--ink-mute)]" />
+                      <span className="truncate">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="font-hand-body text-sm text-[var(--ink-mute)]">暂无文件列表</p>
+              )}
             </div>
           ) : null}
 
