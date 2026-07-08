@@ -26,7 +26,7 @@ export default function ResourceDetail() {
     loadAll();
   }, [loadAll]);
 
-  const resource = useMemo(() => resources.find((r) => r.id === id), [resources, id]);
+  const resource = useMemo(() => resources.find((r) => String(r.id) === String(id)), [resources, id]);
 
   const related = useMemo(() => {
     if (!resource) return [];

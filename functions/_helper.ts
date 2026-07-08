@@ -227,10 +227,10 @@ export function createCrudHandlers(collectionName: string, targetType: string) {
       if (path && path.length > 0) {
         const row = items.find(r => String(r.data.id) === String(path));
         if (!row) return json({ error: '不存在' }, 404);
-        return json(row.data);
+        return json({ ...row.data, id: String(row.data.id) });
       }
 
-      return json(ordered(items));
+      return json(ordered(items).map(item => ({ ...item, id: String(item.id) })));
     },
 
     /** POST /api/<collection> - 创建 */
@@ -242,9 +242,10 @@ export function createCrudHandlers(collectionName: string, targetType: string) {
       if (!body || typeof body !== 'object' || !body.id) {
         return json({ error: '缺少 id 字段' }, 400);
       }
+      body.id = String(body.id);
 
       const items = await getCollection(ctx.env.KV, collectionName);
-      if (items.some(r => String(r.data.id) === String(body.id))) {
+      if (items.some(r => String(r.data.id) === body.id)) {
         return json({ error: `id "${body.id}" 已存在` }, 409);
       }
 
@@ -274,10 +275,11 @@ export function createCrudHandlers(collectionName: string, targetType: string) {
       if (!body || typeof body !== 'object') {
         return json({ error: '请求体无效' }, 400);
       }
-      body.id = id;
+      const sid = String(id);
+      body.id = sid;
 
       const items = await getCollection(ctx.env.KV, collectionName);
-      const idx = items.findIndex(r => String(r.data.id) === String(id));
+      const idx = items.findIndex(r => String(r.data.id) === sid);
       if (idx < 0) return json({ error: '不存在' }, 404);
 
       if (collectionName !== 'tools') body.updatedAt = new Date().toISOString();
@@ -285,7 +287,7 @@ export function createCrudHandlers(collectionName: string, targetType: string) {
       await setCollection(ctx.env.KV, collectionName, items);
 
       await logAction(ctx.env.KV, {
-        action: 'update', targetType, targetId: id,
+        action: 'update', targetType, targetId: sid,
         detail: { name: body.name || body.title }, ip: getIp(ctx.request),
       });
 
@@ -306,11 +308,11 @@ export function createCrudHandlers(collectionName: string, targetType: string) {
       await setCollection(ctx.env.KV, collectionName, items);
 
       await logAction(ctx.env.KV, {
-        action: 'delete', targetType, targetId: id,
+        action: 'delete', targetType, targetId: String(id),
         detail: { name: removed.name || removed.title }, ip: getIp(ctx.request),
       });
 
-      return json({ ok: true, id });
+      return json({ ok: true, id: String(id) });
     },
 
     /** POST /api/<collection>/reorder - 排序 */

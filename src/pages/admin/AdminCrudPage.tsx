@@ -108,30 +108,32 @@ export default function AdminCrudPage({ config, apiBase }: Props) {
   }
 
   function handleEdit(item: Item) {
-    setEditing({ ...item });
+    setEditing({ ...item, id: String(item.id) });
     setIsNew(false);
   }
 
   async function handleSave() {
     if (!editing) return;
-    if (!editing.id) {
+    const id = String(editing.id);
+    if (!id) {
       setError('ID 不能为空');
       return;
     }
+    const item = { ...editing, id };
     setSaving(true);
     setError(null);
     try {
       if (isNew) {
-        const created = await api.create(editing);
+        const created = await api.create(item);
         setList((prev) => {
           const next = [...prev, created];
           listCache.set(apiBase, { data: next, ts: Date.now() });
           return next;
         });
       } else {
-        const updated = await api.update(editing.id, editing);
+        const updated = await api.update(id, item);
         setList((prev) => {
-          const next = prev.map((it) => (it.id === updated.id ? updated : it));
+          const next = prev.map((it) => (String(it.id) === String(updated.id) ? updated : it));
           listCache.set(apiBase, { data: next, ts: Date.now() });
           return next;
         });
@@ -148,10 +150,11 @@ export default function AdminCrudPage({ config, apiBase }: Props) {
 
   async function handleDelete(id: string) {
     if (!confirm(`确认删除？此操作不可撤销。`)) return;
+    const sid = String(id);
     try {
-      await api.remove(id);
+      await api.remove(sid);
       setList((prev) => {
-        const next = prev.filter((it) => it.id !== id);
+        const next = prev.filter((it) => String(it.id) !== sid);
         listCache.set(apiBase, { data: next, ts: Date.now() });
         return next;
       });

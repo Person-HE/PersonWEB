@@ -46,10 +46,10 @@ export default function ServiceDetail() {
     loadAll();
   }, [loadAll]);
 
-  const service = useMemo(() => services.find((s) => s.id === id), [services, id]);
+  const service = useMemo(() => services.find((s) => String(s.id) === String(id)), [services, id]);
   const related = useMemo(() => {
     if (!service) return [];
-    return services.filter((s) => s.id !== service.id && s.type === service.type).slice(0, 3);
+    return services.filter((s) => String(s.id) !== String(service.id) && s.type === service.type).slice(0, 3);
   }, [services, service]);
 
   if (loading && !loaded) {
