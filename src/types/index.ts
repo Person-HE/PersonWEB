@@ -43,6 +43,7 @@ export interface Resource {
   fileCount: number;
   fileList: string[];
   linkUrl: string | null;
+  linkPassword: string | null;
   updatedAt: string;
   createdAt: string;
   tags: string[];

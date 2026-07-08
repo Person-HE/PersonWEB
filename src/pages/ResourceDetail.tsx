@@ -77,6 +77,18 @@ export default function ResourceDetail() {
   const hasFiles = resource.fileList && resource.fileList.length > 0;
   const hasFileCount = resource.fileCount && resource.fileCount > 0;
 
+  const linkPassword = useMemo(() => {
+    if (resource.linkPassword) return resource.linkPassword;
+    if (!resource.linkUrl) return null;
+    try {
+      const url = new URL(resource.linkUrl);
+      const pwd = url.searchParams.get('pwd');
+      return pwd || null;
+    } catch {
+      return null;
+    }
+  }, [resource.linkPassword, resource.linkUrl]);
+
   return (
     <div className="relative min-h-screen overflow-hidden pt-16">
       <PaperBackground />
@@ -151,15 +163,22 @@ export default function ResourceDetail() {
               {/* 网盘链接 */}
               {hasLink ? (
                 <div className="space-y-2">
-                  <a
-                    href={resource.linkUrl!}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hand-btn hand-btn-primary inline-flex text-sm"
-                  >
-                    <LinkIcon className="h-4 w-4" />
-                    访问网盘链接
-                  </a>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <a
+                      href={resource.linkUrl!}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="hand-btn hand-btn-primary inline-flex text-sm"
+                    >
+                      <LinkIcon className="h-4 w-4" />
+                      访问网盘链接
+                    </a>
+                    {linkPassword ? (
+                      <span className="rounded-md border-2 border-[var(--ink)] bg-[var(--mustard)] px-2 py-1 font-hand-body text-xs text-[var(--ink)]">
+                        提取码：{linkPassword}
+                      </span>
+                    ) : null}
+                  </div>
                   <div className="flex items-center gap-2 rounded-lg border-2 border-[var(--ink)]/20 bg-[var(--paper-light)] px-3 py-2">
                     <span className="flex-1 truncate font-hand-body text-xs text-[var(--ink-soft)]">
                       {resource.linkUrl}
@@ -173,7 +192,7 @@ export default function ResourceDetail() {
                       }}
                       className="shrink-0 rounded-md border-2 border-[var(--ink)] bg-[var(--paper)] px-2 py-1 font-hand-body text-xs text-[var(--ink)] shadow-[1px_1px_0_var(--ink)] hover:bg-[var(--paper-light)]"
                     >
-                      复制
+                      复制链接
                     </button>
                   </div>
                 </div>

@@ -224,7 +224,7 @@ export function createCrudHandlers(collectionName: string, targetType: string) {
 
       // 如果有具体 ID
       if (path && typeof path === 'string' && path.length > 0) {
-        const row = items.find(r => r.data.id === path);
+        const row = items.find(r => String(r.data.id) === String(path));
         if (!row) return json({ error: '不存在' }, 404);
         return json(row.data);
       }
@@ -243,7 +243,7 @@ export function createCrudHandlers(collectionName: string, targetType: string) {
       }
 
       const items = await getCollection(ctx.env.KV, collectionName);
-      if (items.some(r => r.data.id === body.id)) {
+      if (items.some(r => String(r.data.id) === String(body.id))) {
         return json({ error: `id "${body.id}" 已存在` }, 409);
       }
 
@@ -276,7 +276,7 @@ export function createCrudHandlers(collectionName: string, targetType: string) {
       body.id = id;
 
       const items = await getCollection(ctx.env.KV, collectionName);
-      const idx = items.findIndex(r => r.data.id === id);
+      const idx = items.findIndex(r => String(r.data.id) === String(id));
       if (idx < 0) return json({ error: '不存在' }, 404);
 
       if (collectionName !== 'tools') body.updatedAt = new Date().toISOString();
@@ -297,7 +297,7 @@ export function createCrudHandlers(collectionName: string, targetType: string) {
       if (!user) return json({ error: '未登录' }, 401);
 
       const items = await getCollection(ctx.env.KV, collectionName);
-      const idx = items.findIndex(r => r.data.id === id);
+      const idx = items.findIndex(r => String(r.data.id) === String(id));
       if (idx < 0) return json({ error: '不存在' }, 404);
 
       const removed = items[idx].data;
@@ -324,7 +324,7 @@ export function createCrudHandlers(collectionName: string, targetType: string) {
 
       const items = await getCollection(ctx.env.KV, collectionName);
       body.ids.forEach((id: string, idx: number) => {
-        const row = items.find(r => r.data.id === id);
+        const row = items.find(r => String(r.data.id) === String(id));
         if (row) row._order = idx + 1;
       });
       await setCollection(ctx.env.KV, collectionName, items);
