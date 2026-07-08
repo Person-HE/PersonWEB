@@ -56,37 +56,33 @@ export default function ResourceCard({ resource, compact = false }: ResourceCard
         {resource.description}
       </p>
 
-      {resource.videoRef && !compact ? (
+      {resource.videoUrl && !compact ? (
         <a
-          href={resource.videoRef.url}
+          href={resource.videoUrl}
           target="_blank"
           rel="noreferrer"
           className="mb-4 flex items-center gap-2 rounded-lg border-2 border-[var(--indigo)] bg-[var(--indigo)]/10 px-3 py-2 font-hand-body text-xs text-[var(--indigo)] transition-colors hover:bg-[var(--indigo)]/20"
         >
           <PlayCircle className="h-4 w-4 shrink-0" />
-          <span className="line-clamp-1">{resource.videoRef.title}</span>
+          <span className="line-clamp-1">抖音视频</span>
         </a>
       ) : null}
 
-      <div className="mt-auto flex items-center justify-end gap-2 font-hand-body text-xs text-[var(--ink-mute)]">
-        <span>更新于 {resource.updatedAt || '—'}</span>
-      </div>
-
       <div className="mt-4 flex items-center gap-2">
-        {isProduct && resource.productUrl ? (
+        {resource.linkUrl ? (
           <a
-            href={resource.productUrl}
+            href={resource.linkUrl}
             target="_blank"
             rel="noreferrer"
             className="hand-btn hand-btn-primary flex-1 text-sm"
           >
             <ExternalLink className="h-4 w-4" />
-            使用
+            访问链接
           </a>
         ) : null}
         <Link
           to={`/resources/${resource.id}`}
-          className="hand-btn text-sm flex-1 text-center"
+          className={`hand-btn text-sm ${!resource.linkUrl ? 'flex-1' : ''} text-center`}
         >
           详情
           <ArrowRight className="ml-1 inline h-3.5 w-3.5" />

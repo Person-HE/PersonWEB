@@ -45,7 +45,6 @@ export const wechatScenes = {
   'product-pro': '添加时请备注"产品咨询"',
   product: '添加时请备注"自研产品+产品名"',
   automation: '添加时请备注"自动化+需求"',
-  skills: '添加时请备注"提示词+场景"',
   enterprise: '添加时请备注"企业咨询+公司名"',
   default: '添加时请备注"来自网站"，方便我通过好友请求',
 } as const;

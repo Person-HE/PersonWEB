@@ -28,15 +28,7 @@ export type ServiceType =
   | 'product-pro'
   | 'enterprise'
   | 'product'
-  | 'automation'
-  | 'skills';
-
-/** 视频引用 */
-export interface VideoRef {
-  title: string;
-  url: string;
-  platform: '抖音' | 'B站' | 'YouTube';
-}
+  | 'automation';
 
 /** 资源 */
 export interface Resource {
@@ -47,11 +39,10 @@ export interface Resource {
   description: string;
   icon: string;
   coverImage: string | null;
-  videoRef: VideoRef | null;
+  videoUrl: string | null;
   fileCount: number;
   fileList: string[];
-  downloadUrl: string | null;
-  productUrl: string | null;
+  linkUrl: string | null;
   updatedAt: string;
   createdAt: string;
   tags: string[];

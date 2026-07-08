@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ExternalLink, FileText, PlayCircle, ArrowLeft, Download, Package } from 'lucide-react';
+import { ExternalLink, FileText, PlayCircle, ArrowLeft, Download, Package, Link as LinkIcon } from 'lucide-react';
 import { useDataStore } from '@/store/useDataStore';
 import Breadcrumb from '@/components/Breadcrumb';
 import EmptyState from '@/components/EmptyState';
@@ -73,7 +73,7 @@ export default function ResourceDetail() {
   }
 
   const isProduct = resource.category === '个人产品';
-  const hasDownload = !isProduct && resource.downloadUrl;
+  const hasLink = resource.linkUrl;
   const hasFiles = resource.fileList && resource.fileList.length > 0;
 
   return (
@@ -147,31 +147,18 @@ export default function ResourceDetail() {
                 </div>
               </div>
 
-              {/* 操作按钮区：产品链接 / 下载链接 */}
-              <div className="flex flex-wrap gap-2">
-                {isProduct && resource.productUrl ? (
-                  <a
-                    href={resource.productUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hand-btn hand-btn-primary inline-flex text-sm"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                    前往使用
-                  </a>
-                ) : null}
-                {hasDownload ? (
-                  <a
-                    href={resource.downloadUrl!}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hand-btn hand-btn-primary inline-flex text-sm"
-                  >
-                    <Download className="h-4 w-4" />
-                    下载资源
-                  </a>
-                ) : null}
-              </div>
+              {/* 网盘链接按钮 */}
+              {hasLink ? (
+                <a
+                  href={resource.linkUrl!}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hand-btn hand-btn-primary inline-flex text-sm"
+                >
+                  <LinkIcon className="h-4 w-4" />
+                  访问网盘链接
+                </a>
+              ) : null}
             </div>
           </div>
 
@@ -216,10 +203,10 @@ export default function ResourceDetail() {
             </div>
           ) : null}
 
-          {/* 对应视频 */}
-          {resource.videoRef ? (
+          {/* 抖音视频 */}
+          {resource.videoUrl ? (
             <a
-              href={resource.videoRef.url}
+              href={resource.videoUrl}
               target="_blank"
               rel="noreferrer"
               className="hand-card mb-6 flex items-center gap-3 p-4 transition-colors hover:bg-[var(--indigo)]/5"
@@ -227,8 +214,8 @@ export default function ResourceDetail() {
             >
               <PlayCircle className="h-6 w-6 shrink-0 text-[var(--indigo)]" />
               <div>
-                <div className="font-hand-body text-xs text-[var(--indigo)]">{resource.videoRef.platform}</div>
-                <div className="font-hand-body text-sm text-[var(--ink)]">{resource.videoRef.title}</div>
+                <div className="font-hand-body text-xs text-[var(--indigo)]">抖音视频</div>
+                <div className="font-hand-body text-sm text-[var(--ink)]">点击查看视频</div>
               </div>
             </a>
           ) : null}

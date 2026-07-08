@@ -8,7 +8,6 @@ import {
   Building2,
   Package,
   Workflow,
-  Sparkles,
   ArrowLeft,
   ArrowRight,
   Check,
@@ -32,7 +31,6 @@ const iconMap: Record<ServiceType, LucideIcon> = {
   'product-pro': Crown,
   product: Package,
   automation: Workflow,
-  skills: Sparkles,
   enterprise: Building2,
 };
 

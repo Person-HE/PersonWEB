@@ -62,7 +62,7 @@ export function createCrudRouter(collectionName, opts = {}) {
       }
 
       const coll = await getCollection(collectionName);
-      if (coll.some((r) => r.data.id === item.id)) {
+      if (coll.some((r) => String(r.data.id) === String(item.id))) {
         return res.status(409).json({ error: `id "${item.id}" 已存在` });
       }
 
@@ -102,7 +102,7 @@ export function createCrudRouter(collectionName, opts = {}) {
       item.id = id;
 
       const coll = await getCollection(collectionName);
-      const idx = coll.findIndex((r) => r.data.id === id);
+      const idx = coll.findIndex((r) => String(r.data.id) === String(id));
       if (idx < 0) {
         return res.status(404).json({ error: '不存在' });
       }
@@ -132,7 +132,7 @@ export function createCrudRouter(collectionName, opts = {}) {
     try {
       const id = req.params.id;
       const coll = await getCollection(collectionName);
-      const idx = coll.findIndex((r) => r.data.id === id);
+      const idx = coll.findIndex((r) => String(r.data.id) === String(id));
       if (idx < 0) {
         return res.status(404).json({ error: '不存在' });
       }

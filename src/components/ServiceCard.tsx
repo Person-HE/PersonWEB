@@ -1,4 +1,4 @@
-import { Wrench, Wand2, Puzzle, Crown, Package, Workflow, Sparkles, ArrowRight, type LucideIcon } from 'lucide-react';
+import { Wrench, Wand2, Puzzle, Crown, Package, Workflow, ArrowRight, type LucideIcon } from 'lucide-react';
 import type { Service, ServiceType } from '@/types';
 import { useWechatModal } from '@/components/WeChatModal';
 
@@ -9,7 +9,6 @@ const iconMap: Record<ServiceType, LucideIcon> = {
   'product-pro': Crown,
   product: Package,
   automation: Workflow,
-  skills: Sparkles,
   enterprise: Crown,
 };
 

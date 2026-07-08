@@ -54,12 +54,6 @@ export const SERVICE_TYPES: ServiceTypeMeta[] = [
     priceRange: '99 - 999 元',
   },
   {
-    id: 'skills',
-    name: 'Skills/提示词',
-    description: '经过实测的Prompt模板和Skills，拿来就能用，覆盖主流创作场景。',
-    priceRange: '9.9 - 39.9 元',
-  },
-  {
     id: 'enterprise',
     name: '企业AI落地搭建',
     description: '帮企业真正把AI用起来。不是概念，不是PPT，是落到工位上、每天能用的工具。',
@@ -75,7 +69,6 @@ export const SERVICE_TYPE_ICON: Record<ServiceType, string> = {
   'product-pro': 'crown',
   product: 'box',
   automation: 'workflow',
-  skills: 'sparkles',
   enterprise: 'building',
 };
 

@@ -8,7 +8,6 @@ import {
   Building2,
   Package,
   Workflow,
-  Sparkles,
   ArrowRight,
   MessageCircle,
   type LucideIcon,
@@ -28,7 +27,6 @@ const iconMap: Record<ServiceType, LucideIcon> = {
   'product-pro': Crown,
   product: Package,
   automation: Workflow,
-  skills: Sparkles,
   enterprise: Building2,
 };
 
@@ -52,7 +50,6 @@ export default function Services() {
       'product-pro': [],
       product: [],
       automation: [],
-      skills: [],
       enterprise: [],
     };
     services.forEach((s) => {
