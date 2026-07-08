@@ -1,7 +1,0 @@
-server/node_modules
-server/data
-server
-functions
-node_modules/.cache
-.git
-.env
