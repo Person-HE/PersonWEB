@@ -220,10 +220,11 @@ export function createCrudHandlers(collectionName: string, targetType: string) {
     /** GET /api/<collection> 或 GET /api/<collection>/<id> */
     async handleList(ctx: APIContext): Promise<Response> {
       const items = await getCollection(ctx.env.KV, collectionName);
-      const path = (ctx.params as any).path;
+      const rawPath = (ctx.params as any).path;
+      const path = rawPath ? (Array.isArray(rawPath) ? rawPath.join('/') : String(rawPath)) : undefined;
 
       // 如果有具体 ID
-      if (path && typeof path === 'string' && path.length > 0) {
+      if (path && path.length > 0) {
         const row = items.find(r => String(r.data.id) === String(path));
         if (!row) return json({ error: '不存在' }, 404);
         return json(row.data);
