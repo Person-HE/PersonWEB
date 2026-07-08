@@ -6,7 +6,9 @@ const crud = createCrudHandlers('resources', 'resource');
 function getPath(context: APIContext): string | undefined {
   const raw = (context.params as any).path;
   if (!raw) return undefined;
-  return Array.isArray(raw) ? raw.join('/') : String(raw);
+  return Array.isArray(raw)
+    ? raw.map(p => decodeURIComponent(p)).join('/')
+    : decodeURIComponent(String(raw));
 }
 
 export async function onRequestGet(context: APIContext): Promise<Response> {

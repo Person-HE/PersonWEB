@@ -221,12 +221,18 @@ export function createCrudHandlers(collectionName: string, targetType: string) {
     async handleList(ctx: APIContext): Promise<Response> {
       const items = await getCollection(ctx.env.KV, collectionName);
       const rawPath = (ctx.params as any).path;
-      const path = rawPath ? (Array.isArray(rawPath) ? rawPath.join('/') : String(rawPath)) : undefined;
+      const path = rawPath
+        ? (Array.isArray(rawPath)
+            ? rawPath.map(p => decodeURIComponent(p)).join('/')
+            : decodeURIComponent(String(rawPath)))
+        : undefined;
 
       // 如果有具体 ID
       if (path && path.length > 0) {
         const row = items.find(r => String(r.data.id) === String(path));
-        if (!row) return json({ error: '不存在' }, 404);
+        if (!row) {
+          return json({ error: '不存在' }, 404);
+        }
         return json({ ...row.data, id: String(row.data.id) });
       }
 
@@ -280,7 +286,9 @@ export function createCrudHandlers(collectionName: string, targetType: string) {
 
       const items = await getCollection(ctx.env.KV, collectionName);
       const idx = items.findIndex(r => String(r.data.id) === sid);
-      if (idx < 0) return json({ error: '不存在' }, 404);
+      if (idx < 0) {
+        return json({ error: '不存在' }, 404);
+      }
 
       if (collectionName !== 'tools') body.updatedAt = new Date().toISOString();
       items[idx].data = body;
@@ -300,8 +308,11 @@ export function createCrudHandlers(collectionName: string, targetType: string) {
       if (!user) return json({ error: '未登录' }, 401);
 
       const items = await getCollection(ctx.env.KV, collectionName);
-      const idx = items.findIndex(r => String(r.data.id) === String(id));
-      if (idx < 0) return json({ error: '不存在' }, 404);
+      const sid = String(id);
+      const idx = items.findIndex(r => String(r.data.id) === sid);
+      if (idx < 0) {
+        return json({ error: '不存在' }, 404);
+      }
 
       const removed = items[idx].data;
       items.splice(idx, 1);
