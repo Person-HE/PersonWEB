@@ -22,6 +22,7 @@ import EmptyState from '@/components/EmptyState';
 import PaperBackground from '@/components/PaperBackground';
 import { SERVICE_TYPES } from '@/constants';
 import { useElasticEnter, useStaggerReveal } from '@/hooks/useGsap';
+import FormattedText from '@/components/FormattedText';
 import type { ServiceType } from '@/types';
 
 const iconMap: Record<ServiceType, LucideIcon> = {
@@ -131,7 +132,9 @@ export default function ServiceDetail() {
                 <p className="mt-2 font-hand-title text-lg font-bold text-[var(--crimson)]">
                   {service.priceRange || service.price}
                 </p>
-                <p className="mt-2 font-hand-body text-sm text-[var(--ink-soft)]">{service.description}</p>
+                <div className="mt-2">
+                  <FormattedText text={service.description} />
+                </div>
                 {service.tags && service.tags.length > 0 ? (
                   <div className="mt-2 flex flex-wrap gap-1">
                     {service.tags.map((t) => (
@@ -165,7 +168,7 @@ export default function ServiceDetail() {
           <h2 className="mb-3 font-hand-title text-base text-[var(--ink)]">
             <span className="hand-underline inline-block">服务详情</span>
           </h2>
-          <p className="font-hand-body text-sm leading-relaxed text-[var(--ink-soft)]">{service.details}</p>
+          <FormattedText text={service.details} />
         </div>
 
         {/* 交付信息 */}
@@ -241,7 +244,7 @@ export default function ServiceDetail() {
                   </div>
                   <h3 className="font-hand-title text-sm text-[var(--ink)]">适用场景</h3>
                 </div>
-                <p className="font-hand-body text-sm leading-relaxed text-[var(--ink-soft)]">{service.applicableScene}</p>
+                <FormattedText text={service.applicableScene} />
               </div>
             ) : null}
             {service.expectedEffect ? (
@@ -255,7 +258,7 @@ export default function ServiceDetail() {
                   </div>
                   <h3 className="font-hand-title text-sm text-[var(--ink)]">预期效果</h3>
                 </div>
-                <p className="font-hand-body text-sm leading-relaxed text-[var(--ink-soft)]">{service.expectedEffect}</p>
+                <FormattedText text={service.expectedEffect} />
               </div>
             ) : null}
           </div>

@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ExternalLink, FileText, PlayCircle, ArrowRight } from 'lucide-react';
-import { getResourceLink } from '@/lib/resourceLink';
+import { FileText, PlayCircle, ArrowRight } from 'lucide-react';
 import type { Resource } from '@/types';
 
 interface ResourceCardProps {
@@ -15,9 +14,6 @@ const categoryColor: Record<string, string> = {
 };
 
 export default function ResourceCard({ resource, compact = false }: ResourceCardProps) {
-  const isProduct = resource.category === '个人产品';
-  const { url: linkUrl } = getResourceLink(resource);
-
   return (
     <div className="hand-card ink-spread group flex h-full flex-col p-5">
       {/* 顶部：图标 + 标签 */}
@@ -71,22 +67,11 @@ export default function ResourceCard({ resource, compact = false }: ResourceCard
       ) : null}
 
       <div className="mt-4 flex items-center gap-2">
-        {linkUrl ? (
-          <a
-            href={linkUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="hand-btn hand-btn-primary flex-1 text-sm"
-          >
-            <ExternalLink className="h-4 w-4" />
-            访问链接
-          </a>
-        ) : null}
         <Link
           to={`/resources/${resource.id}`}
-          className={`hand-btn text-sm ${!linkUrl ? 'flex-1' : ''} text-center`}
+          className="hand-btn hand-btn-primary flex-1 text-center text-sm"
         >
-          详情
+          查看详情
           <ArrowRight className="ml-1 inline h-3.5 w-3.5" />
         </Link>
       </div>

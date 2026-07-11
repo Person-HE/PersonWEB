@@ -8,6 +8,7 @@ import ResourceCard from '@/components/ResourceCard';
 import PaperBackground from '@/components/PaperBackground';
 import { useElasticEnter, useStaggerReveal } from '@/hooks/useGsap';
 import { getResourceLink } from '@/lib/resourceLink';
+import FormattedText from '@/components/FormattedText';
 import type { ResourceCategory } from '@/types';
 
 const categoryColor: Record<ResourceCategory, string> = {
@@ -202,7 +203,7 @@ export default function ResourceDetail() {
             style={{ transform: 'rotate(0.3deg)' }}
           >
             <h2 className="mb-3 font-hand-title text-base text-[var(--ink)]">资源简介</h2>
-            <p className="font-hand-body text-sm leading-relaxed text-[var(--ink-soft)]">{resource.description}</p>
+            <FormattedText text={resource.description} />
             <div className="mt-4 flex flex-wrap items-center gap-4 font-hand-body text-xs text-[var(--ink-mute)]">
               <span>更新于 {resource.updatedAt || '—'}</span>
               <span>创建于 {resource.createdAt || '—'}</span>
