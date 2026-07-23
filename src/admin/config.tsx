@@ -10,6 +10,7 @@
  * - boolean: 布尔
  * - json: JSON 编辑（小对象）
  * - url: URL（带验证）
+ * - gallery: 图片URL数组（多行输入，带预览）
  */
 import type { Resource, Tool, Service, ResourceCategory, ToolCategory, AccessType, Pricing, ServiceType } from '@/types';
 
@@ -21,7 +22,8 @@ export type FieldType =
   | 'tags'
   | 'boolean'
   | 'json'
-  | 'url';
+  | 'url'
+  | 'gallery';
 
 export interface FieldDef {
   key: string;
@@ -68,6 +70,8 @@ export const resourceConfig: CrudConfig<Resource> = {
     tags: [],
     isHot: false,
     isNew: true,
+    screenshots: [],
+    demoUrl: null,
   }),
   fields: [
     { key: 'id', label: 'ID（英文唯一）', type: 'text', required: true, placeholder: '如 sd-local-deploy', readOnly: true },
@@ -85,6 +89,8 @@ export const resourceConfig: CrudConfig<Resource> = {
     { key: 'fileList', label: '文件列表（每行一个）', type: 'tags', full: true },
     { key: 'tags', label: '标签（每行一个）', type: 'tags', full: true },
     { key: 'videoUrl', label: '抖音视频分享链接', type: 'url', full: true, placeholder: 'https://v.douyin.com/...' },
+    { key: 'screenshots', label: '截图画廊（每行一个URL）', type: 'gallery', full: true, placeholder: 'https://...' },
+    { key: 'demoUrl', label: '在线Demo链接', type: 'url', full: true, placeholder: 'https://...' },
     { key: 'createdAt', label: '创建日期', type: 'text' },
     { key: 'updatedAt', label: '更新日期', type: 'text' },
   ],
@@ -148,18 +154,32 @@ export const serviceConfig: CrudConfig<Service> = {
     maintenancePeriod: null,
     productUrl: null,
     tags: [],
+    coverImage: null,
+    screenshots: [],
+    videoUrl: null,
+    liveDemoUrl: null,
+    caseStudy: null,
+    metrics: [],
+    isFeatured: false,
   }),
   fields: [
     { key: 'id', label: 'ID（英文唯一）', type: 'text', required: true },
     { key: 'name', label: '服务名', type: 'text', required: true, full: true },
     { key: 'type', label: '类型', type: 'select', options: ['tool-config', 'ai-output', 'custom', 'product-pro', 'product', 'automation', 'enterprise'] as ServiceType[], required: true },
+    { key: 'isFeatured', label: '招牌展示案例', type: 'boolean' },
     { key: 'price', label: '价格', type: 'text', placeholder: '如 9.9 元' },
     { key: 'priceRange', label: '价格区间', type: 'text', placeholder: '如 9.9 - 99 元' },
     { key: 'orderMethod', label: '下单方式', type: 'text' },
     { key: 'guarantee', label: '保障承诺', type: 'text', full: true },
     { key: 'description', label: '简介', type: 'textarea', full: true, required: true },
     { key: 'details', label: '详细说明', type: 'textarea', full: true, required: true },
+    { key: 'coverImage', label: '封面图 URL（案例效果图）', type: 'url', full: true, placeholder: 'https://...' },
+    { key: 'screenshots', label: '案例截图画廊（每行一个URL）', type: 'gallery', full: true, placeholder: 'https://...' },
+    { key: 'videoUrl', label: '演示视频链接', type: 'url', full: true, placeholder: 'https://... 或抖音分享链接' },
+    { key: 'liveDemoUrl', label: '在线Demo链接', type: 'url', full: true, placeholder: 'https://...' },
     { key: 'productUrl', label: '产品链接（product 类型用）', type: 'url', full: true },
+    { key: 'metrics', label: '量化指标（JSON数组）', type: 'json', full: true, placeholder: '[{"label":"GitHub Star","value":"9k+"}]' },
+    { key: 'caseStudy', label: '案例研究（JSON对象）', type: 'json', full: true },
     { key: 'delivery.method', label: '交付方式', type: 'text', path: 'delivery.method' },
     { key: 'delivery.time', label: '交付时间', type: 'text', path: 'delivery.time' },
     { key: 'delivery.revisions', label: '修改次数', type: 'number', path: 'delivery.revisions' },

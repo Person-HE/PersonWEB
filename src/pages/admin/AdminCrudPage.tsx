@@ -505,6 +505,37 @@ function FieldRenderer({
     );
   }
 
+  if (field.type === 'gallery') {
+    // gallery: 图片URL数组，多行输入 + 缩略图预览
+    const arr: string[] = Array.isArray(value) ? value : [];
+    const text = arr.join('\n');
+    return (
+      <div className={colSpan}>
+        {labelEl}
+        <textarea
+          value={text}
+          onChange={(e) => onChange(e.target.value.split('\n').map((s) => s.trim()).filter(Boolean))}
+          rows={Math.max(3, Math.min(8, text.split('\n').length))}
+          className={inputCls}
+          placeholder={field.placeholder || '每行一个图片URL'}
+        />
+        {arr.length > 0 ? (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {arr.map((url, i) => (
+              <img
+                key={i}
+                src={url}
+                alt={`截图${i + 1}`}
+                className="h-16 w-16 rounded border border-[var(--ink)]/30 object-cover"
+                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+              />
+            ))}
+          </div>
+        ) : null}
+      </div>
+    );
+  }
+
   if (field.type === 'json') {
     const text = value == null ? '' : JSON.stringify(value, null, 2);
     return (

@@ -52,6 +52,10 @@ export interface Resource {
   tags: string[];
   isHot: boolean;
   isNew: boolean;
+  /** 截图画廊（多张） */
+  screenshots: string[];
+  /** 在线Demo链接 */
+  demoUrl: string | null;
 }
 
 /** AI工具 */
@@ -78,6 +82,26 @@ export interface ServiceDelivery {
   revisions: number;
 }
 
+/** 服务案例研究 */
+export interface ServiceCaseStudy {
+  /** 案例标题 */
+  title: string;
+  /** 背景痛点 */
+  background: string;
+  /** 解决方案 */
+  solution: string;
+  /** 成果数据 */
+  result: string;
+  /** 技术栈 */
+  techStack: string[];
+}
+
+/** 量化指标 */
+export interface ServiceMetric {
+  label: string;
+  value: string;
+}
+
 /** 服务 */
 export interface Service {
   id: string;
@@ -97,6 +121,20 @@ export interface Service {
   productUrl: string | null;
   /** 标签 */
   tags: string[];
+  /** 服务封面图（案例效果图） */
+  coverImage: string | null;
+  /** 案例截图画廊（多张） */
+  screenshots: string[];
+  /** 演示视频链接 */
+  videoUrl: string | null;
+  /** 在线Demo链接 */
+  liveDemoUrl: string | null;
+  /** 案例研究 */
+  caseStudy: ServiceCaseStudy | null;
+  /** 量化指标 */
+  metrics: ServiceMetric[];
+  /** 是否为招牌展示案例 */
+  isFeatured: boolean;
 }
 
 /** AI工具导航分类元数据 */

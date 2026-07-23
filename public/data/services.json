@@ -14,7 +14,14 @@
     "expectedEffect": null,
     "maintenancePeriod": null,
     "productUrl": null,
-    "tags": ["ChatGPT", "Claude", "Midjourney", "Cursor"]
+    "tags": ["ChatGPT", "Claude", "Midjourney", "Cursor"],
+    "coverImage": null,
+    "screenshots": [],
+    "videoUrl": null,
+    "liveDemoUrl": null,
+    "caseStudy": null,
+    "metrics": [],
+    "isFeatured": false
   },
   {
     "id": "tool-config-sd",
@@ -31,7 +38,14 @@
     "expectedEffect": null,
     "maintenancePeriod": null,
     "productUrl": null,
-    "tags": ["Stable Diffusion", "ControlNet", "LoRA", "本地部署"]
+    "tags": ["Stable Diffusion", "ControlNet", "LoRA", "本地部署"],
+    "coverImage": null,
+    "screenshots": [],
+    "videoUrl": null,
+    "liveDemoUrl": null,
+    "caseStudy": null,
+    "metrics": [],
+    "isFeatured": false
   },
   {
     "id": "tool-config-cursor",
@@ -48,7 +62,14 @@
     "expectedEffect": null,
     "maintenancePeriod": null,
     "productUrl": null,
-    "tags": ["Cursor", "MCP", "AI编程", "代码效率"]
+    "tags": ["Cursor", "MCP", "AI编程", "代码效率"],
+    "coverImage": null,
+    "screenshots": [],
+    "videoUrl": null,
+    "liveDemoUrl": null,
+    "caseStudy": null,
+    "metrics": [],
+    "isFeatured": false
   },
   {
     "id": "ai-output-image",
@@ -65,7 +86,14 @@
     "expectedEffect": null,
     "maintenancePeriod": null,
     "productUrl": null,
-    "tags": ["Midjourney", "Stable Diffusion", "即梦", "海报", "插画"]
+    "tags": ["Midjourney", "Stable Diffusion", "即梦", "海报", "插画"],
+    "coverImage": null,
+    "screenshots": [],
+    "videoUrl": null,
+    "liveDemoUrl": null,
+    "caseStudy": null,
+    "metrics": [],
+    "isFeatured": false
   },
   {
     "id": "ai-output-video",
@@ -82,7 +110,14 @@
     "expectedEffect": null,
     "maintenancePeriod": null,
     "productUrl": null,
-    "tags": ["可灵", "即梦", "海螺", "数字人", "短视频"]
+    "tags": ["可灵", "即梦", "海螺", "数字人", "短视频"],
+    "coverImage": "/showcase/autoedit/frame-1.png",
+    "screenshots": ["/showcase/autoedit/frame-1.png", "/showcase/autoedit/frame-2.png", "/showcase/autoedit/frame-3.png", "/showcase/autoedit/frame-4.png"],
+    "videoUrl": null,
+    "liveDemoUrl": null,
+    "caseStudy": null,
+    "metrics": [],
+    "isFeatured": false
   },
   {
     "id": "ai-output-ppt",
@@ -99,7 +134,14 @@
     "expectedEffect": null,
     "maintenancePeriod": null,
     "productUrl": null,
-    "tags": ["Gamma", "AiPPT", "讯飞智文", "PPT", "汇报"]
+    "tags": ["Gamma", "AiPPT", "讯飞智文", "PPT", "汇报"],
+    "coverImage": null,
+    "screenshots": [],
+    "videoUrl": null,
+    "liveDemoUrl": null,
+    "caseStudy": null,
+    "metrics": [],
+    "isFeatured": false
   },
   {
     "id": "ai-output-writing",
@@ -116,7 +158,14 @@
     "expectedEffect": null,
     "maintenancePeriod": null,
     "productUrl": null,
-    "tags": ["小红书", "公众号", "短视频脚本", "文案"]
+    "tags": ["小红书", "公众号", "短视频脚本", "文案"],
+    "coverImage": null,
+    "screenshots": [],
+    "videoUrl": null,
+    "liveDemoUrl": null,
+    "caseStudy": null,
+    "metrics": [],
+    "isFeatured": false
   },
   {
     "id": "custom-prompt",
@@ -133,7 +182,23 @@
     "expectedEffect": "每天节省2-3小时重复工作",
     "maintenancePeriod": null,
     "productUrl": null,
-    "tags": ["Prompt", "ChatGPT", "Claude", "豆包"]
+    "tags": ["Prompt", "ChatGPT", "Claude", "豆包"],
+    "coverImage": null,
+    "screenshots": [],
+    "videoUrl": null,
+    "liveDemoUrl": null,
+    "caseStudy": {
+      "title": "认知决策提示词知识库",
+      "background": "企业和个人在做重大决策时缺乏系统化的思考框架，容易凭直觉决策。",
+      "solution": "构建14篇结构化提示词文档体系，覆盖风口项目挖掘、产业链拆解、内行经验提炼、头部标杆分析、多视角大佬决策模拟、落地验证闭环等全链路。",
+      "result": "完整的认知决策方法论体系，可用于商业分析、战略决策、项目评估。",
+      "techStack": ["Prompt Engineering", "认知科学", "商业分析"]
+    },
+    "metrics": [
+      { "label": "提示词体系", "value": "14篇" },
+      { "label": "覆盖维度", "value": "全链路" }
+    ],
+    "isFeatured": false
   },
   {
     "id": "custom-workflow",
@@ -150,7 +215,14 @@
     "expectedEffect": "重复性工作节省80%时间",
     "maintenancePeriod": "7 天",
     "productUrl": null,
-    "tags": ["n8n", "Dify", "Coze", "自动化", "工作流"]
+    "tags": ["n8n", "Dify", "Coze", "自动化", "工作流"],
+    "coverImage": null,
+    "screenshots": [],
+    "videoUrl": null,
+    "liveDemoUrl": null,
+    "caseStudy": null,
+    "metrics": [],
+    "isFeatured": false
   },
   {
     "id": "custom-agent",
@@ -167,7 +239,24 @@
     "expectedEffect": "7x24小时自动答疑",
     "maintenancePeriod": "30 天",
     "productUrl": null,
-    "tags": ["RAG", "Agent", "知识库", "客服机器人"]
+    "tags": ["RAG", "Agent", "知识库", "客服机器人"],
+    "coverImage": "/showcase/aistudy/today-full.png",
+    "screenshots": ["/showcase/aistudy/today.png", "/showcase/aistudy/kb-graph.png", "/showcase/aistudy/learning-path.png", "/showcase/aistudy/learning-card.png", "/showcase/aistudy/srs-review.png"],
+    "videoUrl": null,
+    "liveDemoUrl": null,
+    "caseStudy": {
+      "title": "AI智能学习平台（7-Agent协作架构）",
+      "background": "传统在线学习平台缺乏个性化，学生被动接受内容，无法针对薄弱环节精准补缺。",
+      "solution": "基于LangGraph构建7个专业Agent协作的智能学习系统：Parser解析→Planner规划→Teacher教学→Examiner考察→Healer补缺→Reviewer审查→Companion伴学。7步状态机循环，知识图谱可视化，自适应学习路径推荐，间隔重复系统（SRS）。",
+      "result": "完整7步伴学循环落地，前后端+Docker化部署，支持知识图谱可视化、AI评估、游戏化激励。",
+      "techStack": ["React 19", "FastAPI", "LangGraph", "LangChain", "LiteLLM", "PostgreSQL", "Redis", "Qdrant", "Docker"]
+    },
+    "metrics": [
+      { "label": "AI Agent", "value": "7个协作" },
+      { "label": "架构", "value": "LangGraph" },
+      { "label": "部署", "value": "Docker化" }
+    ],
+    "isFeatured": true
   },
   {
     "id": "product-pro-templates",
@@ -184,7 +273,14 @@
     "expectedEffect": null,
     "maintenancePeriod": "永久更新",
     "productUrl": null,
-    "tags": ["Prompt模板", "写作", "绘画", "视频", "办公"]
+    "tags": ["Prompt模板", "写作", "绘画", "视频", "办公"],
+    "coverImage": null,
+    "screenshots": [],
+    "videoUrl": null,
+    "liveDemoUrl": null,
+    "caseStudy": null,
+    "metrics": [],
+    "isFeatured": false
   },
   {
     "id": "product-pro-resources",
@@ -201,7 +297,14 @@
     "expectedEffect": null,
     "maintenancePeriod": "1 年",
     "productUrl": null,
-    "tags": ["教程", "模型包", "LoRA", "视频教程", "会员"]
+    "tags": ["教程", "模型包", "LoRA", "视频教程", "会员"],
+    "coverImage": null,
+    "screenshots": [],
+    "videoUrl": null,
+    "liveDemoUrl": null,
+    "caseStudy": null,
+    "metrics": [],
+    "isFeatured": false
   },
   {
     "id": "product-pro-tool",
@@ -218,7 +321,24 @@
     "expectedEffect": null,
     "maintenancePeriod": "1 年",
     "productUrl": null,
-    "tags": ["桌面工具", "ChatGPT", "Claude", "免翻墙"]
+    "tags": ["桌面工具", "ChatGPT", "Claude", "免翻墙"],
+    "coverImage": "/showcase/hot/dashboard.png",
+    "screenshots": ["/showcase/hot/dashboard.png", "/showcase/hot/data-collection.png", "/showcase/hot/topic-generator.png", "/showcase/hot/rag-analysis.png"],
+    "videoUrl": null,
+    "liveDemoUrl": null,
+    "caseStudy": {
+      "title": "爆款选题智能系统（Electron桌面应用）",
+      "background": "自媒体创作者找选题靠灵感、靠手动刷榜，效率低且容易错过热点。",
+      "solution": "Electron桌面应用+Cloudflare Pages云端部署。6大模块：赛道配置、数据采集（抖音/小红书/B站/知乎/视频号热榜抓取）、RAG分析引擎（爆款规律拆解）、爆款选题生成器（多维度评分）、数据闭环迭代、Meme雷达。",
+      "result": "完整的桌面应用产品，含Windows安装包，从0到1的全流程AI数据驱动选题工具。",
+      "techStack": ["React 19", "TypeScript", "Tailwind v4", "Electron 33", "OpenAI", "Cloudflare Workers"]
+    },
+    "metrics": [
+      { "label": "应用类型", "value": "Electron桌面" },
+      { "label": "数据源", "value": "5大平台" },
+      { "label": "部署", "value": "Cloudflare" }
+    ],
+    "isFeatured": true
   },
   {
     "id": "product-content-studio",
@@ -235,7 +355,24 @@
     "expectedEffect": "日产能提升3-5倍，单人可日更",
     "maintenancePeriod": "1 年",
     "productUrl": null,
-    "tags": ["内容创作", "自媒体", "日更", "选题", "排版"]
+    "tags": ["内容创作", "自媒体", "日更", "选题", "排版"],
+    "coverImage": "/showcase/webcreate/demo.webm",
+    "screenshots": [],
+    "videoUrl": "/showcase/webcreate/demo.webm",
+    "liveDemoUrl": null,
+    "caseStudy": {
+      "title": "Web手绘风格创作工具",
+      "background": "内容创作者需要手绘风格的配图和动画，但专业设计软件学习成本高、外包成本也高。",
+      "solution": "Web端可视化编辑器，基于roughjs手绘渲染+perfect-freehand笔压感知。支持自由绘图、路径编辑、GIF动图生成、CLI一键导出（PNG/JPEG/GIF/MP4/WebM）。AI辅助创作（Gemini API）。已封装为npm CLI包，可被AI Agent调用。",
+      "result": "完整的创意工具+工程化产品，有npm分发链路+AI Agent Skill化封装。",
+      "techStack": ["React 19", "TypeScript", "Vite 6", "roughjs", "perfect-freehand", "gif.js", "Gemini API"]
+    },
+    "metrics": [
+      { "label": "分发方式", "value": "npm CLI" },
+      { "label": "渲染引擎", "value": "roughjs" },
+      { "label": "AI集成", "value": "Gemini API" }
+    ],
+    "isFeatured": true
   },
   {
     "id": "product-bigshot-roundtable",
@@ -252,7 +389,14 @@
     "expectedEffect": "多视角决策，减少决策失误",
     "maintenancePeriod": "1 年",
     "productUrl": null,
-    "tags": ["多Agent", "圆桌辩论", "决策", "大佬模拟"]
+    "tags": ["多Agent", "圆桌辩论", "决策", "大佬模拟"],
+    "coverImage": null,
+    "screenshots": [],
+    "videoUrl": null,
+    "liveDemoUrl": null,
+    "caseStudy": null,
+    "metrics": [],
+    "isFeatured": false
   },
   {
     "id": "automation-content-pipeline",
@@ -269,7 +413,24 @@
     "expectedEffect": "日均产出10+篇内容，人工只做终审",
     "maintenancePeriod": "30 天",
     "productUrl": null,
-    "tags": ["n8n", "Dify", "内容流水线", "自动发布", "热点监控"]
+    "tags": ["n8n", "Dify", "内容流水线", "自动发布", "热点监控"],
+    "coverImage": "/showcase/video/analytics.png",
+    "screenshots": ["/showcase/video/analytics.png", "/showcase/video/cover-4-3.png", "/showcase/video/final-cover.png"],
+    "videoUrl": null,
+    "liveDemoUrl": null,
+    "caseStudy": {
+      "title": "8平台自媒体内容自动发布系统",
+      "background": "自媒体创作者每天要在抖音、B站、小红书、快手等8个平台手动上传内容，重复劳动耗时巨大，且容易遗漏平台。",
+      "solution": "基于Playwright+FastAPI构建自动化发布系统，统一CLI接入，支持定时发布、Cookie加密管理、反检测stealth。同时集成AI封面生成（手绘风爆款大字报）和小红书图文卡片生成。",
+      "result": "开源后获得9k+ Star，社群2000+人。8平台全覆盖，单人可管理10+账号日更。",
+      "techStack": ["Vue3", "FastAPI", "Playwright", "Redis", "SQLite", "APScheduler"]
+    },
+    "metrics": [
+      { "label": "GitHub Star", "value": "9k+" },
+      { "label": "平台覆盖", "value": "8大平台" },
+      { "label": "社群规模", "value": "2000+人" }
+    ],
+    "isFeatured": true
   },
   {
     "id": "automation-workflow-custom",
@@ -286,6 +447,13 @@
     "expectedEffect": "重复性工作节省80%以上时间",
     "maintenancePeriod": "30 天",
     "productUrl": null,
-    "tags": ["n8n", "Make", "Zapier", "Dify", "工作流", "RPA"]
+    "tags": ["n8n", "Make", "Zapier", "Dify", "工作流", "RPA"],
+    "coverImage": null,
+    "screenshots": [],
+    "videoUrl": null,
+    "liveDemoUrl": null,
+    "caseStudy": null,
+    "metrics": [],
+    "isFeatured": false
   }
 ]
