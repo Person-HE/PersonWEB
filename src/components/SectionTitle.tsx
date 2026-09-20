@@ -17,32 +17,34 @@ export default function SectionTitle({
   subtitle,
   actionLabel,
   actionTo,
-  align = 'center',
+  align = 'left',
 }: SectionTitleProps) {
   const isCenter = align === 'center';
   return (
     <div
       className={
         isCenter
-          ? 'mb-10 text-center'
-          : 'mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between'
+          ? 'mb-12 text-center'
+          : 'mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between'
       }
     >
-      <div>
+      <div className={isCenter ? 'mx-auto max-w-3xl' : 'max-w-3xl'}>
         {eyebrow ? (
-          <div className="mb-2 font-hand-title text-xs uppercase tracking-widest text-[var(--crimson)]">
-            · {eyebrow} ·
-          </div>
+          <div className="text-eyebrow mb-3 terminal-cursor">{eyebrow}</div>
         ) : null}
-        <h2 className={`font-hand-title text-2xl text-[var(--ink)] sm:text-3xl ${isCenter ? 'hand-underline inline-block' : ''}`}>
+        <h2
+          className={`text-headline font-black text-[var(--ink)] ${
+            isCenter ? 'hand-underline inline-block' : ''
+          }`}
+        >
           {title}
         </h2>
         {subtitle ? (
           <p
             className={
               isCenter
-                ? 'mx-auto mt-3 max-w-2xl font-hand-body text-sm text-[var(--ink-soft)]'
-                : 'mt-2 max-w-2xl font-hand-body text-sm text-[var(--ink-soft)]'
+                ? 'mx-auto mt-4 max-w-2xl font-body text-base text-[var(--ink-soft)]'
+                : 'mt-3 max-w-2xl font-body text-base text-[var(--ink-soft)]'
             }
           >
             {subtitle}
@@ -72,12 +74,14 @@ export function PageHeader({
   children?: ReactNode;
 }) {
   return (
-    <div className="mb-8">
-      <h1 className="font-hand-title text-3xl text-[var(--ink)] sm:text-4xl">{title}</h1>
+    <div className="mb-10">
+      <h1 className="text-headline font-black text-[var(--ink)]">{title}</h1>
       {description ? (
-        <p className="mt-3 max-w-2xl font-hand-body text-sm text-[var(--ink-soft)]">{description}</p>
+        <p className="mt-4 max-w-2xl font-body text-base text-[var(--ink-soft)]">
+          {description}
+        </p>
       ) : null}
-      {children ? <div className="mt-5">{children}</div> : null}
+      {children ? <div className="mt-6">{children}</div> : null}
     </div>
   );
 }

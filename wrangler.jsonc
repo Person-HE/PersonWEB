@@ -1,0 +1,19 @@
+{
+  // 配置即代码：本文件同时作用于本地 `wrangler pages dev`。
+  // 远端 Pages 若你的 wrangler 版本未在部署时同步绑定，请在
+  // Dashboard → Pages → person-web → Settings → Functions 中同名配置：
+  //   KV 绑定名: KV；变量: GH_USER/BLOG_REPO/BLOG_BASE；密钥: JWT_SECRET/SETUP_KEY/GH_TOKEN/ADMIN_*/CRON_SECRET
+  // Cron（Pages 的 cron 只能在 Dashboard 配置）: 计划 `0 * * * *`，路径 `/cron`
+  //   （到点 Pages 会 GET https://<域名>/cron，由 functions/cron.ts 处理）
+  "name": "person-web",
+  "compatibility_date": "2025-01-01",
+  "pages_build_output_dir": "dist",
+  "kv_namespaces": [
+    { "binding": "KV", "id": "50e57e1c289b426f83ee02bf3ee8106e" }
+  ],
+  "vars": {
+    "GH_USER": "Person-HE",
+    "BLOG_REPO": "Person-HE/Person-HE.github.io",
+    "BLOG_BASE": "https://person-he.github.io/"
+  }
+}

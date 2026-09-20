@@ -8,13 +8,15 @@
  */
 
 import { create } from 'zustand';
-import type { Resource, Tool, Service } from '@/types';
-import { resourcesApi, toolsApi, servicesApi } from '@/lib/api';
+import type { Resource, Tool, Service, Portfolio, Profile } from '@/types';
+import { resourcesApi, toolsApi, servicesApi, portfolioApi, profileApi } from '@/lib/api';
 
 interface DataState {
   resources: Resource[];
   tools: Tool[];
   services: Service[];
+  portfolio: Portfolio[];
+  profile: Profile | null;
 
   loading: boolean;
   loaded: boolean;
@@ -50,10 +52,25 @@ async function loadWithFallback<T>(
   }
 }
 
+/** 画像单文档加载：API 优先，失败回落静态 JSON */
+async function loadProfile(): Promise<Profile | null> {
+  try {
+    return await profileApi.get();
+  } catch {
+    try {
+      return await fetchStaticJson<Profile>('/data/profile.json');
+    } catch {
+      return null;
+    }
+  }
+}
+
 export const useDataStore = create<DataState>((set, get) => ({
   resources: [],
   tools: [],
   services: [],
+  portfolio: [],
+  profile: null,
   loading: false,
   loaded: false,
   error: null,
@@ -63,14 +80,18 @@ export const useDataStore = create<DataState>((set, get) => ({
     // 已加载过：静默刷新（后台拉取最新数据，不显示 loading，避免页面闪烁）
     if (get().loaded) {
       try {
-        const [r, t, s] = await Promise.all([
+        const [r, t, s, p] = await Promise.all([
           loadWithFallback(resourcesApi.list, '/data/resources.json'),
           loadWithFallback(toolsApi.list, '/data/tools.json'),
           loadWithFallback(servicesApi.list, '/data/services.json'),
+          loadWithFallback(portfolioApi.list, '/data/portfolio.json'),
         ]);
         const source: 'api' | 'static' =
-          r.source === 'api' || t.source === 'api' || s.source === 'api' ? 'api' : 'static';
-        set({ resources: r.data, tools: t.data, services: s.data, source });
+          r.source === 'api' || t.source === 'api' || s.source === 'api' || p.source === 'api' ? 'api' : 'static';
+        set({
+          resources: r.data, tools: t.data, services: s.data,
+          portfolio: p.data, source, profile: await loadProfile(),
+        });
       } catch {
         // 静默刷新失败时保留旧数据，不打扰用户
       }
@@ -81,18 +102,22 @@ export const useDataStore = create<DataState>((set, get) => ({
 
     set({ loading: true, error: null });
     try {
-      const [r, t, s] = await Promise.all([
+      const [r, t, s, p, profile] = await Promise.all([
         loadWithFallback(resourcesApi.list, '/data/resources.json'),
         loadWithFallback(toolsApi.list, '/data/tools.json'),
         loadWithFallback(servicesApi.list, '/data/services.json'),
+        loadWithFallback(portfolioApi.list, '/data/portfolio.json'),
+        loadProfile(),
       ]);
-      // 三者只要有一个走 API 即标记为 api 来源（多数情况下三者一致）
+      // 只要有一个走 API 即标记为 api 来源（多数情况下四者一致）
       const source: 'api' | 'static' =
-        r.source === 'api' || t.source === 'api' || s.source === 'api' ? 'api' : 'static';
+        r.source === 'api' || t.source === 'api' || s.source === 'api' || p.source === 'api' ? 'api' : 'static';
       set({
         resources: r.data,
         tools: t.data,
         services: s.data,
+        portfolio: p.data,
+        profile,
         loading: false,
         loaded: true,
         source,

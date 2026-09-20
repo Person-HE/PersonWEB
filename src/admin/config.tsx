@@ -12,7 +12,7 @@
  * - url: URL（带验证）
  * - gallery: 图片URL数组（多行输入，带预览）
  */
-import type { Resource, Tool, Service, ResourceCategory, ToolCategory, AccessType, Pricing, ServiceType } from '@/types';
+import type { Resource, Tool, Service, Portfolio, Quote, ResourceCategory, ToolCategory, AccessType, Pricing, ServiceType, PortfolioStatus, PortfolioCategory, QuoteStatus } from '@/types';
 
 export type FieldType =
   | 'text'
@@ -190,10 +190,106 @@ export const serviceConfig: CrudConfig<Service> = {
   ],
 };
 
+// ===== 作品集字段 =====
+export const portfolioConfig: CrudConfig<Portfolio> = {
+  name: '作品集',
+  basePath: '/admin/portfolio',
+  titleKey: 'name',
+  defaultItem: () => ({
+    id: '',
+    slug: '',
+    name: '',
+    tagline: '',
+    status: '已上线',
+    category: 'web-app',
+    repo: '',
+    demoUrl: null,
+    coverImage: null,
+    screenshots: [],
+    techStack: [],
+    role: '独立开发与交付',
+    period: '',
+    problem: '',
+    solution: '',
+    highlights: [],
+    decisions: [],
+    metrics: [],
+    relatedPosts: [],
+    relatedFiles: [],
+    ctaServiceId: null,
+    isFeatured: false,
+    published: true,
+    createdAt: new Date().toISOString().slice(0, 10),
+    updatedAt: new Date().toISOString().slice(0, 10),
+  }),
+  fields: [
+    { key: 'id', label: 'ID（英文唯一）', type: 'text', required: true, placeholder: '如 filecut' },
+    { key: 'slug', label: 'URL slug（详情页地址用）', type: 'text', required: true, placeholder: '如 filecut' },
+    { key: 'name', label: '项目名', type: 'text', required: true },
+    { key: 'status', label: '状态', type: 'select', options: ['已上线', '维护中', '已完成', '归档'] as PortfolioStatus[], required: true },
+    { key: 'category', label: '分类', type: 'select', options: ['web-app', 'desktop', 'cli', 'backend', 'ai', 'site'] as PortfolioCategory[], required: true },
+    { key: 'repo', label: 'GitHub 仓库名（活数据匹配用，可空）', type: 'text', placeholder: '如 FileCut' },
+    { key: 'isFeatured', label: '主推案例', type: 'boolean' },
+    { key: 'published', label: '前台可见', type: 'boolean' },
+    { key: 'tagline', label: '一句话简介', type: 'textarea', full: true, required: true },
+    { key: 'role', label: '我的角色', type: 'text' },
+    { key: 'period', label: '周期', type: 'text', placeholder: '如 2026.03 - 至今' },
+    { key: 'demoUrl', label: '在线 Demo 链接', type: 'url', full: true },
+    { key: 'coverImage', label: '封面图 URL', type: 'url', full: true },
+    { key: 'screenshots', label: '产品截图（每行一个URL）', type: 'gallery', full: true },
+    { key: 'techStack', label: '技术栈（每行一个）', type: 'tags', full: true },
+    { key: 'problem', label: '面对的真实问题', type: 'textarea', full: true, placeholder: '支持换行/**加粗**/`代码`' },
+    { key: 'solution', label: '方案与架构', type: 'textarea', full: true },
+    { key: 'highlights', label: '关键亮点（JSON数组）', type: 'json', full: true, placeholder: '[{"title":"...","desc":"..."}]' },
+    { key: 'decisions', label: '关键技术决策（JSON数组）', type: 'json', full: true, placeholder: '[{"question":"...","choice":"...","reason":"..."}]' },
+    { key: 'metrics', label: '成果指标（JSON数组，source 必填才渲染）', type: 'json', full: true, placeholder: '[{"label":"内置工具","value":"112 个","source":"源码统计"}]' },
+    { key: 'relatedPosts', label: '关联博客文章（JSON数组）', type: 'json', full: true, placeholder: '[{"label":"...","url":"https://..."}]' },
+    { key: 'relatedFiles', label: '代码直达（JSON数组）', type: 'json', full: true, placeholder: '[{"label":"...","url":"https://github.com/..."}]' },
+    { key: 'ctaServiceId', label: '底部CTA关联服务ID', type: 'text' },
+    { key: 'createdAt', label: '创建日期', type: 'text' },
+    { key: 'updatedAt', label: '更新日期', type: 'text' },
+  ],
+};
+
+// ===== 需求工单字段（访客表单提交，后台查看/改状态/删除） =====
+export const quoteConfig: CrudConfig<Quote> = {
+  name: '需求工单',
+  basePath: '/admin/quotes',
+  titleKey: 'name',
+  defaultItem: () => ({
+    id: '',
+    name: '',
+    contact: '',
+    serviceType: '',
+    budget: '',
+    deadline: '',
+    channel: '',
+    message: '',
+    ref: '',
+    status: '待处理',
+    createdAt: '',
+  }),
+  fields: [
+    { key: 'id', label: '工单号', type: 'text', readOnly: true },
+    { key: 'status', label: '处理状态', type: 'select', options: ['待处理', '已回复', '已成交', '无效'] as QuoteStatus[], required: true },
+    { key: 'name', label: '称呼', type: 'text' },
+    { key: 'contact', label: '联系方式', type: 'text' },
+    { key: 'serviceType', label: '需求类型', type: 'text' },
+    { key: 'budget', label: '预算', type: 'text' },
+    { key: 'deadline', label: '期望交付', type: 'text' },
+    { key: 'channel', label: '来源渠道', type: 'text' },
+    { key: 'ref', label: '来源页面', type: 'text' },
+    { key: 'message', label: '需求描述', type: 'textarea', full: true },
+    { key: 'createdAt', label: '提交时间', type: 'text', readOnly: true },
+  ],
+};
+
 export const CRUD_CONFIGS = {
   resources: resourceConfig,
   tools: toolConfig,
   services: serviceConfig,
+  portfolio: portfolioConfig,
+  quotes: quoteConfig,
 } as const;
 
 export type CrudConfigKey = keyof typeof CRUD_CONFIGS;

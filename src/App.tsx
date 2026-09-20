@@ -3,11 +3,16 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'r
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import BackToTop from '@/components/BackToTop';
+import SiteEffects from '@/components/SiteEffects';
 import { WechatModalProvider } from '@/components/WeChatModal';
 import { siteConfig } from '@/config/site.config';
 
 // 前台路由级代码分割
 const Home = lazy(() => import('@/pages/Home'));
+const Portfolio = lazy(() => import('@/pages/Portfolio'));
+const PortfolioDetail = lazy(() => import('@/pages/PortfolioDetail'));
+const Blog = lazy(() => import('@/pages/Blog'));
+const Contact = lazy(() => import('@/pages/Contact'));
 const Resources = lazy(() => import('@/pages/Resources'));
 const ResourceDetail = lazy(() => import('@/pages/ResourceDetail'));
 const Navigation = lazy(() => import('@/pages/Navigation'));
@@ -21,37 +26,19 @@ const AdminLogin = lazy(() => import('@/pages/admin/AdminLogin'));
 const AdminLayout = lazy(() => import('@/pages/admin/AdminLayout'));
 const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'));
 const AdminCrudPage = lazy(() => import('@/pages/admin/AdminCrudPage'));
+const AdminProfile = lazy(() => import('@/pages/admin/AdminProfile'));
 const AdminLogs = lazy(() => import('@/pages/admin/AdminLogs'));
 const AdminPassword = lazy(() => import('@/pages/admin/AdminPassword'));
 
-import { resourceConfig, toolConfig, serviceConfig } from '@/admin/config';
+import { resourceConfig, toolConfig, serviceConfig, portfolioConfig, quoteConfig } from '@/admin/config';
 
-/** 根据路由设置 document.title */
+/** 各页面标题由 <Seo> 组件设置；此处只兜底后台与未接入页 */
 function useDocumentTitle() {
   const location = useLocation();
   useEffect(() => {
-    const path = location.pathname;
-    let title = siteConfig.name;
-    if (path === '/') {
-      title = `${siteConfig.name} - AI工具导航 / 免费资源 / 技术服务`;
-    } else if (path.startsWith('/resources/')) {
-      title = `资源详情 - ${siteConfig.name}`;
-    } else if (path === '/resources') {
-      title = `资源中心 - 免费AI工具和教程下载 | ${siteConfig.name}`;
-    } else if (path === '/navigation') {
-      title = `AI工具导航 - 收录好用AI工具 | ${siteConfig.name}`;
-    } else if (path.startsWith('/services/')) {
-      title = `服务详情 - ${siteConfig.name}`;
-    } else if (path === '/services') {
-      title = `服务中心 - AI技术服务 | ${siteConfig.name}`;
-    } else if (path === '/enterprise') {
-      title = `企业AI落地服务 | ${siteConfig.name}`;
-    } else if (path === '/about') {
-      title = `关于 - ${siteConfig.name}`;
-    } else if (path.startsWith('/admin')) {
-      title = `管理后台 - ${siteConfig.name}`;
+    if (location.pathname.startsWith('/admin')) {
+      document.title = `管理后台 - ${siteConfig.name}`;
     }
-    document.title = title;
   }, [location.pathname]);
 }
 
@@ -68,6 +55,10 @@ function FrontRoutes() {
     <Suspense fallback={<PageLoading />}>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/portfolio" element={<Portfolio />} />
+        <Route path="/portfolio/:slug" element={<PortfolioDetail />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/resources" element={<Resources />} />
         <Route path="/resources/:id" element={<ResourceDetail />} />
         <Route path="/navigation" element={<Navigation />} />
@@ -75,6 +66,7 @@ function FrontRoutes() {
         <Route path="/services/:id" element={<ServiceDetail />} />
         <Route path="/enterprise" element={<Enterprise />} />
         <Route path="/about" element={<About />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>
   );
@@ -99,6 +91,15 @@ function AdminRoutes() {
             path="services"
             element={<AdminCrudPage config={serviceConfig} apiBase="/api/services" />}
           />
+          <Route
+            path="portfolio"
+            element={<AdminCrudPage config={portfolioConfig} apiBase="/api/portfolio" />}
+          />
+          <Route
+            path="quotes"
+            element={<AdminCrudPage config={quoteConfig} apiBase="/api/quote" />}
+          />
+          <Route path="profile" element={<AdminProfile />} />
           <Route path="logs" element={<AdminLogs />} />
           <Route path="password" element={<AdminPassword />} />
         </Route>
@@ -118,6 +119,7 @@ function AppRoutes() {
 
   return (
     <>
+      <SiteEffects />
       <Navbar />
       <FrontRoutes />
       <Footer />

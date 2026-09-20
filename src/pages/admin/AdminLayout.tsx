@@ -10,6 +10,9 @@ import {
   FileText,
   Compass,
   Wrench,
+  Rocket,
+  Inbox,
+  UserRound,
   ScrollText,
   KeyRound,
   LogOut,
@@ -23,9 +26,12 @@ import { siteConfig } from '@/config/site.config';
 
 const NAV_ITEMS = [
   { to: '/admin', label: '概览', icon: LayoutDashboard, end: true },
+  { to: '/admin/portfolio', label: '作品集', icon: Rocket },
+  { to: '/admin/profile', label: '个人画像', icon: UserRound },
+  { to: '/admin/quotes', label: '需求工单', icon: Inbox },
+  { to: '/admin/services', label: '服务管理', icon: Wrench },
   { to: '/admin/resources', label: '资源管理', icon: FileText },
   { to: '/admin/tools', label: '工具管理', icon: Compass },
-  { to: '/admin/services', label: '服务管理', icon: Wrench },
   { to: '/admin/logs', label: '操作日志', icon: ScrollText },
   { to: '/admin/password', label: '修改密码', icon: KeyRound },
 ];

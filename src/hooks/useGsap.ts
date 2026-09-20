@@ -7,6 +7,9 @@
  */
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 type ElementRef = React.RefObject<HTMLElement | null>;
 
@@ -188,6 +191,46 @@ export function useInkHover<T extends HTMLElement = HTMLDivElement>() {
     el.addEventListener('mousemove', onMove);
     return () => el.removeEventListener('mousemove', onMove);
   }, []);
+
+  return ref;
+}
+
+/**
+ * 滚动驱动显现：元素进入视口时从下方弹入
+ * 配合 ScrollTrigger 实现滚动叙事
+ */
+export function useScrollReveal<T extends HTMLElement = HTMLDivElement>(
+  selector: string,
+  deps: unknown[] = [],
+  opts: { stagger?: number; y?: number; start?: string } = {},
+) {
+  const ref = useRef<T>(null);
+  const { stagger = 0.1, y = 40, start = 'top 85%' } = opts;
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const el = ref.current;
+    const items = el.querySelectorAll(selector);
+    if (items.length === 0) return;
+
+    gsap.set(items, { opacity: 0, y });
+    const ctx = gsap.context(() => {
+      gsap.to(items, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger,
+        ease: 'back.out(1.4)',
+        scrollTrigger: {
+          trigger: el,
+          start,
+          toggleActions: 'play none none none',
+        },
+      });
+    }, el);
+    return () => ctx.revert();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
 
   return ref;
 }

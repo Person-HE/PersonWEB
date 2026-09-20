@@ -16,15 +16,17 @@ import Breadcrumb from '@/components/Breadcrumb';
 import EmptyState from '@/components/EmptyState';
 import ResourceCard from '@/components/ResourceCard';
 import PaperBackground from '@/components/PaperBackground';
+import Seo from '@/components/Seo';
 import { useElasticEnter, useStaggerReveal } from '@/hooks/useGsap';
 import { getResourceLink } from '@/lib/resourceLink';
 import FormattedText from '@/components/FormattedText';
+import { SmartImage, SmartVideo } from '@/components/SmartMedia';
 import type { ResourceCategory } from '@/types';
 
 const categoryColor: Record<ResourceCategory, string> = {
-  个人产品: 'bg-[var(--crimson)] text-[var(--paper-light)]',
-  教程资料: 'bg-[var(--indigo)] text-[var(--paper-light)]',
-  AI资料: 'bg-[var(--violet)] text-[var(--paper-light)]',
+  个人产品: 'bg-[var(--accent-alt)] text-[var(--bg-elevated)]',
+  教程资料: 'bg-[var(--accent-blue)] text-[var(--bg-elevated)]',
+  AI资料: 'bg-[var(--accent-violet)] text-[var(--bg-elevated)]',
 };
 
 /** 判断是否为可直接内嵌播放的视频直链（mp4 / webm） */
@@ -68,8 +70,8 @@ export default function ResourceDetail() {
     return (
       <div className="relative min-h-screen overflow-hidden pt-16">
         <PaperBackground />
-        <div className="relative z-10 mx-auto max-w-4xl px-4 py-20 text-center font-hand-body text-sm text-[var(--ink-mute)]">
-          加载中...
+        <div className="relative z-10 mx-auto max-w-4xl px-4 py-20 text-center font-mono text-sm text-[var(--ink-mute)]">
+          <span className="text-[var(--accent)]">{'>'}</span> loading...
         </div>
       </div>
     );
@@ -113,6 +115,7 @@ export default function ResourceDetail() {
   return (
     <div className="relative min-h-screen overflow-hidden pt-16">
       <PaperBackground />
+      <Seo title={resource.title} description={resource.description} path={`/resources/${resource.id}`} />
 
       <div className="relative z-10 mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
         <Breadcrumb
@@ -124,21 +127,21 @@ export default function ResourceDetail() {
         />
 
         <div ref={heroRef}>
-          {/* 头部 */}
+          {/* 头部：终端面板风格 */}
           <div
-            className="hand-card mb-6 overflow-hidden p-0"
+            className="hand-card mb-6 overflow-hidden p-0 rgb-shift"
             style={{ transform: 'rotate(-0.4deg)' }}
           >
             {/* 封面图 */}
             {resource.coverImage ? (
               <div className="relative h-48 w-full overflow-hidden border-b-2 border-[var(--ink)] sm:h-60">
-                <img
+                <SmartImage
                   src={resource.coverImage}
                   alt={resource.title}
+                  eager
+                  fallbackLabel="封面信号丢失"
+                  wrapperClassName="h-full w-full"
                   className="h-full w-full object-cover"
-                  onError={(e) => {
-                    (e.currentTarget.parentElement as HTMLElement).style.display = 'none';
-                  }}
                 />
               </div>
             ) : null}
@@ -146,7 +149,7 @@ export default function ResourceDetail() {
             <div className="p-6">
               <div className="mb-4 flex items-start gap-4">
                 {/* 图标：优先用 icon 字段，否则用默认 FileText */}
-                <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl border-2 border-[var(--ink)] bg-[var(--paper)] shadow-[3px_3px_0_var(--ink)]">
+                <div className="flex h-20 w-20 shrink-0 items-center justify-center border-2 border-[var(--ink)] bg-[var(--bg)] shadow-[3px_3px_0_var(--ink)]">
                   {resource.icon ? (
                     <span className="text-3xl">{resource.icon}</span>
                   ) : (
@@ -154,13 +157,16 @@ export default function ResourceDetail() {
                   )}
                 </div>
                 <div className="min-w-0">
-                  <h1 className="mb-2 font-hand-title text-2xl text-[var(--ink)] sm:text-3xl">
+                  <h1
+                    className="mb-2 font-display text-2xl text-[var(--ink)] glitch-text sm:text-3xl"
+                    data-text={resource.title}
+                  >
                     {resource.title}
                   </h1>
                   <div className="flex flex-wrap items-center gap-2">
                     <span
-                      className={`rounded-md border-2 border-[var(--ink)] px-2 py-0.5 font-hand-title text-xs font-bold ${
-                        categoryColor[resource.category] ?? 'bg-[var(--paper-light)] text-[var(--ink)]'
+                      className={`border-2 border-[var(--ink)] px-2 py-0.5 font-display text-xs font-bold ${
+                        categoryColor[resource.category] ?? 'bg-[var(--bg-elevated)] text-[var(--ink)]'
                       }`}
                     >
                       {resource.category}
@@ -169,10 +175,10 @@ export default function ResourceDetail() {
                       <span className="hand-tag text-xs">{resource.subCategory}</span>
                     ) : null}
                     {resource.isHot ? (
-                      <span className="hand-tag text-xs" style={{ background: 'var(--crimson)', color: 'var(--paper-light)' }}>热门</span>
+                      <span className="hand-tag text-xs" style={{ background: 'var(--accent-alt)', color: 'var(--bg-elevated)' }}>热门</span>
                     ) : null}
                     {resource.isNew ? (
-                      <span className="hand-tag text-xs" style={{ background: 'var(--teal)', color: 'var(--paper-light)' }}>NEW</span>
+                      <span className="hand-tag text-xs" style={{ background: 'var(--accent-cyan)', color: 'var(--bg-elevated)' }}>NEW</span>
                     ) : null}
                     {resource.tags.map((t) => (
                       <span key={t} className="hand-tag text-xs">#{t}</span>
@@ -195,13 +201,13 @@ export default function ResourceDetail() {
                       访问网盘链接
                     </a>
                     {linkPassword ? (
-                      <span className="rounded-md border-2 border-[var(--ink)] bg-[var(--mustard)] px-2 py-1 font-hand-body text-xs text-[var(--ink)]">
+                      <span className="border-2 border-[var(--ink)] bg-[var(--accent)] px-2 py-1 font-mono text-xs text-[var(--ink)]">
                         提取码：{linkPassword}
                       </span>
                     ) : null}
                   </div>
-                  <div className="flex items-center gap-2 rounded-lg border-2 border-[var(--ink)]/20 bg-[var(--paper-light)] px-3 py-2">
-                    <span className="flex-1 truncate font-hand-body text-xs text-[var(--ink-soft)]">
+                  <div className="flex items-center gap-2 border-2 border-[var(--ink)]/20 bg-[var(--bg-elevated)] px-3 py-2">
+                    <span className="flex-1 truncate font-mono text-xs text-[var(--ink-soft)]">
                       {linkUrl}
                     </span>
                     <button
@@ -211,36 +217,40 @@ export default function ResourceDetail() {
                           navigator.clipboard.writeText(linkUrl);
                         }
                       }}
-                      className="shrink-0 rounded-md border-2 border-[var(--ink)] bg-[var(--paper)] px-2 py-1 font-hand-body text-xs text-[var(--ink)] shadow-[1px_1px_0_var(--ink)] hover:bg-[var(--paper-light)]"
+                      className="shrink-0 border-2 border-[var(--ink)] bg-[var(--bg)] px-2 py-1 font-mono text-xs text-[var(--ink)] shadow-[1px_1px_0_var(--ink)] hover:bg-[var(--bg-elevated)]"
                     >
                       复制链接
                     </button>
                   </div>
                 </div>
               ) : (
-                <p className="font-hand-body text-sm text-[var(--ink-mute)]">暂无网盘链接</p>
+                <p className="font-mono text-sm text-[var(--ink-mute)]">{'>'} 暂无网盘链接</p>
               )}
             </div>
           </div>
 
           {/* 简介 */}
           <div
-            className="hand-card mb-6 p-5"
+            className="hand-card mb-6 p-5 rgb-shift"
             style={{ transform: 'rotate(0.3deg)' }}
           >
-            <h2 className="mb-3 font-hand-title text-base text-[var(--ink)]">资源简介</h2>
+            <h2 className="mb-3 font-display text-base text-[var(--ink)]">
+              <span className="text-[var(--accent)]">{'// '}</span>
+              资源简介
+            </h2>
             <FormattedText text={resource.description} />
-            <div className="mt-4 flex flex-wrap items-center gap-4 font-hand-body text-xs text-[var(--ink-mute)]">
-              <span>更新于 {resource.updatedAt || '—'}</span>
-              <span>创建于 {resource.createdAt || '—'}</span>
+            <div className="mt-4 flex flex-wrap items-center gap-4 font-mono text-xs text-[var(--ink-mute)]">
+              <span><span className="text-[var(--accent)]">{'>'}</span> 更新于 {resource.updatedAt || '—'}</span>
+              <span><span className="text-[var(--accent)]">{'>'}</span> 创建于 {resource.createdAt || '—'}</span>
             </div>
           </div>
 
           {/* 效果展示（截图画廊） */}
           {hasScreenshots ? (
             <div className="mb-6">
-              <h2 className="mb-3 font-hand-title text-base text-[var(--ink)]">
-                <span className="hand-underline inline-block">效果展示</span>
+              <h2 className="mb-3 font-display text-base text-[var(--ink)]">
+                <span className="text-[var(--accent)]">{'// '}</span>
+                效果展示
               </h2>
               <div
                 ref={galleryRef}
@@ -252,22 +262,21 @@ export default function ResourceDetail() {
                     type="button"
                     key={`${i}-${shot}`}
                     onClick={() => setActiveShot(shot)}
-                    className="shot-item hand-card ink-spread shrink-0 overflow-hidden p-0"
+                    className="shot-item hand-card rgb-shift shrink-0 overflow-hidden p-0"
                     style={{ transform: `rotate(${(i % 2 ? 1 : -1) * 0.4}deg)`, width: '16rem' }}
                     aria-label={`查看效果截图 ${i + 1}`}
                   >
                     <div className="relative h-40 w-full overflow-hidden border-b-2 border-[var(--ink)]">
-                      <img
+                      <SmartImage
                         src={shot}
                         alt={`效果截图 ${i + 1}`}
-                        className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-                        onError={(e) => {
-                          (e.currentTarget.parentElement as HTMLElement).style.display = 'none';
-                        }}
+                        fallbackLabel={`截图 ${i + 1} 丢失`}
+                        wrapperClassName="h-full w-full"
+                        className="h-full w-full object-cover"
                       />
                       <span
-                        className="hand-tag absolute right-2 top-2 text-xs"
-                        style={{ background: 'var(--paper-light)', color: 'var(--ink)' }}
+                        className="hand-tag absolute right-2 top-2 z-10 text-xs"
+                        style={{ background: 'var(--bg-elevated)', color: 'var(--ink)' }}
                       >
                         <ImageIcon className="h-3 w-3" /> {i + 1}
                       </span>
@@ -275,21 +284,24 @@ export default function ResourceDetail() {
                   </button>
                 ))}
               </div>
-              <p className="mt-1 font-hand-body text-xs text-[var(--ink-mute)]">点击截图可放大查看 →</p>
+              <p className="mt-1 font-mono text-xs text-[var(--ink-mute)]">
+                <span className="text-[var(--accent)]">{'>'}</span> 点击截图可放大查看 →
+              </p>
             </div>
           ) : null}
 
           {/* 文件信息 */}
           {(hasFiles || hasFileCount) ? (
             <div
-              className="hand-card mb-6 p-5"
+              className="hand-card mb-6 p-5 rgb-shift"
               style={{ transform: 'rotate(-0.3deg)' }}
             >
               <div className="mb-3 flex items-center gap-2">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg border-2 border-[var(--ink)] bg-[var(--indigo)] shadow-[1px_1px_0_var(--ink)]">
-                  <Package className="h-3.5 w-3.5 text-[var(--paper-light)]" />
+                <div className="flex h-7 w-7 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent-blue)] shadow-[1px_1px_0_var(--ink)]">
+                  <Package className="h-3.5 w-3.5 text-[var(--ink)]" />
                 </div>
-                <h2 className="font-hand-title text-base text-[var(--ink)]">
+                <h2 className="font-display text-base text-[var(--ink)]">
+                  <span className="text-[var(--accent)]">{'// '}</span>
                   文件信息 <span className="text-xs text-[var(--ink-mute)]">（共 {resource.fileCount || resource.fileList.length} 个）</span>
                 </h2>
               </div>
@@ -298,7 +310,7 @@ export default function ResourceDetail() {
                   {resource.fileList.map((f, i) => (
                     <li
                       key={i}
-                      className="flex items-center gap-2 rounded-md border border-[var(--ink)]/20 bg-[var(--paper-light)] px-3 py-1.5 font-hand-body text-xs text-[var(--ink-soft)]"
+                      className="flex items-center gap-2 border border-[var(--ink)]/20 bg-[var(--bg-elevated)] px-3 py-1.5 font-mono text-xs text-[var(--ink-soft)]"
                     >
                       <FileText className="h-3 w-3 shrink-0 text-[var(--ink-mute)]" />
                       <span className="truncate">{f}</span>
@@ -306,7 +318,7 @@ export default function ResourceDetail() {
                   ))}
                 </ul>
               ) : (
-                <p className="font-hand-body text-sm text-[var(--ink-mute)]">暂无文件列表</p>
+                <p className="font-mono text-sm text-[var(--ink-mute)]">{'>'} 暂无文件列表</p>
               )}
             </div>
           ) : null}
@@ -314,38 +326,37 @@ export default function ResourceDetail() {
           {/* 视频演示 */}
           {hasVideo ? (
             <div className="mb-6">
-              <h2 className="mb-3 font-hand-title text-base text-[var(--ink)]">
-                <span className="hand-underline inline-block">视频演示</span>
+              <h2 className="mb-3 font-display text-base text-[var(--ink)]">
+                <span className="text-[var(--accent)]">{'// '}</span>
+                视频演示
               </h2>
               {isDirectVideo ? (
                 <div
-                  className="hand-card overflow-hidden p-0"
+                  className="hand-card overflow-hidden p-0 rgb-shift"
                   style={{ transform: 'rotate(-0.3deg)' }}
                 >
-                  <video
+                  <SmartVideo
                     src={resource.videoUrl as string}
-                    className="h-auto w-full"
-                    controls
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
+                    poster={resource.coverImage || undefined}
+                    wrapperClassName="aspect-video w-full"
+                    className="aspect-video w-full object-cover"
+                    fallbackLabel="视频信号丢失"
                   />
                 </div>
               ) : (
                 <div
-                  className="hand-card p-5"
+                  className="hand-card p-5 rgb-shift"
                   style={{ transform: 'rotate(-0.3deg)' }}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border-2 border-[var(--ink)] bg-[var(--indigo)] shadow-[2px_2px_0_var(--ink)]">
-                      <PlayCircle className="h-5 w-5 text-[var(--paper-light)]" />
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent-blue)] shadow-[2px_2px_0_var(--ink)]">
+                      <PlayCircle className="h-5 w-5 text-[var(--ink)]" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="font-hand-title text-sm text-[var(--ink)]">
+                      <p className="font-display text-sm text-[var(--ink)]">
                         {isDouyinUrl(resource.videoUrl as string) ? '抖音视频演示' : '视频演示'}
                       </p>
-                      <p className="truncate font-hand-body text-xs text-[var(--ink-mute)]">
+                      <p className="truncate font-mono text-xs text-[var(--ink-mute)]">
                         {resource.videoUrl}
                       </p>
                     </div>
@@ -390,14 +401,15 @@ export default function ResourceDetail() {
           {/* 相关资源 */}
           {related.length > 0 ? (
             <div>
-              <h2 className="mb-4 font-hand-title text-base text-[var(--ink)]">
-                <span className="hand-underline inline-block">相关资源</span>
+              <h2 className="mb-4 font-display text-base text-[var(--ink)]">
+                <span className="text-[var(--accent)]">{'// '}</span>
+                相关资源
               </h2>
               <div ref={relatedRef} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {related.map((r, i) => (
                   <div
                     key={r.id}
-                    className="related-card"
+                    className="related-card rgb-shift"
                     style={{ transform: `rotate(${(i % 2 ? -1 : 1) * 0.4}deg)` }}
                   >
                     <ResourceCard resource={r} compact />
@@ -412,7 +424,7 @@ export default function ResourceDetail() {
       {/* 截图放大模态 */}
       {activeShot ? (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
           onClick={() => setActiveShot(null)}
           role="dialog"
           aria-modal="true"
@@ -425,15 +437,17 @@ export default function ResourceDetail() {
               type="button"
               onClick={() => setActiveShot(null)}
               className="hand-btn absolute -right-3 -top-3 z-10 h-9 w-9 p-0"
-              style={{ background: 'var(--crimson)', color: 'var(--paper-light)' }}
+              style={{ background: 'var(--accent-alt)', color: 'var(--bg-elevated)' }}
               aria-label="关闭"
             >
               <X className="h-4 w-4" />
             </button>
-            <img
+            <SmartImage
               src={activeShot}
               alt="效果截图放大"
-              className="max-h-[80vh] w-auto rounded-lg border-2 border-[var(--ink)] shadow-[6px_6px_0_var(--ink)]"
+              wrapperClassName="max-h-[80vh] w-auto border-2 border-[var(--ink)] shadow-[6px_6px_0_var(--ink)]"
+              className="max-h-[80vh] w-auto object-contain"
+              fallbackLabel="放大查看失败"
             />
           </div>
         </div>

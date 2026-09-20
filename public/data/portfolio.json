@@ -1,0 +1,322 @@
+[
+  {
+    "id": "filecut",
+    "slug": "filecut",
+    "name": "FileCut",
+    "tagline": "112 个完全跑在浏览器里的文件工具，13 个分类：PDF / Word / Excel / PPT / 图片 / 音视频 / 二维码，文件零上传",
+    "status": "已上线",
+    "category": "web-app",
+    "repo": "filecut",
+    "demoUrl": "https://filecut.pages.dev",
+    "coverImage": null,
+    "screenshots": [],
+    "techStack": ["Vue", "Vite", "WASM", "Web Worker", "Cloudflare Pages"],
+    "role": "独立完成（设计/开发/部署）",
+    "period": "2026 - 持续迭代",
+    "problem": "网上的文件工具要么收费会员、要么把 PDF 和合同传进陌生服务器，桌面软件手机又用不了。目标是零安装、零上传、零服务器成本的「三零」文件处理台。",
+    "solution": "112 个工具、13 个分类全部在浏览器内用 WASM 与 Web Worker 完成（pdf.js、SheetJS、ffmpeg.wasm、tesseract.js、ONNX Runtime），引擎按工具按需加载。隐私不是承诺而是架构：代码库里不存在上传端点。30 秒可自行验证——DevTools 切离线模式后照常处理文件，网络面板无任何上传请求。131 条工具路由在构建期预渲染成静态 HTML，每个工具都是可被搜索引擎索引的独立着陆页；部署在 Cloudflare Pages 免费层。",
+    "highlights": [
+      { "title": "112 个工具统一 pipeline", "desc": "输入→转换→输出声明式注册（router/categories.js 注册表），加工具不加工程" },
+      { "title": "隐私可验证", "desc": "无上传端点存在于代码中；离线模式实测即可自证" },
+      { "title": "预渲染 SEO", "desc": "131 条静态路由，全部数字一条命令可复现" }
+    ],
+    "decisions": [
+      {
+        "question": "SEO 用构建期预渲染而不是运行时 SSR？",
+        "choice": "无头浏览器预渲染 131 条静态路由",
+        "reason": "零常驻服务器进程，Cloudflare Pages 免费层即可承载；实测预渲染首页 55KB、148 个可达链接（CSR 壳只有约 6KB、0 锚链）。代价是部署必须本地 build 后上传——Cloudflare 构建镜像装不上可用的 Playwright 浏览器，Git 自动构建会静默发布 SPA 壳、毁掉整个 SEO 面。这条坑已写进部署纪律。"
+      },
+      {
+        "question": "重型引擎（23.4MB ONNX 抠像模型）怎么不拖慢全站？",
+        "choice": "引擎按工具按需加载，首页首传仅约 104KB",
+        "reason": "冷缓存实测首页 104KB、load 2.66s；只有打开抠像工具那一次才付 23.4MB 的代价，其余工具不受影响。"
+      }
+    ],
+    "metrics": [
+      { "label": "浏览器端工具数", "value": "112 · 13 分类", "source": "仓库 README（src/router/categories.js 注册表）" },
+      { "label": "预渲染静态路由", "value": "131", "source": "仓库 docs/metrics.json（npm run metrics 生成）" },
+      { "label": "源码规模", "value": "143 文件 · 33,489 行", "source": "仓库 docs/metrics.json" },
+      { "label": "冷缓存首页", "value": "TTFB 740ms · load 2.66s", "source": "README 实测记录（部署站冷缓存）" },
+      { "label": "服务器成本", "value": "¥0/月", "source": "Cloudflare Pages 免费层账单" }
+    ],
+    "relatedPosts": [],
+    "relatedFiles": [
+      { "label": "源码仓库", "url": "https://github.com/Person-HE/filecut" }
+    ],
+    "ctaServiceId": null,
+    "isFeatured": true,
+    "published": true,
+    "createdAt": "2026-09-20",
+    "updatedAt": "2026-09-20"
+  },
+  {
+    "id": "note-plan",
+    "slug": "note-plan",
+    "name": "Note-Plan",
+    "tagline": "本地优先的笔记·任务·灵感应用：数据存在你自己设备里，WebDAV 同步你自己的服务器，一套代码跑 Web/桌面/安卓/iOS",
+    "status": "已上线",
+    "category": "web-app",
+    "repo": "Note-Plan",
+    "demoUrl": "https://note-plan-bwm.pages.dev",
+    "coverImage": null,
+    "screenshots": [],
+    "techStack": ["TypeScript", "TipTap", "IndexedDB/Dexie", "PWA", "WebDAV", "Electron/Capacitor"],
+    "role": "独立完成",
+    "period": "2026",
+    "problem": "笔记工具的数据都在别人服务器上，断网即失能，换端靠云同步还得买它家的会员。想要一个打开就能记、数据永远在自己手里、跨端还能自己掌控同步的应用。",
+    "solution": "IndexedDB（Dexie）作主存储，PWA 首访后可离线；同步走 WebDAV——接你自己的 Nextcloud 或坚果云，不经过任何官方后端；AI 助手指向你自己配置的兼容端点。同一份代码四处交付：Web、Electron 桌面、Capacitor 安卓/iOS。演示视频（合计约 128MB）挂 GitHub Release 资产而不是提交进仓库树，clone 保持轻量。",
+    "highlights": [
+      { "title": "本地优先", "desc": "IndexedDB 直存，无账号无官方后端；统计也在设备端算" },
+      { "title": "同步自主可控", "desc": "WebDAV 对接自有服务器，数据链路完全在自己手里" },
+      { "title": "一套代码四端", "desc": "Web / Electron / Capacitor Android / iOS 同源交付" },
+      { "title": "资产分离", "desc": "约 128MB 演示视频走 Release 资产，仓库树干净" }
+    ],
+    "decisions": [
+      {
+        "question": "演示视频放仓库还是 Release？",
+        "choice": "GitHub Release 资产（demos-2026-09）",
+        "reason": "5 个视频合计约 128MB 进 git 树会永久拖累每次 clone 的历史体积；Release 资产按需下载。"
+      }
+    ],
+    "metrics": [
+      { "label": "交付端数", "value": "4（Web/桌面/安卓/iOS）", "source": "仓库 README（npm run electron:build:win / build:android / build:ios）" },
+      { "label": "源码规模", "value": "93 文件 · 20,177 行", "source": "仓库 docs/metrics.json（npm run metrics 生成）" },
+      { "label": "构建产物", "value": "2.18 MB gzip · 零服务器", "source": "仓库 docs/metrics.json" },
+      { "label": "许可证", "value": "Apache-2.0", "source": "仓库 LICENSE" }
+    ],
+    "relatedPosts": [],
+    "relatedFiles": [{ "label": "源码仓库", "url": "https://github.com/Person-HE/Note-Plan" }],
+    "ctaServiceId": null,
+    "isFeatured": true,
+    "published": true,
+    "createdAt": "2026-09-20",
+    "updatedAt": "2026-09-20"
+  },
+  {
+    "id": "autoedit",
+    "slug": "autoedit",
+    "name": "NanoEdit Pro (AutoEdit)",
+    "tagline": "浏览器视频剪辑器 + ReAct AI 导演：多轨时间轴、95 个动效预设、MediaPipe 抠像，说出需求它自己规划剪辑步骤",
+    "status": "已上线",
+    "category": "web-app",
+    "repo": "AutoEdit",
+    "demoUrl": "https://nanoedit-pro.pages.dev",
+    "coverImage": null,
+    "screenshots": [],
+    "techStack": ["React 19", "Vite 6", "MediaPipe", "WebAudio", "Jest"],
+    "role": "独立完成",
+    "period": "2026",
+    "problem": "剪辑软件的门槛在「操作」而不是「想法」。想让不懂时间轴的人用一句话得到成片，AI 不能只会聊天，要能驱动真实剪辑动作。",
+    "solution": "剪辑内核完全跑在浏览器端：多轨时间线、逐属性关键帧、9 种转场、WebAudio、MediaPipe 分割抠像，工程存 Dexie/IndexedDB 刷新不丢。AI 导演是 ReAct 循环：选题分析→文案→分镜→预设摆放→音画对齐→渲染，每一步都是和手工编辑完全相同的工具调用——跑完打开时间轴能看到它到底做了什么。线上版内置 mock 模式，不用任何 key 就能完整体验导演流程；接真实模型时指向你自己的 OpenAI 兼容端点，代码里不存在官方服务器。",
+    "highlights": [
+      { "title": "ReAct 导演", "desc": "推理与剪辑动作交替，每步是可检查的工具调用而非黑盒" },
+      { "title": "零 key 可玩", "desc": "内置 mock AI 模式，Demo 打开即可观察完整导演循环" },
+      { "title": "测试兜底", "desc": "Jest 75 用例（71 过 4 按设计跳过），0 失败" }
+    ],
+    "decisions": [
+      {
+        "question": "AI 一次生成完整剪辑方案，还是 ReAct 分步执行？",
+        "choice": "ReAct：推理→执行→观察循环",
+        "reason": "视频参数（时长/轨道状态）必须实测而非模型臆测，一步一验证才不会整体跑偏；且产物落在与手工编辑同一工程模型上，人可随时接管。"
+      }
+    ],
+    "metrics": [
+      { "label": "动效预设 / 模板", "value": "95 / 28", "source": "仓库 README（scripts/count-assets.mjs）" },
+      { "label": "Jest 测试", "value": "71 通过 · 0 失败（共 75）", "source": "仓库 docs/metrics.json（npm run metrics 生成）" },
+      { "label": "源码规模", "value": "314 文件 · 43,616 行", "source": "仓库 docs/metrics.json" },
+      { "label": "冷缓存首屏", "value": "首传约 269KB · load 2.33s", "source": "README 实测记录（部署站冷缓存）" }
+    ],
+    "relatedPosts": [
+      { "label": "Agent Harness 驾驭工程", "url": "https://person-he.github.io/2026-06-30/Agent-Harness-Engineering驾驭工程/" }
+    ],
+    "relatedFiles": [{ "label": "源码仓库", "url": "https://github.com/Person-HE/AutoEdit" }],
+    "ctaServiceId": null,
+    "isFeatured": true,
+    "published": true,
+    "createdAt": "2026-09-20",
+    "updatedAt": "2026-09-20"
+  },
+  {
+    "id": "webcreate",
+    "slug": "webcreate",
+    "name": "WebCreate",
+    "tagline": "浏览器里的图层逐帧手绘动画工坊：压感笔迹 + rough.js 形状 + GIF/WebM/MP4 导出，另带 Playwright 无头 CLI 不开 UI 直接渲成片",
+    "status": "已上线",
+    "category": "web-app",
+    "repo": "webcreate",
+    "demoUrl": "https://webcreate.pages.dev",
+    "coverImage": null,
+    "screenshots": [],
+    "techStack": ["TypeScript", "React", "Canvas", "rough.js", "Playwright"],
+    "role": "独立完成",
+    "period": "2026",
+    "problem": "做逐帧手绘动画要装 AE/Procreate 级别的软件，轻量需求（几条动画短片）被重型工具劝退；想要批量出片时还得一帧帧手动导出。",
+    "solution": "浏览器内压感手绘 + rough.js 形状 + 图层混合模式 + 帧时间轴，工程存 localStorage，无账号无后端，gzip 后整包只有 0.12MB。同一条 canvas 渲染链路复用进 Playwright 无头 CLI：命令行直接把工程渲染成 GIF/WebM/MP4，批量出片不碰 UI。AI 绘图默认走内置 mock，可自行替换为兼容端点。与积木MG 互补：一个手画，一个引擎按剧本生成。",
+    "highlights": [
+      { "title": "UI 与 CLI 同链路", "desc": "同一 canvas 渲染路径，手动创作与无头批量导出结果一致" },
+      { "title": "极致轻量", "desc": "0.44MB 原始 / 0.12MB gzip 构建产物，13 个直接依赖" }
+    ],
+    "decisions": [
+      {
+        "question": "模板与工程数据怎么存？",
+        "choice": "localStorage + 随包模板库（24 静态 + 10 动画）",
+        "reason": "零后端定位下的诚实取舍：不承诺云同步，换浏览器需要自行导出；换来的是整站没有任何服务器与账号面。"
+      }
+    ],
+    "metrics": [
+      { "label": "模板数", "value": "24 静态 + 10 动画", "source": "仓库 README（scripts/count-templates.mjs）" },
+      { "label": "构建产物", "value": "0.12 MB gzip", "source": "仓库 docs/metrics.json（npm run metrics 生成）" },
+      { "label": "源码规模", "value": "60 文件 · 13,633 行", "source": "仓库 docs/metrics.json" }
+    ],
+    "relatedPosts": [],
+    "relatedFiles": [{ "label": "源码仓库", "url": "https://github.com/Person-HE/webcreate" }],
+    "ctaServiceId": null,
+    "isFeatured": false,
+    "published": true,
+    "createdAt": "2026-09-20",
+    "updatedAt": "2026-09-20"
+  },
+  {
+    "id": "jimu-mg",
+    "slug": "jimu-mg",
+    "name": "积木MG 渲染器",
+    "tagline": "确定性手绘 MG 动画引擎：LLM 只写剧本 JSON，74 项效果目录内逐帧由引擎计算——同输入永远同 SHA-256",
+    "status": "已完成",
+    "category": "cli",
+    "repo": "jimu-mg",
+    "demoUrl": null,
+    "coverImage": null,
+    "screenshots": [],
+    "techStack": ["Node.js", "Electron", "@napi-rs/canvas", "perfect-freehand", "rough.js", "FFmpeg"],
+    "role": "独立完成",
+    "period": "2026",
+    "problem": "让 LLM 直接生成动画，每次结果都不一样、画面随机漂移——不可复现就不可测试，也不可用于生产。",
+    "solution": "职责切分：LLM 唯一职责是产出 MGProject JSON，输入是一份机器可读的效果目录（74 项手绘效果、17 种节点类型、11 色固定色板、7 条硬性视觉规则，mg catalog 一次导出）；mg validate 校验、mg render 用 @napi-rs/canvas + perfect-freehand + rough.js 逐帧光栅化，FFmpeg 合成。确定性不是口号：同一时间戳连续渲 3 帧，SHA-256 完全一致，一条命令（node scripts/mg-metrics.mjs）即可复现，渲染器回归是 diff 而不是感觉。本地 CLI + Electron 桌面应用，无云端运行时。",
+    "highlights": [
+      { "title": "确定性可验证", "desc": "同输入→同 SHA-256，含测量机器信息一起落盘 docs/metrics.json" },
+      { "title": "目录即 API", "desc": "效果目录同时喂给模型和校验器，改引擎效果库惠及所有未来剧本" },
+      { "title": "手绘线条保真回归", "desc": "曾经「直线得完美、高解析出垃圾」的 bug 类，固化为审计脚本" }
+    ],
+    "decisions": [
+      {
+        "question": "LLM 输出画面参数还是输出剧本？",
+        "choice": "只输出剧本 JSON，像素级决定全部由引擎做",
+        "reason": "这是整个项目的核心命题：把不确定性关进最小笼子。提示词改布局是治标，效果目录修正才对每个未来剧本生效。也是我对「企业级 Agent 可靠性」方向的工程回答。"
+      },
+      {
+        "question": "确定性基准怎么防止「为测试而通过」？",
+        "choice": "fixture 由 mg preset 运行时生成，采样早（1.5s）晚（30s）两个时间戳各渲 3 次",
+        "reason": "没有提交的输入可以漂移出针对性补丁；跨时间采样抓的是沿时间轴积累状态的 bug 类，单帧冻结测不出来。"
+      }
+    ],
+    "metrics": [
+      { "label": "效果目录 / 节点类型", "value": "74 / 17", "source": "mg catalog 输出（仓库 README 计数）" },
+      { "label": "确定性验证", "value": "2 时间戳 × 3 渲染，SHA-256 组内 1 种", "source": "node scripts/mg-metrics.mjs → docs/metrics.json" },
+      { "label": "手绘线条 RMS 偏差", "value": "4103.471 → 2.785", "source": "scripts/audit_handline.mjs 修复前后实测" },
+      { "label": "云端依赖", "value": "无（本地 CLI/Electron）", "source": "仓库 README" }
+    ],
+    "relatedPosts": [
+      { "label": "Agent Harness 驾驭工程", "url": "https://person-he.github.io/2026-06-30/Agent-Harness-Engineering驾驭工程/" }
+    ],
+    "relatedFiles": [
+      { "label": "源码仓库", "url": "https://github.com/Person-HE/jimu-mg" },
+      { "label": "37KB 浏览器演示（双击 prototype/index.html 即看）", "url": "https://github.com/Person-HE/jimu-mg/tree/main/prototype" }
+    ],
+    "ctaServiceId": null,
+    "isFeatured": true,
+    "published": true,
+    "createdAt": "2026-09-20",
+    "updatedAt": "2026-09-20"
+  },
+  {
+    "id": "zhiyuanflow",
+    "slug": "zhiyuanflow",
+    "name": "知源Flow",
+    "tagline": "社交发现社区平台：Spring Boot 多模块后端 + React 前端，多级缓存用 JMeter 500 并发四组对照压测说话",
+    "status": "已完成",
+    "category": "backend",
+    "repo": "zhiyuanFlow",
+    "demoUrl": null,
+    "coverImage": null,
+    "screenshots": [],
+    "techStack": ["Java", "Spring Boot", "MySQL", "Redis", "Caffeine", "RabbitMQ", "JMeter"],
+    "role": "独立完成前后端",
+    "period": "2025 - 2026",
+    "problem": "校招项目普遍「只会 CRUD」。我要做一个有真实性能证据的完整系统：接口能不能扛，用 JMeter 在真实 MySQL + Redis 环境实测，不靠嘴说；而且缓存这种优化，没有对照组的数据面试官一句就能打回。",
+    "solution": "分层多模块架构（api/common/models），RabbitMQ 做异步解耦，Redis + Caffeine 构建 L1/L2 多级缓存。性能结论来自四组控制变量压测：500 并发 × 90 秒稳态采样，A 组无缓存基线、B 组仅 Redis、C/D 组 L1+L2 冷启动与预热后，只改缓存开关这一个变量；数据规模 10 万级帖子、近 100 万条互动记录，JMeter 用帕累托分布帖子 ID 模拟真实长尾访问。全过程与环境快照写进系列架构文章，指标可复现。",
+    "highlights": [
+      { "title": "对照组压测", "desc": "四组控制变量实验，证明的是「缓存的边际价值」而不是「有缓存很快」" },
+      { "title": "10 万级真实数据", "desc": "103,810 帖子 / 992,631 互动记录 / 帕累托长尾 ID 分布" },
+      { "title": "系列文章复盘", "desc": "从项目起源、架构设计到性能采集的完整公开复盘" }
+    ],
+    "decisions": [
+      {
+        "question": "性能结论怎么来？",
+        "choice": "JMeter 真实压测：500 并发 × 90s，四组只切换缓存开关这一个变量",
+        "reason": "「带数据来，别带感觉」——这既是工程原则也是我做事的底线。前一轮只测有缓存没有对照组，被自己判定为不合格数据，重做了整套实验。"
+      },
+      {
+        "question": "压测时 RabbitMQ 和限流怎么处理？",
+        "choice": "显式关闭（RABBITMQ_ENABLED=false、RATE_LIMIT_ENABLED=false）",
+        "reason": "测的是帖子详情接口的缓存分层，就要把消息队列波动和限流截断这两个混淆变量隔离掉，否则数据解释不了。"
+      }
+    ],
+    "metrics": [
+      { "label": "无缓存基线 QPS", "value": "1,742.9 · P99 395ms", "source": "博客《知源Flow社区平台多级缓存JMeter真实压测》A 组（2026-07-06）" },
+      { "label": "L1+L2 冷启动 QPS", "value": "5,769.1 · P99 140ms", "source": "同上 C 组，四组共 1,577,076 请求 0 错误" },
+      { "label": "数据规模", "value": "10 万帖子 · 近 100 万互动", "source": "同上文章压测数据规模表" },
+      { "label": "后端源码", "value": "Java ≈ 787KB · 前端 TS ≈ 495KB", "source": "GitHub Languages API（2026-09-20 快照）" }
+    ],
+    "relatedPosts": [
+      { "label": "知源项目总览和架构设计", "url": "https://person-he.github.io/2026-04-05/知源项目总览和架构设计/" },
+      { "label": "核心代码的设计取舍", "url": "https://person-he.github.io/2026-06-30/核心代码的设计取舍/" },
+      { "label": "项目起源与设计初衷", "url": "https://person-he.github.io/2026-06-30/项目起源与设计初衷/" },
+      { "label": "知源Flow社区平台多级缓存JMeter真实压测", "url": "https://person-he.github.io/2026-07-06/知源Flow社区平台做真实性能采集/" }
+    ],
+    "relatedFiles": [
+      { "label": "前端仓库", "url": "https://github.com/Person-HE/zhiyuanFlow" },
+      { "label": "后端仓库", "url": "https://github.com/Person-HE/zhiyuan_Flow-backend" }
+    ],
+    "ctaServiceId": null,
+    "isFeatured": false,
+    "published": true,
+    "createdAt": "2026-09-20",
+    "updatedAt": "2026-09-20"
+  },
+  {
+    "id": "personweb",
+    "slug": "personweb",
+    "name": "本站 · 阿维的个人 IP 站",
+    "tagline": "你正在看的网站：作品集×博客×GitHub 数据级串联，零成本全栈",
+    "status": "维护中",
+    "category": "site",
+    "repo": "PersonWEB",
+    "demoUrl": null,
+    "coverImage": null,
+    "screenshots": [],
+    "techStack": ["React", "TypeScript", "Cloudflare Pages + Functions + KV + Cron"],
+    "role": "独立完成",
+    "period": "2025 - 持续迭代",
+    "problem": "个人站不该是挂几个链接的名片。要让用户在三分钟内验证：这个人的产品能用、代码公开、思考成文——三者互相引用成证据网。",
+    "solution": "Cloudflare 免费层全家桶（Pages + Functions + KV + 定时任务）：每小时同步 GitHub 与博客快照，作品集卡片上的仓库语言、最近提交天数都是活数据；页面上一切数字要么来自可复现实测、要么直接不显示（'--'）。作品集/画像/服务/资源/需求工单全部后台可管理，前台零硬编码。",
+    "highlights": [
+      { "title": "证据网结构", "desc": "案例↔仓库↔文章互链，每条数据带出处" },
+      { "title": "诚实降级", "desc": "无出处的数字渲染为 --，没有快照就明说没有" }
+    ],
+    "decisions": [
+      {
+        "question": "GitHub/博客数据是前端直连还是经服务端同步？",
+        "choice": "Pages Functions + Cron 每小时快照进 KV，读接口只查 KV",
+        "reason": "访客不消耗 GitHub API 配额、不怕限流；快照时间本身也是数据的一部分，明确标注而不是假装实时。"
+      }
+    ],
+    "metrics": [],
+    "relatedPosts": [],
+    "relatedFiles": [{ "label": "源码仓库", "url": "https://github.com/Person-HE/PersonWEB" }],
+    "ctaServiceId": null,
+    "isFeatured": false,
+    "published": true,
+    "createdAt": "2026-09-20",
+    "updatedAt": "2026-09-20"
+  }
+]

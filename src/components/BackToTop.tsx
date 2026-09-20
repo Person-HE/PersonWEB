@@ -18,7 +18,7 @@ export default function BackToTop() {
     <button
       onClick={scrollTop}
       className={cn(
-        'fixed bottom-6 right-6 z-40 flex h-12 w-12 items-center justify-center rounded-full border-2 border-[var(--ink)] bg-[var(--crimson)] text-[var(--paper-light)] shadow-[3px_3px_0_var(--ink)] transition-all duration-300 hover:bg-[var(--mustard)] hover:text-[var(--ink)]',
+        'fixed bottom-6 right-6 z-40 flex h-12 w-12 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent-alt)] text-[var(--ink)] shadow-[3px_3px_0_var(--ink)] transition-all duration-300 hover:bg-[var(--accent)] hover:text-[var(--bg)]',
         visible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-2 opacity-0',
       )}
       aria-label="回到顶部"

@@ -8,6 +8,13 @@
 export interface Env {
   KV: KVNamespace;
   JWT_SECRET: string;
+  /** 活数据同步配置（均有代码内默认值，可选覆盖） */
+  GH_USER?: string;
+  GH_TOKEN?: string;
+  BLOG_REPO?: string;
+  BLOG_BASE?: string;
+  /** 可选：设置后 GET /cron 必须带 ?key= 匹配 */
+  CRON_SECRET?: string;
 }
 
 export interface APIContext {

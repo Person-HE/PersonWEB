@@ -6,6 +6,7 @@ import ToolItem, { RecommendedToolCard } from '@/components/ToolItem';
 import EmptyState from '@/components/EmptyState';
 import { PageHeader } from '@/components/SectionTitle';
 import PaperBackground from '@/components/PaperBackground';
+import Seo from '@/components/Seo';
 import { TOOL_CATEGORIES } from '@/constants';
 import { useStaggerReveal } from '@/hooks/useGsap';
 import type { Tool, ToolCategory } from '@/types';
@@ -82,6 +83,7 @@ export default function Navigation() {
   return (
     <div className="relative min-h-screen overflow-hidden pt-16">
       <PaperBackground />
+      <Seo title="AI导航" description="人工筛选的 AI 工具导航：标注国内可用性与定价，不收广告位，只收真用得上的。" path="/navigation" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <PageHeader
@@ -97,12 +99,12 @@ export default function Navigation() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="搜索工具名称、描述或标签..."
-            className="w-full rounded-xl border-2 border-[var(--ink)] bg-[var(--paper-light)] py-2.5 pl-10 pr-10 font-hand-body text-sm text-[var(--ink)] placeholder-[var(--ink-mute)] shadow-[3px_3px_0_var(--ink)] outline-none transition-all focus:-translate-y-0.5 focus:shadow-[4px_4px_0_var(--crimson)]"
+            className="w-full border-2 border-[var(--ink)] bg-[var(--bg-elevated)] py-2.5 pl-10 pr-10 font-mono text-sm text-[var(--ink)] placeholder-[var(--ink-mute)] shadow-[3px_3px_0_var(--ink)] outline-none transition-all focus:-translate-y-0.5 focus:shadow-[4px_4px_0_var(--accent-alt)]"
           />
           {search ? (
             <button
               onClick={() => setSearch('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--ink-mute)] transition-colors hover:text-[var(--crimson)]"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--ink-mute)] transition-colors hover:text-[var(--accent-alt)]"
               aria-label="清除"
             >
               <X className="h-4 w-4" />
@@ -118,17 +120,17 @@ export default function Navigation() {
               <button
                 key={t.id}
                 onClick={() => switchTab(t.id)}
-                className={`inline-flex shrink-0 items-center gap-1.5 rounded-xl border-2 border-[var(--ink)] px-3.5 py-1.5 font-hand-title text-sm transition-all ${
+                className={`inline-flex shrink-0 items-center gap-1.5 border-2 border-[var(--ink)] px-3.5 py-1.5 font-display text-sm transition-all ${
                   active
-                    ? 'bg-[var(--crimson)] text-[var(--paper-light)] shadow-[3px_3px_0_var(--ink)]'
-                    : 'bg-[var(--paper-light)] text-[var(--ink)] hover:bg-[var(--mustard)]/30'
+                    ? 'bg-[var(--accent-alt)] text-[var(--ink)] shadow-[3px_3px_0_var(--ink)]'
+                    : 'bg-[var(--bg-elevated)] text-[var(--ink)] hover:bg-[var(--accent)]/20'
                 }`}
                 style={{ transform: `rotate(${(i % 2 ? 1 : -1) * 0.4}deg)` }}
               >
                 {t.name}
                 <span
-                  className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${
-                    active ? 'bg-[var(--paper)]/30 text-[var(--paper-light)]' : 'bg-[var(--ink)] text-[var(--paper-light)]'
+                  className={`px-1.5 py-0.5 text-[10px] font-bold ${
+                    active ? 'bg-[var(--bg)] text-[var(--accent-alt)]' : 'bg-[var(--ink)] text-[var(--bg)]'
                   }`}
                 >
                   {t.count}
@@ -140,7 +142,9 @@ export default function Navigation() {
 
         {/* 内容区 */}
         {loading && !loaded ? (
-          <div className="hand-empty">加载中...</div>
+          <div className="hand-empty font-mono text-sm">
+            <span className="text-[var(--accent)]">{'>'}</span> 加载中...
+          </div>
         ) : tools.length === 0 ? (
           <EmptyState
             title="工具即将收录"
@@ -172,10 +176,13 @@ export default function Navigation() {
             {recommended.length > 0 ? (
               <section className="mb-8">
                 <div className="mb-4 flex items-center gap-2">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg border-2 border-[var(--ink)] bg-[var(--mustard)] shadow-[1px_1px_0_var(--ink)]">
-                    <Sparkles className="h-3.5 w-3.5 text-[var(--ink)]" />
+                  <div className="flex h-7 w-7 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent)] shadow-[1px_1px_0_var(--ink)]">
+                    <Sparkles className="h-3.5 w-3.5 text-[var(--bg)]" />
                   </div>
-                  <h2 className="font-hand-title text-base text-[var(--ink)]">编辑推荐</h2>
+                  <h2 className="font-display text-base text-[var(--ink)]">
+                    <span className="text-[var(--accent)]">{'// '}</span>
+                    编辑推荐
+                  </h2>
                 </div>
                 <div ref={recRef} className="grid gap-4 sm:grid-cols-2">
                   {recommended.map((t) => (
@@ -190,9 +197,10 @@ export default function Navigation() {
             {/* 工具列表 */}
             <section>
               <div className="mb-4 flex items-center justify-between">
-                <h2 className="font-hand-title text-base text-[var(--ink)]">
+                <h2 className="font-display text-base text-[var(--ink)]">
+                  <span className="text-[var(--accent)]">{'// '}</span>
                   {tab === 'all' ? '全部工具' : TOOL_CATEGORIES.find((c) => c.id === tab)?.name}
-                  <span className="ml-2 font-hand-body text-xs text-[var(--ink-mute)]">({displayList.length})</span>
+                  <span className="ml-2 font-mono text-xs text-[var(--ink-mute)]">({displayList.length})</span>
                 </h2>
               </div>
               {displayList.length === 0 ? (
@@ -212,10 +220,13 @@ export default function Navigation() {
             {tab === 'all' && latestAdded.length > 0 ? (
               <section className="mt-12">
                 <div className="mb-4 flex items-center gap-2">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg border-2 border-[var(--ink)] bg-[var(--teal)] shadow-[1px_1px_0_var(--ink)]">
-                    <Clock className="h-3.5 w-3.5 text-[var(--paper-light)]" />
+                  <div className="flex h-7 w-7 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent-cyan)] shadow-[1px_1px_0_var(--ink)]">
+                    <Clock className="h-3.5 w-3.5 text-[var(--bg)]" />
                   </div>
-                  <h2 className="font-hand-title text-base text-[var(--ink)]">最新收录</h2>
+                  <h2 className="font-display text-base text-[var(--ink)]">
+                    <span className="text-[var(--accent)]">{'// '}</span>
+                    最新收录
+                  </h2>
                 </div>
                 <div ref={latestRef} className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {latestAdded.map((t) => (

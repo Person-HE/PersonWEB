@@ -124,6 +124,29 @@ export function crudApi<T extends { id: string }>(basePath: string) {
 export const resourcesApi = crudApi<import('@/types').Resource>('/api/resources');
 export const toolsApi = crudApi<import('@/types').Tool>('/api/tools');
 export const servicesApi = crudApi<import('@/types').Service>('/api/services');
+export const portfolioApi = crudApi<import('@/types').Portfolio>('/api/portfolio');
+export const quotesApi = crudApi<import('@/types').Quote>('/api/quote');
+
+/** 个人画像（单文档） */
+export const profileApi = {
+  get: () => apiPublic<import('@/types').Profile | null>('/api/profile'),
+  save: (profile: import('@/types').Profile) =>
+    api<import('@/types').Profile>('/api/profile', { method: 'PUT', body: JSON.stringify(profile) }),
+};
+
+/** 活数据快照（cron 写入，前端只读） */
+export const liveApi = {
+  github: () => apiPublic<import('@/types').GithubSnapshot>('/api/github'),
+  blog: () => apiPublic<import('@/types').BlogFeed>('/api/blog'),
+  refreshGithub: () => api<import('@/types').GithubSnapshot>('/api/github/refresh', { method: 'POST' }),
+  refreshBlog: () => api<import('@/types').BlogFeed>('/api/blog/refresh', { method: 'POST' }),
+};
+
+/** 需求表单公开提交 */
+export const quoteSubmitApi = {
+  create: (payload: Record<string, string>) =>
+    apiPublic<{ ok: boolean; id: string }>('/api/quote', { method: 'POST', body: JSON.stringify(payload) }),
+};
 
 export const logsApi = {
   list: (limit = 100) => api<any[]>(`/api/logs?limit=${limit}`),

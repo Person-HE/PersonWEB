@@ -1,90 +1,108 @@
-import { Wrench, Wand2, Puzzle, Crown, Package, Workflow, ArrowRight, type LucideIcon } from 'lucide-react';
-import type { Service, ServiceType } from '@/types';
+import { Link } from 'react-router-dom';
+import { Play, ArrowRight, TrendingUp } from 'lucide-react';
+import type { Service } from '@/types';
 import { useWechatModal } from '@/components/WeChatModal';
-
-const iconMap: Record<ServiceType, LucideIcon> = {
-  'tool-config': Wrench,
-  'ai-output': Wand2,
-  custom: Puzzle,
-  'product-pro': Crown,
-  product: Package,
-  automation: Workflow,
-  enterprise: Crown,
-};
+import { SmartImage, SmartVideo } from '@/components/SmartMedia';
 
 interface ServiceCardProps {
   service: Service;
-  isEnterprise?: boolean;
 }
 
-export default function ServiceCard({ service, isEnterprise = false }: ServiceCardProps) {
+function isDirectVideoUrl(url: string | null): boolean {
+  return !!url && /\.(mp4|webm)(\?.*)?$/i.test(url);
+}
+
+export default function ServiceCard({ service }: ServiceCardProps) {
   const { open } = useWechatModal();
-  const Icon = iconMap[service.type] ?? Wrench;
-  const scene = service.type;
+  const hasVisual = !!service.coverImage || isDirectVideoUrl(service.videoUrl);
 
   return (
-    <div className={`hand-card ink-spread group flex h-full flex-col p-5 ${isEnterprise ? 'hand-card-gold' : ''}`}>
-      <div className="mb-3 flex items-center gap-3">
-        <div
-          className={`flex h-11 w-11 items-center justify-center rounded-xl border-2 border-[var(--ink)] shadow-[2px_2px_0_var(--ink)] ${
-            isEnterprise
-              ? 'bg-[var(--mustard)] text-[var(--ink)]'
-              : 'bg-[var(--crimson)] text-[var(--paper-light)]'
-          }`}
-        >
-          <Icon className="h-5 w-5" />
-        </div>
-        <div className="min-w-0 flex-1">
-          <h3 className="line-clamp-1 font-hand-title text-base text-[var(--ink)]">{service.name}</h3>
-          <p
-            className={`font-hand-title text-sm font-bold ${
-              isEnterprise ? 'text-[var(--mustard)]' : 'text-[var(--crimson)]'
-            }`}
-            style={isEnterprise ? { color: '#B8791B' } : undefined}
-          >
-            {service.priceRange || service.price}
-          </p>
-        </div>
-      </div>
-
-      <p className="mb-3 line-clamp-2 font-hand-body text-sm leading-relaxed text-[var(--ink-soft)]">
-        {service.description}
-      </p>
-
-      {/* 标签 */}
-      {service.tags && service.tags.length > 0 ? (
-        <div className="mb-4 flex flex-wrap gap-1">
-          {service.tags.slice(0, 4).map((t) => (
-            <span key={t} className="hand-tag text-xs">#{t}</span>
-          ))}
+    <div className="hand-card rgb-shift group flex flex-col overflow-hidden lg:flex-row">
+      {/* 左侧：封面图 / 视频（40%） */}
+      {hasVisual ? (
+        <div className="relative aspect-[16/10] w-full overflow-hidden border-b-2 border-[var(--border)] lg:aspect-auto lg:w-[40%] lg:border-b-0 lg:border-r-2">
+          {service.coverImage ? (
+            <SmartImage
+              src={service.coverImage}
+              alt={service.name}
+              wrapperClassName="h-full w-full"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              fallbackLabel="封面信号丢失"
+            />
+          ) : null}
+          {isDirectVideoUrl(service.videoUrl) ? (
+            <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <SmartVideo
+                src={service.videoUrl as string}
+                autoPlay={false}
+                controls={false}
+                wrapperClassName="h-full w-full"
+                className="h-full w-full object-cover"
+                fallbackLabel="视频信号丢失"
+              />
+            </div>
+          ) : null}
+          {isDirectVideoUrl(service.videoUrl) ? (
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <div className="flex h-12 w-12 items-center justify-center border-2 border-[var(--border)] bg-[var(--accent)] text-[var(--bg)] shadow-[3px_3px_0_var(--border)] transition-transform duration-300 group-hover:scale-110">
+                <Play className="h-5 w-5 fill-current" />
+              </div>
+            </div>
+          ) : null}
+          {service.isFeatured ? (
+            <span className="absolute left-3 top-3 border-2 border-[var(--border)] bg-[var(--accent-alt)] px-2 py-0.5 font-mono text-[10px] font-bold text-[var(--ink)] shadow-[2px_2px_0_var(--border)]">
+              FEATURED
+            </span>
+          ) : null}
         </div>
       ) : null}
 
-      {/* 交付信息 */}
-      <div className="mb-4 space-y-1.5 font-hand-body text-xs text-[var(--ink-soft)]">
-        <div className="flex items-center gap-2">
-          <span className="shrink-0 text-[var(--ink-mute)]">交付方式</span>
-          <span>{service.delivery.method}</span>
+      {/* 右侧：信息 */}
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
+        <div className="mb-3 flex flex-wrap items-center gap-2">
+          <h3 className="font-display text-xl font-bold text-[var(--ink)] sm:text-2xl">
+            {service.name}
+          </h3>
+          <span className="border-2 border-[var(--border)] bg-[var(--accent)] px-2 py-0.5 font-mono text-xs font-bold text-[var(--bg)] shadow-[2px_2px_0_var(--border)]">
+            {service.priceRange || service.price}
+          </span>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="shrink-0 text-[var(--ink-mute)]">交付时间</span>
-          <span>{service.delivery.time}</span>
-        </div>
-        {service.guarantee ? (
-          <div className="flex items-center gap-2">
-            <span className="shrink-0 text-[var(--ink-mute)]">保障</span>
-            <span>{service.guarantee}</span>
+
+        <p className="mb-4 font-mono text-sm leading-relaxed text-[var(--ink-soft)]">
+          {service.description}
+        </p>
+
+        {service.metrics && service.metrics.length > 0 ? (
+          <div className="mb-4 flex flex-wrap gap-2">
+            {service.metrics.slice(0, 3).map((m) => (
+              <span
+                key={m.label}
+                className="inline-flex items-center gap-1 border border-[var(--ink-mute)] bg-[var(--bg-surface)] px-2 py-1 font-mono text-[11px] text-[var(--ink-soft)]"
+              >
+                <TrendingUp className="h-3 w-3 text-[var(--accent)]" />
+                <span className="text-[var(--ink)]">{m.value}</span>
+                <span>{m.label}</span>
+              </span>
+            ))}
           </div>
         ) : null}
-      </div>
 
-      <button
-        onClick={() => open(scene)}
-        className={`hand-btn mt-auto text-sm ${isEnterprise ? 'hand-btn-gold' : 'hand-btn-primary'}`}
-      >
-        立即咨询
-        <ArrowRight className="h-4 w-4" />
-      </button>
+        <div className="mt-auto flex flex-wrap items-center gap-3 pt-2">
+          <Link
+            to={`/services/${service.id}`}
+            className="hand-btn hand-btn-primary text-sm"
+          >
+            查看详情
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+          <button
+            onClick={() => open(service.type)}
+            className="hand-btn text-sm"
+          >
+            微信咨询
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

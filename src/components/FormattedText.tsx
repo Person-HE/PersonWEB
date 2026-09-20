@@ -1,11 +1,16 @@
 /**
- * 富文本排版组件
+ * 富文本排版组件 —— Cyber Glitch Brutalism v2 风格
  *
  * 将纯文本（textarea 录入）渲染为带排版的 HTML：
  * - 换行：保留空行分段
  * - 列表：以 - / • / * / 数字. 开头的行渲染为 <ul>/<ol>
  * - 加粗：**text** → <strong>
  * - 行内代码：`text` → <code>
+ *
+ * 设计意图（per creative-frontend-design-expert SKILL.md）：
+ * - 反 AI 味：列表 marker 用荧光色而非默认圆点；段落用等宽字体营造终端感
+ * - 物理感：列表项之间留有节奏感的间距
+ * - 因果链 5.2：用反预期的 marker 颜色（荧光黄绿）打破同质化
  */
 import { Fragment, type ReactNode } from 'react';
 
@@ -30,7 +35,10 @@ function renderInline(text: string, keyBase: string): ReactNode[] {
     const token = match[0];
     if (token.startsWith('**')) {
       nodes.push(
-        <strong key={`${keyBase}-b-${i}`} className="font-hand-title text-[var(--ink)]">
+        <strong
+          key={`${keyBase}-b-${i}`}
+          className="font-mono font-bold text-[var(--accent)]"
+        >
           {token.slice(2, -2)}
         </strong>,
       );
@@ -38,7 +46,7 @@ function renderInline(text: string, keyBase: string): ReactNode[] {
       nodes.push(
         <code
           key={`${keyBase}-c-${i}`}
-          className="rounded border border-[var(--ink)]/30 bg-[var(--paper-light)] px-1 py-0.5 font-mono text-xs text-[var(--crimson)]"
+          className="border border-[var(--ink-mute)] bg-[var(--bg-surface)] px-1 py-0.5 font-mono text-xs text-[var(--accent-cyan)]"
         >
           {token.slice(1, -1)}
         </code>,
@@ -88,7 +96,7 @@ export default function FormattedText({ text, className = '' }: FormattedTextPro
       ordered ? (
         <ol
           key={`ol-${keyIdx++}`}
-          className="my-1.5 ml-5 list-decimal space-y-1 font-hand-body text-sm leading-relaxed text-[var(--ink-soft)] marker:font-hand-title marker:text-[var(--crimson)]"
+          className="my-2 ml-5 list-decimal space-y-1 font-mono text-sm leading-relaxed text-[var(--ink-soft)] marker:font-mono marker:font-bold marker:text-[var(--accent)]"
         >
           {items.map((item, i) => (
             <li key={i} className="pl-1">{renderInline(item.content, `ol-${keyIdx}-${i}`)}</li>
@@ -97,7 +105,7 @@ export default function FormattedText({ text, className = '' }: FormattedTextPro
       ) : (
         <ul
           key={`ul-${keyIdx++}`}
-          className="my-1.5 ml-5 list-disc space-y-1 font-hand-body text-sm leading-relaxed text-[var(--ink-soft)] marker:text-[var(--crimson)]"
+          className="my-2 ml-5 list-disc space-y-1 font-mono text-sm leading-relaxed text-[var(--ink-soft)] marker:text-[var(--accent)]"
         >
           {items.map((item, i) => (
             <li key={i} className="pl-1">{renderInline(item.content, `ul-${keyIdx}-${i}`)}</li>
@@ -132,7 +140,10 @@ export default function FormattedText({ text, className = '' }: FormattedTextPro
     // 普通段落行：先 flush 列表
     flushList();
     blocks.push(
-      <p key={`p-${keyIdx++}`} className="my-1.5 font-hand-body text-sm leading-relaxed text-[var(--ink-soft)]">
+      <p
+        key={`p-${keyIdx++}`}
+        className="my-1.5 font-mono text-sm leading-relaxed text-[var(--ink-soft)]"
+      >
         {renderInline(trimmed, `p-${keyIdx}`)}
       </p>,
     );

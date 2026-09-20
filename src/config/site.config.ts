@@ -4,15 +4,15 @@
 
 export const siteConfig = {
   /** 站点名称 */
-  name: '阿维的平台',
+  name: '阿维',
   /** 站点一句话定位 */
-  tagline: 'AI 工具导航 / 免费资源 / 技术服务 —— 帮你把 AI 真正用起来',
+  tagline: '拒绝套壳 · 真实提效 —— 在线产品 / 作品集 / 技术服务',
   /** 站长称呼 */
   owner: '阿维',
   /** 站长一句话定位 */
-  ownerTitle: '全栈开发者，被技术毒打过的过来人',
+  ownerTitle: '软件工程专业大三学生 · 全栈开发者，一个人一支队伍',
   /** 版权年份 */
-  copyrightYear: 2025,
+  copyrightYear: 2026,
 
   /** 个人微信号（用于弹窗展示，留空表示尚未填写） */
   wechatId: 'HHX3090425323',
@@ -25,6 +25,8 @@ export const siteConfig = {
 
   /** 自媒体统一账号名（B站/小红书/快手/抖音） */
   socialBrand: '阿维AI实验室',
+  /** IP 品牌 */
+  brand: '真效 AI (ZHENXIAO AI)',
   /** 抖音主页链接（留空表示尚未填写） */
   douyinUrl: '',
   /** B站主页链接（留空表示尚未填写） */
@@ -33,8 +35,10 @@ export const siteConfig = {
   xiaohongshuUrl: '',
   /** 快手主页链接（留空表示尚未填写） */
   kuaishouUrl: '',
-  /** GitHub 主页链接（留空表示尚未填写） */
-  githubUrl: '',
+  /** GitHub 主页链接 */
+  githubUrl: 'https://github.com/Person-HE',
+  /** 个人博客（Hexo） */
+  blogUrl: 'https://person-he.github.io/',
 };
 
 /** 微信咨询场景对应的备注文案 */

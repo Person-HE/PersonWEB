@@ -15,6 +15,8 @@ import { useWechatModal } from '@/components/WeChatModal';
 import Breadcrumb from '@/components/Breadcrumb';
 import EmptyState from '@/components/EmptyState';
 import PaperBackground from '@/components/PaperBackground';
+import Seo from '@/components/Seo';
+import { SmartImage } from '@/components/SmartMedia';
 import { ENTERPRISE_PAINS, ENTERPRISE_PROCESS, ENTERPRISE_ADVANTAGES, ENTERPRISE_FAQS } from '@/constants';
 import { siteConfig } from '@/config/site.config';
 import { useElasticEnter, useStaggerReveal } from '@/hooks/useGsap';
@@ -41,6 +43,7 @@ export default function Enterprise() {
   return (
     <div className="relative min-h-screen overflow-hidden pt-16">
       <PaperBackground />
+      <Seo title="企业AI落地服务" description="面向企业的 AI 落地服务：工作流诊断、Agent 部署、团队培训。先诊断后报价，交付可运行的系统。" path="/enterprise" />
 
       <div className="relative z-10 mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
         <Breadcrumb
@@ -54,31 +57,34 @@ export default function Enterprise() {
         {/* ===== Hero ===== */}
         <section ref={heroRef} className="layer-mid relative mb-16">
           <div
-            className="hand-card hand-card-gold relative overflow-hidden p-8 sm:p-12"
+            className="hand-card hand-card-accent rgb-shift relative overflow-hidden p-8 sm:p-12"
             style={{ transform: 'rotate(-0.4deg)' }}
           >
             {/* 背景墨点 */}
             <div className="pointer-events-none absolute inset-0 opacity-40">
-              <div className="absolute -right-12 -top-12 h-64 w-64 rounded-full bg-[var(--mustard)]/30 blur-3xl" />
-              <div className="absolute -left-12 -bottom-12 h-64 w-64 rounded-full bg-[var(--crimson)]/20 blur-3xl" />
+              <div className="absolute -right-12 -top-12 h-64 w-64 rounded-full bg-[var(--accent)]/20 blur-3xl" />
+              <div className="absolute -left-12 -bottom-12 h-64 w-64 rounded-full bg-[var(--accent-alt)]/20 blur-3xl" />
             </div>
 
             <div className="relative text-center">
               <div
-                className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-[var(--ink)] bg-[var(--mustard)] shadow-[4px_4px_0_var(--ink)]"
+                className="mx-auto mb-5 flex h-16 w-16 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent)] shadow-[4px_4px_0_var(--ink)]"
                 style={{ transform: 'rotate(-4deg)' }}
               >
-                <Building2 className="h-8 w-8 text-[var(--ink)]" />
+                <Building2 className="h-8 w-8 text-[var(--bg)]" />
               </div>
-              <h1 className="ink-title mb-3 font-hand-title text-3xl font-black sm:text-5xl">
+              <h1
+                className="mb-3 font-display text-3xl font-black text-[var(--ink)] sm:text-5xl glitch-text"
+                data-text="企业AI落地服务"
+              >
                 企业AI落地服务
               </h1>
-              <p className="mb-8 mx-auto max-w-2xl font-hand-body text-base text-[var(--ink-soft)] sm:text-lg">
+              <p className="mb-8 mx-auto max-w-2xl font-mono text-base text-[var(--ink-soft)] sm:text-lg">
                 不卖概念，不写PPT。帮你把AI装到每个工位上。
               </p>
               <button
                 onClick={() => open('enterprise')}
-                className="hand-btn hand-btn-gold text-sm sm:text-base"
+                className="hand-btn hand-btn-primary text-sm sm:text-base"
               >
                 预约免费咨询
                 <ArrowRight className="h-4 w-4" />
@@ -90,10 +96,13 @@ export default function Enterprise() {
         {/* ===== 痛点区 ===== */}
         <section ref={painRef} className="mb-16">
           <div className="mb-8 text-center">
-            <div className="mb-2 font-hand-title text-xs uppercase tracking-widest text-[var(--crimson)]">
-              · 痛点 ·
+            <div className="mb-2 font-mono text-xs uppercase tracking-widest text-[var(--accent)] terminal-cursor">
+              {'>'} 痛点
             </div>
-            <h2 className="hand-underline inline-block font-hand-title text-2xl text-[var(--ink)] sm:text-3xl">
+            <h2
+              className="font-display text-2xl text-[var(--ink)] sm:text-3xl glitch-text inline-block"
+              data-text="你是不是也遇到了这些问题？"
+            >
               你是不是也遇到了这些问题？
             </h2>
           </div>
@@ -101,15 +110,15 @@ export default function Enterprise() {
             {ENTERPRISE_PAINS.map((p, i) => (
               <div
                 key={p.title}
-                className="pain-card hand-card ink-spread flex items-start gap-3 p-5"
+                className="pain-card hand-card rgb-shift flex items-start gap-3 p-5"
                 style={{ transform: `rotate(${(i % 2 ? 1 : -1) * 0.6}deg)` }}
               >
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--ink)] bg-[var(--mustard)] shadow-[2px_2px_0_var(--ink)]">
-                  <AlertCircle className="h-4 w-4 text-[var(--ink)]" />
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent)] shadow-[2px_2px_0_var(--ink)]">
+                  <AlertCircle className="h-4 w-4 text-[var(--bg)]" />
                 </div>
                 <div>
-                  <h3 className="mb-1 font-hand-title text-base text-[var(--ink)]">{p.title}</h3>
-                  <p className="font-hand-body text-sm leading-relaxed text-[var(--ink-soft)]">{p.desc}</p>
+                  <h3 className="mb-1 font-display text-base text-[var(--ink)]">{p.title}</h3>
+                  <p className="font-mono text-sm leading-relaxed text-[var(--ink-soft)]">{p.desc}</p>
                 </div>
               </div>
             ))}
@@ -119,23 +128,28 @@ export default function Enterprise() {
         {/* ===== 服务详情 ===== */}
         <section className="mb-16">
           <div className="mb-8 text-center">
-            <div className="mb-2 font-hand-title text-xs uppercase tracking-widest text-[var(--crimson)]">
-              · 服务 ·
+            <div className="mb-2 font-mono text-xs uppercase tracking-widest text-[var(--accent)] terminal-cursor">
+              {'>'} 服务
             </div>
-            <h2 className="hand-underline inline-block font-hand-title text-2xl text-[var(--ink)] sm:text-3xl">
+            <h2
+              className="font-display text-2xl text-[var(--ink)] sm:text-3xl glitch-text inline-block"
+              data-text="我能帮你做什么"
+            >
               我能帮你做什么
             </h2>
           </div>
 
           {loading && !loaded ? (
-            <div className="hand-empty">加载中...</div>
+            <div className="hand-empty font-mono text-sm">
+              <span className="text-[var(--accent)]">{'>'}</span> 加载中...
+            </div>
           ) : enterpriseServices.length === 0 ? (
             <EmptyState
               icon={<Wrench className="h-7 w-7" />}
               title="企业服务方案整理中"
               description="具体服务方案正在梳理，欢迎加微信免费咨询，根据你的业务场景定制方案。"
               action={
-                <button onClick={() => open('enterprise')} className="hand-btn hand-btn-gold text-sm">
+                <button onClick={() => open('enterprise')} className="hand-btn hand-btn-primary text-sm">
                   微信咨询 <ArrowRight className="h-4 w-4" />
                 </button>
               }
@@ -145,27 +159,27 @@ export default function Enterprise() {
               {enterpriseServices.map((s, i) => (
                 <div
                   key={s.id}
-                  className="ent-service-card hand-card hand-card-gold ink-spread group p-6"
+                  className="ent-service-card hand-card hand-card-accent rgb-shift group p-6"
                   style={{ transform: `rotate(${(i % 2 ? -1 : 1) * 0.5}deg)` }}
                 >
                   <div className="mb-3 flex items-center justify-between gap-2">
-                    <h3 className="font-hand-title text-lg text-[var(--ink)]">{s.name}</h3>
-                    <span className="shrink-0 rounded-md border-2 border-[var(--ink)] bg-[var(--mustard)] px-2 py-0.5 font-hand-title text-xs font-bold text-[var(--ink)] shadow-[1px_1px_0_var(--ink)]">
+                    <h3 className="font-display text-lg text-[var(--ink)]">{s.name}</h3>
+                    <span className="shrink-0 border-2 border-[var(--ink)] bg-[var(--accent)] px-2 py-0.5 font-display text-xs font-bold text-[var(--bg)] shadow-[1px_1px_0_var(--ink)]">
                       {s.priceRange}
                     </span>
                   </div>
-                  <p className="mb-3 font-hand-body text-sm leading-relaxed text-[var(--ink-soft)]">{s.details}</p>
+                  <p className="mb-3 font-mono text-sm leading-relaxed text-[var(--ink-soft)]">{s.details}</p>
 
                   {s.expectedEffect ? (
-                    <div className="mb-3 rounded-lg border-2 border-dashed border-[var(--teal)] bg-[var(--teal)]/10 px-3 py-2">
-                      <div className="mb-0.5 flex items-center gap-1 font-hand-title text-xs text-[var(--teal)]">
+                    <div className="mb-3 rounded-lg border-2 border-dashed border-[var(--accent-cyan)] bg-[var(--accent-cyan)]/10 px-3 py-2">
+                      <div className="mb-0.5 flex items-center gap-1 font-display text-xs text-[var(--accent-cyan)]">
                         <CheckCircle2 className="h-3.5 w-3.5" /> 预期效果
                       </div>
-                      <p className="font-hand-body text-xs text-[var(--ink-soft)]">{s.expectedEffect}</p>
+                      <p className="font-mono text-xs text-[var(--ink-soft)]">{s.expectedEffect}</p>
                     </div>
                   ) : null}
 
-                  <div className="mb-4 flex flex-wrap gap-x-4 gap-y-1 font-hand-body text-xs text-[var(--ink-mute)]">
+                  <div className="mb-4 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-[var(--ink-mute)]">
                     <span>周期：{s.delivery.time}</span>
                     {s.maintenancePeriod ? <span>免费维护：{s.maintenancePeriod}</span> : null}
                   </div>
@@ -184,10 +198,13 @@ export default function Enterprise() {
         {/* ===== 合作流程 ===== */}
         <section className="mb-16">
           <div className="mb-8 text-center">
-            <div className="mb-2 font-hand-title text-xs uppercase tracking-widest text-[var(--crimson)]">
-              · 流程 ·
+            <div className="mb-2 font-mono text-xs uppercase tracking-widest text-[var(--accent)] terminal-cursor">
+              {'>'} 流程
             </div>
-            <h2 className="hand-underline inline-block font-hand-title text-2xl text-[var(--ink)] sm:text-3xl">
+            <h2
+              className="font-display text-2xl text-[var(--ink)] sm:text-3xl glitch-text inline-block"
+              data-text="合作流程"
+            >
               合作流程
             </h2>
           </div>
@@ -195,14 +212,14 @@ export default function Enterprise() {
             {ENTERPRISE_PROCESS.map((step, i) => (
               <div key={step.step} className="step-card relative">
                 <div
-                  className="hand-card p-5 text-center"
+                  className="hand-card rgb-shift p-5 text-center"
                   style={{ transform: `rotate(${(i % 2 ? 1 : -1) * 0.8}deg)` }}
                 >
-                  <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full border-2 border-[var(--ink)] bg-[var(--mustard)] font-hand-title text-sm font-black text-[var(--ink)] shadow-[2px_2px_0_var(--ink)]">
+                  <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent)] font-display text-sm font-black text-[var(--bg)] shadow-[2px_2px_0_var(--ink)]">
                     {step.step}
                   </div>
-                  <h3 className="mb-1.5 font-hand-title text-sm text-[var(--ink)]">{step.name}</h3>
-                  <p className="font-hand-body text-xs leading-relaxed text-[var(--ink-mute)]">{step.desc}</p>
+                  <h3 className="mb-1.5 font-display text-sm text-[var(--ink)]">{step.name}</h3>
+                  <p className="font-mono text-xs leading-relaxed text-[var(--ink-mute)]">{step.desc}</p>
                 </div>
                 {i < ENTERPRISE_PROCESS.length - 1 ? (
                   <ArrowRight className="absolute -right-2 top-1/2 hidden h-4 w-4 -translate-y-1/2 text-[var(--ink-mute)] sm:block" />
@@ -215,10 +232,13 @@ export default function Enterprise() {
         {/* ===== 为什么选择我 ===== */}
         <section className="mb-16">
           <div className="mb-8 text-center">
-            <div className="mb-2 font-hand-title text-xs uppercase tracking-widest text-[var(--crimson)]">
-              · 优势 ·
+            <div className="mb-2 font-mono text-xs uppercase tracking-widest text-[var(--accent)] terminal-cursor">
+              {'>'} 优势
             </div>
-            <h2 className="hand-underline inline-block font-hand-title text-2xl text-[var(--ink)] sm:text-3xl">
+            <h2
+              className="font-display text-2xl text-[var(--ink)] sm:text-3xl glitch-text inline-block"
+              data-text="为什么选择我"
+            >
               为什么选择我
             </h2>
           </div>
@@ -226,14 +246,14 @@ export default function Enterprise() {
             {ENTERPRISE_ADVANTAGES.map((a, i) => (
               <div
                 key={a.title}
-                className="adv-card hand-card ink-spread p-5 text-center"
+                className="adv-card hand-card rgb-shift p-5 text-center"
                 style={{ transform: `rotate(${(i % 2 ? 1 : -1) * 0.7}deg)` }}
               >
-                <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl border-2 border-[var(--ink)] bg-[var(--teal)] shadow-[2px_2px_0_var(--ink)]">
-                  <CheckCircle2 className="h-5 w-5 text-[var(--paper-light)]" />
+                <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent-cyan)] shadow-[2px_2px_0_var(--ink)]">
+                  <CheckCircle2 className="h-5 w-5 text-[var(--bg)]" />
                 </div>
-                <h3 className="mb-1.5 font-hand-title text-base text-[var(--ink)]">{a.title}</h3>
-                <p className="font-hand-body text-xs leading-relaxed text-[var(--ink-soft)]">{a.desc}</p>
+                <h3 className="mb-1.5 font-display text-base text-[var(--ink)]">{a.title}</h3>
+                <p className="font-mono text-xs leading-relaxed text-[var(--ink-soft)]">{a.desc}</p>
               </div>
             ))}
           </div>
@@ -242,10 +262,13 @@ export default function Enterprise() {
         {/* ===== FAQ ===== */}
         <section className="mb-16">
           <div className="mb-8 text-center">
-            <div className="mb-2 font-hand-title text-xs uppercase tracking-widest text-[var(--crimson)]">
-              · FAQ ·
+            <div className="mb-2 font-mono text-xs uppercase tracking-widest text-[var(--accent)] terminal-cursor">
+              {'>'} FAQ
             </div>
-            <h2 className="hand-underline inline-block font-hand-title text-2xl text-[var(--ink)] sm:text-3xl">
+            <h2
+              className="font-display text-2xl text-[var(--ink)] sm:text-3xl glitch-text inline-block"
+              data-text="常见问题"
+            >
               常见问题
             </h2>
           </div>
@@ -255,14 +278,14 @@ export default function Enterprise() {
               return (
                 <div
                   key={i}
-                  className="hand-card overflow-hidden"
+                  className="hand-card rgb-shift overflow-hidden"
                   style={{ transform: `rotate(${(i % 2 ? 0.4 : -0.4) * 1}deg)` }}
                 >
                   <button
                     onClick={() => setOpenFaq(isOpen ? null : i)}
-                    className="flex w-full items-center justify-between gap-3 px-5 py-4 text-left transition-colors hover:bg-[var(--mustard)]/10"
+                    className="flex w-full items-center justify-between gap-3 px-5 py-4 text-left transition-colors hover:bg-[var(--accent)]/10"
                   >
-                    <span className="font-hand-title text-sm text-[var(--ink)] sm:text-base">{faq.q}</span>
+                    <span className="font-display text-sm text-[var(--ink)] sm:text-base">{faq.q}</span>
                     <ChevronDown
                       className={`h-4 w-4 shrink-0 text-[var(--ink-mute)] transition-transform ${
                         isOpen ? 'rotate-180' : ''
@@ -270,7 +293,7 @@ export default function Enterprise() {
                     />
                   </button>
                   {isOpen ? (
-                    <div className="border-t-2 border-dashed border-[var(--ink)]/30 px-5 py-4 font-hand-body text-sm leading-relaxed text-[var(--ink-soft)]">
+                    <div className="border-t-2 border-dashed border-[var(--ink)]/30 px-5 py-4 font-mono text-sm leading-relaxed text-[var(--ink-soft)]">
                       {faq.a}
                     </div>
                   ) : null}
@@ -282,61 +305,61 @@ export default function Enterprise() {
 
         {/* ===== 联系区 ===== */}
         <section
-          className="hand-card hand-card-gold p-8 text-center sm:p-12"
+          className="hand-card hand-card-accent rgb-shift p-8 text-center sm:p-12"
           style={{ transform: 'rotate(0.5deg)' }}
         >
-          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border-2 border-[var(--ink)] bg-[var(--mustard)] shadow-[3px_3px_0_var(--ink)]">
-            <MessageCircle className="h-7 w-7 text-[var(--ink)]" />
+          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent)] shadow-[3px_3px_0_var(--ink)]">
+            <MessageCircle className="h-7 w-7 text-[var(--bg)]" />
           </div>
-          <h2 className="mb-2 font-hand-title text-2xl text-[var(--ink)] sm:text-3xl">开始聊聊</h2>
-          <p className="mb-6 font-hand-body text-sm text-[var(--ink-soft)]">
+          <h2
+            className="mb-2 font-display text-2xl text-[var(--ink)] sm:text-3xl glitch-text"
+            data-text="开始聊聊"
+          >
+            开始聊聊
+          </h2>
+          <p className="mb-6 font-mono text-sm text-[var(--ink-soft)]">
             添加时请备注"企业咨询+公司名"，方便我提前了解您的需求
           </p>
 
-          <div className="mx-auto mb-4 inline-block rounded-xl border-2 border-[var(--ink)] bg-[var(--paper)] p-3 shadow-[3px_3px_0_var(--ink)]">
-            <div className="flex h-40 w-40 items-center justify-center overflow-hidden rounded-lg bg-[var(--paper-light)]">
-              {siteConfig.wechatQrUrl ? (
-                <img
-                  src={siteConfig.wechatQrUrl}
-                  alt="微信二维码"
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <div className="px-3 text-center">
-                  <MessageCircle className="mx-auto mb-2 h-8 w-8 text-[var(--ink-mute)]" />
-                  <p className="font-hand-body text-xs text-[var(--ink-mute)]">二维码待上传</p>
-                </div>
-              )}
+          <div className="mx-auto mb-4 inline-block border-2 border-[var(--ink)] bg-[var(--bg)] p-3 shadow-[3px_3px_0_var(--ink)]">
+            <div className="flex h-40 w-40 items-center justify-center overflow-hidden bg-[var(--bg-elevated)]">
+              <SmartImage
+                src={siteConfig.wechatQrUrl}
+                alt="微信二维码"
+                fallbackLabel="二维码待上传"
+                wrapperClassName="h-full w-full"
+                className="h-full w-full object-cover"
+              />
             </div>
           </div>
 
           {siteConfig.wechatId ? (
-            <p className="mb-6 font-hand-body text-sm text-[var(--ink-soft)]">
+            <p className="mb-6 font-mono text-sm text-[var(--ink-soft)]">
               微信号：
-              <span className="font-hand-title font-bold text-[var(--ink)]">{siteConfig.wechatId}</span>
+              <span className="font-display font-bold text-[var(--ink)]">{siteConfig.wechatId}</span>
             </p>
           ) : (
-            <p className="mb-6 font-hand-body text-xs text-[var(--ink-mute)]">微信号待填写（请在 site.config.ts 中配置）</p>
+            <p className="mb-6 font-mono text-xs text-[var(--ink-mute)]">微信号待填写（请在 site.config.ts 中配置）</p>
           )}
 
-          <button onClick={() => open('enterprise')} className="hand-btn hand-btn-gold">
+          <button onClick={() => open('enterprise')} className="hand-btn hand-btn-primary">
             预约免费咨询
             <ArrowRight className="h-4 w-4" />
           </button>
         </section>
 
         {/* 底部返回链接 */}
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-4 font-hand-body text-sm">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-4 font-mono text-sm">
           <Link
             to="/"
-            className="inline-flex items-center gap-1 text-[var(--ink-mute)] transition-colors hover:text-[var(--crimson)]"
+            className="inline-flex items-center gap-1 text-[var(--ink-mute)] transition-colors hover:text-[var(--accent-alt)]"
           >
             <ArrowLeft className="h-4 w-4" /> 回到首页
           </Link>
           <span className="text-[var(--ink-mute)]">·</span>
           <Link
             to="/services"
-            className="inline-flex items-center gap-1 text-[var(--ink-mute)] transition-colors hover:text-[var(--crimson)]"
+            className="inline-flex items-center gap-1 text-[var(--ink-mute)] transition-colors hover:text-[var(--accent-alt)]"
           >
             <ArrowLeft className="h-4 w-4" /> 返回服务中心
           </Link>

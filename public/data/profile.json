@@ -1,0 +1,33 @@
+{
+  "nickname": "阿维",
+  "realName": "何宏鑫",
+  "avatarUrl": null,
+  "brand": "真效 AI (ZHENXIAO AI)",
+  "slogan": "拒绝套壳 · 真实提效",
+  "identity": "软件工程专业大三学生（2027届）· 全栈开发者 · 一个人，一支队伍",
+  "location": "太原 · 中北大学",
+  "focus": "企业级 Agent 运行时与可靠性工程（Java / 分布式系统地基，金融信创场景靶场）",
+  "story": "我叫阿维。做这个网站的信条和做工程的信条是同一个：只摆证据，不讲口径。这里每个数字都是从 GitHub 和博客 API 实时拉的，每个产品点开就能用，每段代码在仓库里躺着，每个指标都注明出处、一条命令可复现。宁可给你看难听的真话，也不给你看好听的假话——「拒绝套壳·真实提效」先约束的是我自己。",
+  "timeline": [
+    { "date": "2025", "title": "知源Flow：从 CRUD 到真实压测数据", "desc": "Spring Boot 全栈项目，JMeter 500 并发四组对照实测（无缓存 1,743 QPS → 多级缓存 5,769 QPS），系列架构文章公开复盘" },
+    { "date": "2026-06", "title": "Agent 驾驭工程", "desc": "积木MG 确定性渲染器：LLM 只写剧本，同输入渲出同 SHA-256——把不确定性关进最小笼子" },
+    { "date": "2026-08", "title": "方向确立", "desc": "深度研究后主攻企业级 Agent 运行时与可靠性工程，精力按 45/35/15/5 分层投入" },
+    { "date": "2026", "title": "浏览器工具爆发期", "desc": "FileCut / Note-Plan / NanoEdit Pro / WebCreate 四个在线产品上线，全部零服务器成本、指标可复现" },
+    { "date": "2026-09", "title": "本站重构", "desc": "从工具导航站升级为个人 IP 站：作品集×博客×GitHub 数据级串联" }
+  ],
+  "capabilities": [
+    { "title": "Web / PWA", "desc": "112 个纯浏览器工具站、本地优先应用、一套代码四端交付", "evidenceLabel": "FileCut：131 条预渲染路由，数字一条命令可复现", "evidenceUrl": "/portfolio/filecut" },
+    { "title": "Java 后端", "desc": "Spring Boot 多模块 + 多级缓存，性能结论来自 JMeter 四组对照压测", "evidenceLabel": "知源Flow：1,743 → 5,769 QPS，157 万请求 0 错误", "evidenceUrl": "/portfolio/zhiyuanflow" },
+    { "title": "AI 工程化", "desc": "Agent 编排、LLM 输出确定性控制、ReAct 工具循环", "evidenceLabel": "积木MG：同帧 3 次渲染 SHA-256 全等", "evidenceUrl": "/portfolio/jimu-mg" },
+    { "title": "零成本全栈", "desc": "Cloudflare Pages/Functions/KV/Cron 免费层撑起全站", "evidenceLabel": "本站本身就是作品：活数据快照 + 后台可管理", "evidenceUrl": "/portfolio/personweb" }
+  ],
+  "effortModel": [
+    { "layer": "地基层", "percent": 45, "focus": "Java / 分布式系统" },
+    { "layer": "专业层", "percent": 35, "focus": "企业级 Agent 运行时与可靠性工程" },
+    { "layer": "差异化层", "percent": 15, "focus": "金融信创真实场景" },
+    { "layer": "工具层", "percent": 5, "focus": "效率工具与 Skill 沉淀" }
+  ],
+  "values": ["实证优先", "反编造", "Truth-telling over flattery", "带数据来，别带感觉"],
+  "githubUrl": "https://github.com/Person-HE",
+  "blogUrl": "https://person-he.github.io/"
+}

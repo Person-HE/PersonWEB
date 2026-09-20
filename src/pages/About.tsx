@@ -1,3 +1,10 @@
+/**
+ * 关于页 —— 个人画像的完整展示（单一数据源：profile 集合，后台可编辑）
+ *
+ * 叙事结构：我是谁 → 走过的路（时间线）→ 会什么（每条挂证据）→
+ * 精力怎么分配（45/35/15/5）→ 在哪找到我（三链身份 + 二维码）。
+ */
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   MessageCircle,
@@ -5,18 +12,22 @@ import {
   Tv,
   ArrowRight,
   ArrowLeft,
-  Target,
-  Heart,
-  Newspaper,
-  Sparkles,
+  Github,
+  Rss,
+  MapPin,
+  ShieldCheck,
 } from 'lucide-react';
 import { siteConfig } from '@/config/site.config';
+import { useDataStore } from '@/store/useDataStore';
 import { useWechatModal } from '@/components/WeChatModal';
 import Breadcrumb from '@/components/Breadcrumb';
 import PaperBackground from '@/components/PaperBackground';
-import { useElasticEnter, useStaggerReveal, useParallax } from '@/hooks/useGsap';
+import Seo, { personJsonLd } from '@/components/Seo';
+import FormattedText from '@/components/FormattedText';
+import EmptyState from '@/components/EmptyState';
+import { SmartImage } from '@/components/SmartMedia';
+import { useElasticEnter, useStaggerReveal, useScrollReveal } from '@/hooks/useGsap';
 
-/** 三张二维码卡片配置 */
 const QR_CARDS = [
   {
     key: 'wechat',
@@ -24,16 +35,16 @@ const QR_CARDS = [
     desc: '加好友聊需求、问问题',
     icon: MessageCircle,
     url: siteConfig.wechatQrUrl,
-    color: 'var(--teal)',
+    color: 'var(--accent-cyan)',
     rotate: -1.2,
   },
   {
     key: 'official',
     title: '微信公众号',
     desc: '订阅不定期更新与干货',
-    icon: Newspaper,
+    icon: Tv,
     url: siteConfig.wechatOfficialQrUrl,
-    color: 'var(--indigo)',
+    color: 'var(--accent)',
     rotate: 1,
   },
   {
@@ -42,74 +53,119 @@ const QR_CARDS = [
     desc: '扫码看视频内容',
     icon: Music2,
     url: siteConfig.douyinQrUrl,
-    color: 'var(--crimson)',
+    color: 'var(--accent-alt)',
     rotate: -0.8,
   },
 ];
 
-/** 全平台账号 */
-const SOCIAL_PLATFORMS = [
-  { name: 'B站', emoji: '📺' },
-  { name: '小红书', emoji: '📕' },
-  { name: '快手', emoji: '🎬' },
-  { name: '抖音', emoji: '🎵' },
-];
+const SOCIAL_PLATFORMS = ['B站', '小红书', '快手', '抖音'];
 
 export default function About() {
+  const { profile, loading, loaded, loadAll } = useDataStore();
   const { open } = useWechatModal();
 
-  const heroRef = useElasticEnter<HTMLDivElement>([], { y: 40, delay: 0.1 });
+  const heroRef = useElasticEnter<HTMLDivElement>([!!profile], { y: 40, delay: 0.1 });
+  const tlRef = useScrollReveal<HTMLDivElement>('.tl-item', [profile?.timeline.length ?? 0], { stagger: 0.1, y: 40 });
+  const capRef = useStaggerReveal<HTMLDivElement>('.cap-item', [profile?.capabilities.length ?? 0], { stagger: 0.08 });
   const qrRef = useStaggerReveal<HTMLDivElement>('.qr-card', [], { stagger: 0.12 });
-  const socialRef = useStaggerReveal<HTMLDivElement>('.social-chip', [], { stagger: 0.08, delay: 0.2 });
-  const philosophyRef = useParallax<HTMLDivElement>(0.04);
+
+  useEffect(() => {
+    loadAll();
+  }, [loadAll]);
+
+  if (loading && !loaded) {
+    return (
+      <div className="relative min-h-screen pt-16">
+        <PaperBackground />
+        <div className="relative z-10 mx-auto max-w-5xl px-4 py-24 font-mono text-sm text-[var(--ink-mute)]">
+          <span className="text-[var(--accent)]">{'>'}</span> <span className="terminal-cursor">loading…</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <div className="relative min-h-screen overflow-hidden pt-16">
+        <PaperBackground />
+        <div className="relative z-10 mx-auto max-w-5xl px-4 py-24 sm:px-6 lg:px-8">
+          <EmptyState
+            title="画像尚未录入"
+            description="关于页的全部内容来自后台「个人画像」。登录后在 管理后台 → 个人画像 中编辑，本页即生效。"
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen overflow-hidden pt-16">
       <PaperBackground />
+      <Seo
+        title={`关于${profile.nickname}`}
+        description={`${profile.identity}。${profile.focus}`}
+        path="/about"
+        jsonLd={[personJsonLd()]}
+      />
 
       <div className="relative z-10 mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
         <Breadcrumb items={[{ label: '首页', to: '/' }, { label: '关于' }]} />
 
-        {/* ===== 个人介绍区 ===== */}
+        {/* ===== 我是谁 ===== */}
         <section ref={heroRef} className="layer-mid relative mb-12">
           <div
-            className="hand-card hand-card-crimson overflow-hidden p-8 sm:p-10"
+            className="hand-card hand-card-alt rgb-shift overflow-hidden p-8 sm:p-10"
             style={{ transform: 'rotate(-0.5deg)' }}
           >
-            {/* 背景墨点装饰 */}
             <div className="pointer-events-none absolute inset-0 opacity-30">
-              <div className="absolute -right-6 -top-6 h-32 w-32 rounded-full bg-[var(--crimson)]/20 blur-2xl" />
-              <div className="absolute -left-6 -bottom-6 h-32 w-32 rounded-full bg-[var(--mustard)]/30 blur-2xl" />
+              <div className="absolute -right-6 -top-6 h-32 w-32 rounded-full bg-[var(--accent-alt)]/20 blur-2xl" />
+              <div className="absolute -left-6 -bottom-6 h-32 w-32 rounded-full bg-[var(--accent)]/20 blur-2xl" />
             </div>
 
             <div className="relative flex flex-col items-center gap-6 sm:flex-row sm:items-start">
-              {/* 头像（手绘方框） */}
               <div
-                className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border-2 border-[var(--ink)] bg-[var(--crimson)] shadow-[4px_4px_0_var(--ink)] sm:h-28 sm:w-28"
+                className="h-24 w-24 shrink-0 overflow-hidden border-2 border-[var(--ink)] bg-[var(--accent-alt)] shadow-[4px_4px_0_var(--ink)] sm:h-28 sm:w-28"
                 style={{ transform: 'rotate(-3deg)' }}
               >
-                <span className="font-hand-title text-5xl font-black text-[var(--paper-light)]">
-                  {siteConfig.owner.slice(0, 1)}
-                </span>
+                {profile.avatarUrl ? (
+                  <SmartImage src={profile.avatarUrl} alt={profile.nickname} wrapperClassName="h-full w-full" />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <span className="font-display text-5xl font-black text-[var(--ink)]">
+                      {profile.nickname.slice(0, 1)}
+                    </span>
+                  </div>
+                )}
               </div>
               <div className="flex-1 text-center sm:text-left">
                 <div className="mb-2 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
-                  <h1 className="ink-title font-hand-title text-3xl font-black sm:text-4xl">
-                    {siteConfig.owner}
+                  <h1
+                    className="font-display text-3xl font-black text-[var(--ink)] sm:text-4xl glitch-text"
+                    data-text={profile.nickname}
+                  >
+                    {profile.nickname}
+                    {profile.realName ? (
+                      <span className="ml-2 font-mono text-sm font-normal text-[var(--ink-mute)]">/ {profile.realName}</span>
+                    ) : null}
                   </h1>
-                  <span className="hand-tag bg-[var(--mustard)]/30">{siteConfig.ownerTitle}</span>
+                  <span className="hand-tag bg-[var(--accent)]/20">{profile.identity}</span>
                 </div>
-                <p className="font-hand-body text-sm leading-relaxed text-[var(--ink-soft)] sm:text-base">
-                  全栈开发者，做过后端、搞过前端、玩过AI。被技术毒打过、也靠技术翻过身。
-                  做这个站，是想把踩过的坑、用过的工具、攒下的资源分享出来，帮你少走弯路，把AI真正用起来。
+                <p className="mb-2 flex items-center justify-center gap-1 font-mono text-xs text-[var(--ink-mute)] sm:justify-start">
+                  <MapPin className="h-3.5 w-3.5" /> {profile.location} · 品牌 {profile.brand}
                 </p>
+                <div className="font-mono text-sm leading-relaxed text-[var(--ink-soft)] sm:text-base">
+                  <FormattedText text={profile.story} />
+                </div>
                 <div className="mt-4 flex flex-wrap justify-center gap-2 sm:justify-start">
                   <button onClick={() => open('default')} className="hand-btn hand-btn-primary text-sm">
                     <MessageCircle className="h-4 w-4" />
                     微信聊
                   </button>
+                  <Link to="/portfolio" className="hand-btn text-sm">
+                    看作品 <ArrowRight className="h-4 w-4" />
+                  </Link>
                   <Link to="/services" className="hand-btn text-sm">
-                    看看服务 <ArrowRight className="h-4 w-4" />
+                    看服务 <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
               </div>
@@ -117,74 +173,149 @@ export default function About() {
           </div>
         </section>
 
-        {/* ===== 建站理念 ===== */}
-        <section ref={philosophyRef} className="mb-12">
-          <div className="mb-6 text-center">
-            <div className="mb-2 font-hand-title text-xs uppercase tracking-widest text-[var(--crimson)]">
-              · 理念 ·
-            </div>
-            <h2 className="hand-underline inline-block font-hand-title text-2xl text-[var(--ink)] sm:text-3xl">
-              为什么做这个站
+        {/* ===== 时间线 ===== */}
+        {profile.timeline.length > 0 ? (
+          <section className="mb-12">
+            <h2 className="mb-6 font-display text-2xl text-[var(--ink)] sm:text-3xl glitch-text inline-block" data-text="走过的路">
+              走过的路
             </h2>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-3">
-            {[
-              {
-                icon: Target,
-                title: '把好工具整理出来',
-                desc: 'AI工具太多太杂，我帮你筛掉花架子和割韭菜的，只留下真用得上的。',
-                color: 'var(--indigo)',
-                rotate: -1,
-              },
-              {
-                icon: Heart,
-                title: '把踩过的坑写下来',
-                desc: '不卖课不卖训练营。免费资源尽管拿，觉得好用再回来聊聊。',
-                color: 'var(--crimson)',
-                rotate: 1.2,
-              },
-              {
-                icon: Sparkles,
-                title: '把服务交付到底',
-                desc: '不玩概念不写PPT。你需要什么，我交付什么。搞不定不收费。',
-                color: 'var(--teal)',
-                rotate: -0.8,
-              },
-            ].map((item) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={item.title}
-                  className="hand-card ink-spread group p-5"
-                  style={{ transform: `rotate(${item.rotate}deg)` }}
-                >
-                  <div
-                    className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl border-2 border-[var(--ink)] shadow-[2px_2px_0_var(--ink)]"
-                    style={{ background: item.color }}
-                  >
-                    <Icon className="h-5 w-5 text-[var(--paper-light)]" />
-                  </div>
-                  <h3 className="mb-2 font-hand-title text-base text-[var(--ink)]">{item.title}</h3>
-                  <p className="font-hand-body text-sm leading-relaxed text-[var(--ink-soft)]">{item.desc}</p>
+            <div ref={tlRef} className="relative space-y-0 border-l-2 border-dashed border-[var(--ink-mute)] pl-6">
+              {profile.timeline.map((t, i) => (
+                <div key={i} className="tl-item relative pb-8">
+                  <span className="absolute -left-[31px] top-1 h-2.5 w-2.5 border-2 border-[var(--ink)] bg-[var(--accent)]" />
+                  <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--accent-cyan)]">{t.date}</div>
+                  <h3 className="font-display text-xl font-bold text-[var(--ink)]">{t.title}</h3>
+                  <p className="mt-1 max-w-2xl font-mono text-xs leading-relaxed text-[var(--ink-soft)]">{t.desc}</p>
                 </div>
-              );
-            })}
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {/* ===== 能力 × 证据 ===== */}
+        {profile.capabilities.length > 0 ? (
+          <section className="mb-12">
+            <h2 className="mb-2 font-display text-2xl text-[var(--ink)] sm:text-3xl glitch-text" data-text="能力清单">
+              能力清单
+            </h2>
+            <p className="mb-6 font-mono text-xs text-[var(--ink-mute)]">
+              {'//'} 每条「我会」后面都挂着可点开的证据，没有证据的不写。
+            </p>
+            <div ref={capRef} className="grid gap-4 sm:grid-cols-2">
+              {profile.capabilities.map((c) => (
+                <div key={c.title} className="cap-item hand-card rgb-shift flex flex-col p-5">
+                  <h3 className="font-display text-lg font-bold text-[var(--ink)]">
+                    <span className="text-[var(--accent)]">{'>'}</span> {c.title}
+                  </h3>
+                  <p className="mt-1 flex-1 font-mono text-xs leading-relaxed text-[var(--ink-soft)]">{c.desc}</p>
+                  {c.evidenceUrl ? (
+                    <Link
+                      to={c.evidenceUrl.startsWith('/') ? c.evidenceUrl : '/portfolio'}
+                      className="mt-3 inline-flex items-center gap-1 border border-[var(--accent-cyan)] px-2 py-1 font-mono text-[10px] text-[var(--accent-cyan)] hover:bg-[var(--accent-cyan)] hover:text-[var(--bg)]"
+                    >
+                      <ShieldCheck className="h-3 w-3" /> {c.evidenceLabel}
+                      <ArrowRight className="h-3 w-3" />
+                    </Link>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {/* ===== 精力分配模型 ===== */}
+        {profile.effortModel.length > 0 ? (
+          <section className="mb-12">
+            <h2 className="mb-2 font-display text-2xl text-[var(--ink)] sm:text-3xl glitch-text" data-text="我的 45/35/15/5">
+              {profile.effortModel.map((e) => e.percent).join('/')} —— 精力花在哪
+            </h2>
+            <p className="mb-6 font-mono text-xs text-[var(--ink-mute)]">
+              {'//'} 一个人精力有限，这份比例决定了你找我做什么最合适。
+            </p>
+            <div className="space-y-3">
+              {profile.effortModel.map((e, i) => (
+                <div key={i} className="hand-card flex items-center gap-4 p-4">
+                  <span className="w-14 shrink-0 font-display text-2xl font-black text-[var(--accent)]">{e.percent}%</span>
+                  <div className="h-3 flex-1 overflow-hidden border-2 border-[var(--ink)] bg-[var(--bg)]">
+                    <div
+                      className={`h-full ${i === 0 ? 'bg-[var(--accent)]' : i === 1 ? 'bg-[var(--accent-cyan)]' : i === 2 ? 'bg-[var(--accent-alt)]' : 'bg-[var(--ink-mute)]'}`}
+                      style={{ width: `${e.percent}%` }}
+                    />
+                  </div>
+                  <div className="w-full shrink-0 sm:w-64">
+                    <div className="font-mono text-xs font-bold text-[var(--ink)]">{e.layer}</div>
+                    <div className="font-mono text-[10px] text-[var(--ink-soft)]">{e.focus}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {/* ===== 价值观 ===== */}
+        {profile.values.length > 0 ? (
+          <section className="mb-12">
+            <div className="flex flex-wrap gap-2">
+              {profile.values.map((v) => (
+                <span
+                  key={v}
+                  className="border-2 border-[var(--ink)] bg-[var(--bg-elevated)] px-3 py-1.5 font-mono text-xs text-[var(--ink)] shadow-[2px_2px_0_var(--ink)]"
+                >
+                  <span className="text-[var(--accent)]">{'#'}</span> {v}
+                </span>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {/* ===== 三链身份：同一人可交叉验证 ===== */}
+        <section className="mb-12">
+          <div
+            className="hand-card hand-card-accent rgb-shift p-6 sm:p-8"
+            style={{ transform: 'rotate(0.4deg)' }}
+          >
+            <h2 className="mb-5 font-display text-xl text-[var(--ink)] sm:text-2xl glitch-text" data-text="验证我">
+              交叉验证：阿维 = Person-HE = 博客作者
+            </h2>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <a
+                href={profile.githubUrl || siteConfig.githubUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-3 border-2 border-[var(--ink)] bg-[var(--bg)] p-4 font-mono text-xs text-[var(--ink)] shadow-[2px_2px_0_var(--ink)] hover:-translate-y-0.5"
+              >
+                <Github className="h-5 w-5 text-[var(--accent)]" /> GitHub · Person-HE
+              </a>
+              <a
+                href={profile.blogUrl || siteConfig.blogUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-3 border-2 border-[var(--ink)] bg-[var(--bg)] p-4 font-mono text-xs text-[var(--ink)] shadow-[2px_2px_0_var(--ink)] hover:-translate-y-0.5"
+              >
+                <Rss className="h-5 w-5 text-[var(--accent)]" /> 博客 · person-he.github.io
+              </a>
+              <Link
+                to="/blog"
+                className="flex items-center gap-3 border-2 border-[var(--ink)] bg-[var(--bg)] p-4 font-mono text-xs text-[var(--ink)] shadow-[2px_2px_0_var(--ink)] hover:-translate-y-0.5"
+              >
+                <ArrowRight className="h-5 w-5 text-[var(--accent)]" /> 本站文章目录
+              </Link>
+            </div>
+            <p className="mt-4 font-mono text-[10px] leading-relaxed text-[var(--ink-mute)]">
+              {'//'} 仓库 README、博客文章、在线产品署名互相引用，任何一条链都能推到另外两条。
+            </p>
           </div>
         </section>
 
-        {/* ===== 关注我：3 张二维码 ===== */}
+        {/* ===== 关注我：二维码 ===== */}
         <section className="mb-12">
           <div className="mb-6 text-center">
-            <div className="mb-2 font-hand-title text-xs uppercase tracking-widest text-[var(--crimson)]">
-              · 关注我 ·
+            <div className="mb-2 font-mono text-xs uppercase tracking-widest text-[var(--accent)] terminal-cursor">
+              {'>'} 关注我
             </div>
-            <h2 className="hand-underline inline-block font-hand-title text-2xl text-[var(--ink)] sm:text-3xl">
+            <h2 className="font-display text-2xl text-[var(--ink)] sm:text-3xl glitch-text inline-block" data-text="扫码找到我">
               扫码找到我
             </h2>
-            <p className="mt-3 font-hand-body text-sm text-[var(--ink-soft)]">
-              三个地方都能找到我，挑你顺手的方式
-            </p>
           </div>
 
           <div ref={qrRef} className="grid gap-5 sm:grid-cols-3">
@@ -193,81 +324,54 @@ export default function About() {
               return (
                 <div
                   key={card.key}
-                  className="qr-card hand-card ink-spread flex flex-col items-center p-6"
+                  className="qr-card hand-card rgb-shift flex flex-col items-center p-6"
                   style={{ transform: `rotate(${card.rotate}deg)` }}
                 >
                   <div
-                    className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl border-2 border-[var(--ink)] shadow-[2px_2px_0_var(--ink)]"
+                    className="mb-3 flex h-10 w-10 items-center justify-center border-2 border-[var(--ink)] shadow-[2px_2px_0_var(--ink)]"
                     style={{ background: card.color }}
                   >
-                    <Icon className="h-5 w-5 text-[var(--paper-light)]" />
+                    <Icon className="h-5 w-5 text-[var(--ink)]" />
                   </div>
-                  <h3 className="mb-1 font-hand-title text-lg text-[var(--ink)]">{card.title}</h3>
-                  <p className="mb-4 font-hand-body text-xs text-[var(--ink-mute)]">{card.desc}</p>
-
-                  {/* 二维码图片 */}
-                  <div className="flex h-44 w-44 items-center justify-center overflow-hidden rounded-xl border-2 border-[var(--ink)] bg-[var(--paper)] shadow-[3px_3px_0_var(--ink)]">
-                    {card.url ? (
-                      <img
-                        src={card.url}
-                        alt={`${card.title}二维码`}
-                        className="h-full w-full object-cover"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <span className="px-3 text-center font-hand-body text-xs text-[var(--ink-mute)]">
-                        二维码待上传
-                      </span>
-                    )}
+                  <h3 className="mb-1 font-display text-lg text-[var(--ink)]">{card.title}</h3>
+                  <p className="mb-4 font-mono text-xs text-[var(--ink-mute)]">{card.desc}</p>
+                  <div className="flex h-44 w-44 items-center justify-center overflow-hidden border-2 border-[var(--ink)] bg-[var(--bg)] shadow-[3px_3px_0_var(--ink)]">
+                    <SmartImage
+                      src={card.url}
+                      alt={`${card.title}二维码`}
+                      fallbackLabel="二维码待上传"
+                      wrapperClassName="h-full w-full"
+                      className="h-full w-full object-cover"
+                    />
                   </div>
-
-                  {/* 长按提示 */}
-                  <p className="mt-3 font-hand-body text-[10px] text-[var(--ink-mute)]">
-                    长按或扫码识别
-                  </p>
+                  <p className="mt-3 font-mono text-[10px] text-[var(--ink-mute)]">长按或扫码识别</p>
                 </div>
               );
             })}
           </div>
         </section>
 
-        {/* ===== 全平台账号名 ===== */}
+        {/* ===== 全平台账号 ===== */}
         <section className="mb-12">
-          <div
-            className="hand-card hand-card-gold p-6 sm:p-8"
-            style={{ transform: 'rotate(0.4deg)' }}
-          >
-            <div className="mb-5 flex items-center justify-center gap-2">
+          <div className="hand-card rgb-shift p-6 text-center sm:p-8" style={{ transform: 'rotate(-0.4deg)' }}>
+            <div className="mb-4 flex items-center justify-center gap-2">
               <Tv className="h-5 w-5 text-[var(--ink)]" />
-              <h2 className="font-hand-title text-xl text-[var(--ink)] sm:text-2xl">
-                全平台同名
-              </h2>
+              <h2 className="font-display text-xl text-[var(--ink)] sm:text-2xl">全平台同名</h2>
             </div>
-            <p className="mb-6 text-center font-hand-body text-sm text-[var(--ink-soft)]">
-              在以下平台搜索下面这个账号名，都能找到我
-            </p>
-
-            {/* 账号名突出展示 */}
-            <div className="mb-6 text-center">
-              <div className="mx-auto inline-flex items-center gap-2 rounded-xl border-2 border-dashed border-[var(--ink)] bg-[var(--paper)] px-5 py-2.5 shadow-[3px_3px_0_var(--ink)]">
-                <span className="font-hand-body text-xs text-[var(--ink-mute)]">账号名</span>
-                <span className="font-hand-title text-xl font-black text-[var(--crimson)] sm:text-2xl">
-                  {siteConfig.socialBrand}
-                </span>
-              </div>
+            <div className="mx-auto mb-5 inline-flex items-center gap-2 border-2 border-dashed border-[var(--ink)] bg-[var(--bg)] px-5 py-2.5 shadow-[3px_3px_0_var(--ink)]">
+              <span className="font-mono text-xs text-[var(--ink-mute)]">账号名</span>
+              <span className="font-display text-xl font-black text-[var(--accent-alt)] sm:text-2xl">
+                {siteConfig.socialBrand}
+              </span>
             </div>
-
-            {/* 平台 chips */}
-            <div ref={socialRef} className="flex flex-wrap justify-center gap-3">
-              {SOCIAL_PLATFORMS.map((p) => (
-                <div
-                  key={p.name}
-                  className="social-chip flex items-center gap-2 rounded-xl border-2 border-[var(--ink)] bg-[var(--paper-light)] px-4 py-2 shadow-[2px_2px_0_var(--ink)] transition-all hover:-translate-y-0.5 hover:bg-[var(--mustard)]/30"
+            <div className="flex flex-wrap justify-center gap-3">
+              {SOCIAL_PLATFORMS.map((name) => (
+                <span
+                  key={name}
+                  className="border-2 border-[var(--ink)] bg-[var(--bg-elevated)] px-4 py-2 font-display text-sm text-[var(--ink)] shadow-[2px_2px_0_var(--ink)]"
                 >
-                  <span className="text-base">{p.emoji}</span>
-                  <span className="font-hand-title text-sm text-[var(--ink)]">{p.name}</span>
-                  <span className="font-hand-body text-xs text-[var(--ink-soft)]">· {siteConfig.socialBrand}</span>
-                </div>
+                  {name}
+                </span>
               ))}
             </div>
           </div>
@@ -275,27 +379,30 @@ export default function About() {
 
         {/* ===== 联系区 ===== */}
         <section
-          className="hand-card hand-card-crimson p-8 text-center sm:p-10"
+          className="hand-card hand-card-alt rgb-shift p-8 text-center sm:p-10"
           style={{ transform: 'rotate(-0.6deg)' }}
         >
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border-2 border-[var(--ink)] bg-[var(--crimson)] shadow-[3px_3px_0_var(--ink)]">
-            <MessageCircle className="h-6 w-6 text-[var(--paper-light)]" />
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent-alt)] shadow-[3px_3px_0_var(--ink)]">
+            <MessageCircle className="h-6 w-6 text-[var(--ink)]" />
           </div>
-          <h2 className="mb-2 font-hand-title text-2xl text-[var(--ink)] sm:text-3xl">聊聊吧</h2>
-          <p className="mb-6 font-hand-body text-sm text-[var(--ink-soft)]">
-            合作 · 交流 · 技术咨询 · 什么都可以聊
-          </p>
-          <button onClick={() => open('default')} className="hand-btn hand-btn-primary">
-            微信咨询
-            <ArrowRight className="h-4 w-4" />
-          </button>
+          <h2 className="mb-2 font-display text-2xl text-[var(--ink)] sm:text-3xl glitch-text" data-text="聊聊吧">
+            聊聊吧
+          </h2>
+          <p className="mb-6 font-mono text-sm text-[var(--ink-soft)]">合作 · 交流 · 技术咨询 · 什么都可以聊</p>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link to="/contact" className="hand-btn hand-btn-primary">
+              提交需求 <ArrowRight className="h-4 w-4" />
+            </Link>
+            <button onClick={() => open('default')} className="hand-btn">
+              微信咨询
+            </button>
+          </div>
         </section>
 
-        {/* 返回首页 */}
         <div className="mt-8 text-center">
           <Link
             to="/"
-            className="inline-flex items-center gap-1 font-hand-body text-sm text-[var(--ink-mute)] transition-colors hover:text-[var(--crimson)]"
+            className="inline-flex items-center gap-1 font-mono text-sm text-[var(--ink-mute)] transition-colors hover:text-[var(--accent-alt)]"
           >
             <ArrowLeft className="h-4 w-4" /> 回到首页
           </Link>

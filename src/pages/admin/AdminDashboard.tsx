@@ -3,43 +3,86 @@
  */
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FileText, Compass, Wrench, ArrowRight, Activity } from 'lucide-react';
-import { apiPublic, logsApi } from '@/lib/api';
+import { FileText, Compass, Wrench, Rocket, Inbox, ArrowRight, Activity, RefreshCw } from 'lucide-react';
+import { apiPublic, logsApi, liveApi } from '@/lib/api';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useDataStore } from '@/store/useDataStore';
+import type { Resource, Tool, Service, Portfolio, Quote } from '@/types';
+
+interface LogEntry {
+  id?: string;
+  action?: string;
+  targetType?: string;
+  targetId?: string;
+  detail?: string;
+  createdAt?: string;
+}
 
 export default function AdminDashboard() {
   const { user } = useAuthStore();
-  const [counts, setCounts] = useState({ resources: 0, tools: 0, services: 0 });
-  const [recentLogs, setRecentLogs] = useState<any[]>([]);
+  const reload = useDataStore((s) => s.reload);
+  const [counts, setCounts] = useState({ resources: 0, tools: 0, services: 0, portfolio: 0, quotes: 0 });
+  const [liveInfo, setLiveInfo] = useState<{ github: string | null; blog: string | null }>({ github: null, blog: null });
+  const [refreshing, setRefreshing] = useState<'github' | 'blog' | null>(null);
+  const [recentLogs, setRecentLogs] = useState<LogEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
-        const [resources, tools, services, logs] = await Promise.all([
-          apiPublic<any[]>('/api/resources'),
-          apiPublic<any[]>('/api/tools'),
-          apiPublic<any[]>('/api/services'),
-          logsApi.list(10).catch(() => []),
+        const [resources, tools, services, portfolio, quotes, logs] = await Promise.all([
+          apiPublic<Resource[]>('/api/resources'),
+          apiPublic<Tool[]>('/api/tools'),
+          apiPublic<Service[]>('/api/services'),
+          apiPublic<Portfolio[]>('/api/portfolio'),
+          apiPublic<Quote[]>('/api/quote'),
+          logsApi.list(10).catch(() => [] as LogEntry[]),
         ]);
         setCounts({
           resources: resources.length,
           tools: tools.length,
           services: services.length,
+          portfolio: portfolio.length,
+          quotes: quotes.length,
         });
         setRecentLogs(logs);
-      } catch (e) {
-        // ignore
+      } catch {
+        // 概览拉取失败时保持 0 值展示
       } finally {
         setLoading(false);
       }
+      const [gh, blog] = await Promise.allSettled([liveApi.github(), liveApi.blog()]);
+      setLiveInfo({
+        github: gh.status === 'fulfilled' ? gh.value.fetchedAt : null,
+        blog: blog.status === 'fulfilled' ? blog.value.fetchedAt : null,
+      });
     })();
   }, []);
 
+  async function handleRefresh(kind: 'github' | 'blog') {
+    setRefreshing(kind);
+    try {
+      if (kind === 'github') {
+        const snap = await liveApi.refreshGithub();
+        setLiveInfo((v) => ({ ...v, github: snap.fetchedAt }));
+      } else {
+        const feed = await liveApi.refreshBlog();
+        setLiveInfo((v) => ({ ...v, blog: feed.fetchedAt }));
+      }
+      await reload();
+    } catch {
+      // 静默失败，快照时间不变即代表未刷新成功
+    } finally {
+      setRefreshing(null);
+    }
+  }
+
   const cards = [
+    { label: '作品集', count: counts.portfolio, to: '/admin/portfolio', icon: Rocket, color: 'var(--accent)' },
+    { label: '需求工单', count: counts.quotes, to: '/admin/quotes', icon: Inbox, color: 'var(--accent-alt)' },
+    { label: '服务', count: counts.services, to: '/admin/services', icon: Wrench, color: 'var(--crimson)' },
     { label: '资源', count: counts.resources, to: '/admin/resources', icon: FileText, color: 'var(--indigo)' },
     { label: '工具', count: counts.tools, to: '/admin/tools', icon: Compass, color: 'var(--teal)' },
-    { label: '服务', count: counts.services, to: '/admin/services', icon: Wrench, color: 'var(--crimson)' },
   ];
 
   return (
@@ -49,7 +92,7 @@ export default function AdminDashboard() {
       </h1>
 
       {/* 数据卡片 */}
-      <div className="mb-8 grid gap-4 sm:grid-cols-3">
+      <div className="mb-8 grid gap-4 sm:grid-cols-3 lg:grid-cols-5">
         {cards.map((c, i) => {
           const Icon = c.icon;
           return (
@@ -75,6 +118,36 @@ export default function AdminDashboard() {
             </Link>
           );
         })}
+      </div>
+
+      {/* 活数据快照：cron 每小时自动同步，这里可手动触发 */}
+      <div className="hand-card mb-8 flex flex-wrap items-center gap-6 p-5">
+        <div className="flex items-center gap-2">
+          <Activity className="h-4 w-4 text-[var(--accent-cyan)]" />
+          <h2 className="font-hand-title text-base text-[var(--ink)]">活数据快照（cron 每小时）</h2>
+        </div>
+        <div className="flex flex-wrap items-center gap-6 text-sm">
+          <span className="text-[var(--ink-soft)]">
+            GitHub：{liveInfo.github ? liveInfo.github.replace('T', ' ').slice(0, 16) + ' UTC' : '未同步'}
+            <button
+              onClick={() => handleRefresh('github')}
+              disabled={refreshing !== null}
+              className="ml-2 inline-flex items-center gap-1 border border-[var(--ink)] px-2 py-0.5 text-xs hover:bg-[var(--accent)]"
+            >
+              <RefreshCw className={`h-3 w-3 ${refreshing === 'github' ? 'animate-spin' : ''}`} /> 立即刷新
+            </button>
+          </span>
+          <span className="text-[var(--ink-soft)]">
+            博客目录：{liveInfo.blog ? liveInfo.blog.replace('T', ' ').slice(0, 16) + ' UTC' : '未同步'}
+            <button
+              onClick={() => handleRefresh('blog')}
+              disabled={refreshing !== null}
+              className="ml-2 inline-flex items-center gap-1 border border-[var(--ink)] px-2 py-0.5 text-xs hover:bg-[var(--accent)]"
+            >
+              <RefreshCw className={`h-3 w-3 ${refreshing === 'blog' ? 'animate-spin' : ''}`} /> 立即刷新
+            </button>
+          </span>
+        </div>
       </div>
 
       {/* 最近操作 */}

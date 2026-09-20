@@ -5,6 +5,7 @@ import ResourceCard from '@/components/ResourceCard';
 import EmptyState from '@/components/EmptyState';
 import { PageHeader } from '@/components/SectionTitle';
 import PaperBackground from '@/components/PaperBackground';
+import Seo from '@/components/Seo';
 import { useStaggerReveal } from '@/hooks/useGsap';
 import type { Resource, ResourceCategory } from '@/types';
 
@@ -77,6 +78,7 @@ export default function Resources() {
   return (
     <div className="relative min-h-screen overflow-hidden pt-16">
       <PaperBackground />
+      <Seo title="资源中心" description="免费下载阿维整理的 AI 工具、教程资料与自研产品：网盘直连，全部免费。" path="/resources" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <PageHeader
@@ -113,10 +115,10 @@ export default function Resources() {
                   <button
                     key={opt.id}
                     onClick={() => setSort(opt.id)}
-                    className={`inline-flex items-center gap-1 rounded-lg border-2 border-[var(--ink)] px-3 py-1.5 font-hand-body text-xs transition-all ${
+                    className={`inline-flex items-center gap-1 rounded-lg border-2 border-[var(--ink)] px-3 py-1.5 font-mono text-xs transition-all rgb-shift ${
                       active
-                        ? 'bg-[var(--ink)] text-[var(--paper-light)] shadow-[2px_2px_0_var(--crimson)]'
-                        : 'bg-[var(--paper-light)] text-[var(--ink-soft)] hover:bg-[var(--mustard)]/30'
+                        ? 'bg-[var(--ink)] text-[var(--bg-elevated)] shadow-[2px_2px_0_var(--accent-alt)]'
+                        : 'bg-[var(--bg-elevated)] text-[var(--ink-soft)] hover:bg-[var(--accent)]/30'
                     }`}
                   >
                     <Icon className="h-3.5 w-3.5" />
@@ -135,12 +137,12 @@ export default function Resources() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="搜索资源名称、简介或标签..."
-              className="w-full rounded-xl border-2 border-[var(--ink)] bg-[var(--paper-light)] py-2.5 pl-10 pr-10 font-hand-body text-sm text-[var(--ink)] placeholder-[var(--ink-mute)] shadow-[3px_3px_0_var(--ink)] outline-none transition-all focus:-translate-y-0.5 focus:shadow-[4px_4px_0_var(--crimson)]"
+              className="w-full border-2 border-[var(--ink)] bg-[var(--bg-elevated)] py-2.5 pl-10 pr-10 font-mono text-sm text-[var(--ink)] placeholder-[var(--ink-mute)] shadow-[3px_3px_0_var(--ink)] outline-none transition-all focus:-translate-y-0.5 focus:shadow-[4px_4px_0_var(--accent-alt)]"
             />
             {search ? (
               <button
                 onClick={() => setSearch('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--ink-mute)] transition-colors hover:text-[var(--crimson)]"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--ink-mute)] transition-colors hover:text-[var(--accent-alt)]"
                 aria-label="清除"
               >
                 <X className="h-4 w-4" />
@@ -151,7 +153,9 @@ export default function Resources() {
 
         {/* 列表 */}
         {loading && !loaded ? (
-          <div className="hand-empty">加载中...</div>
+          <div className="hand-empty font-mono text-sm">
+            <span className="text-[var(--accent)]">{'>'}</span> loading...
+          </div>
         ) : filtered.length === 0 ? (
           <EmptyState
             title="没有找到匹配的资源"
@@ -173,7 +177,7 @@ export default function Resources() {
             {filtered.map((r, i) => (
               <div
                 key={r.id}
-                className="res-card"
+                className="res-card rgb-shift"
                 style={{ transform: `rotate(${(i % 2 ? -1 : 1) * 0.4}deg)` }}
               >
                 <ResourceCard resource={r} />

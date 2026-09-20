@@ -151,3 +151,168 @@ export interface ServiceTypeMeta {
   description: string;
   priceRange: string;
 }
+
+// ==================== 作品集（后台可管理） ====================
+
+export type PortfolioStatus = '已上线' | '维护中' | '已完成' | '归档';
+export type PortfolioCategory = 'web-app' | 'desktop' | 'cli' | 'backend' | 'ai' | 'site';
+
+export interface CaseHighlight {
+  title: string;
+  desc: string;
+}
+
+/** 关键技术决策：问题 → 选择 → 理由 */
+export interface TechDecision {
+  question: string;
+  choice: string;
+  reason: string;
+}
+
+/** 成果数据指标，source 为可复现出处（无出处不渲染） */
+export interface CaseMetric {
+  label: string;
+  value: string;
+  source: string;
+}
+
+/** 外部深链（关联文章 / 代码直达） */
+export interface RelatedLink {
+  label: string;
+  url: string;
+}
+
+export interface Portfolio {
+  id: string;
+  slug: string;
+  name: string;
+  tagline: string;
+  status: PortfolioStatus;
+  category: PortfolioCategory;
+  /** GitHub 仓库名（用于与 /api/github 活数据按名匹配），无仓库留空 */
+  repo: string;
+  demoUrl: string | null;
+  coverImage: string | null;
+  screenshots: string[];
+  techStack: string[];
+  role: string;
+  period: string;
+  /** 挑战 */
+  problem: string;
+  /** 方案与架构 */
+  solution: string;
+  highlights: CaseHighlight[];
+  decisions: TechDecision[];
+  metrics: CaseMetric[];
+  /** 关联博客文章 */
+  relatedPosts: RelatedLink[];
+  /** 代码直达（链到具体文件而非仓库首页） */
+  relatedFiles: RelatedLink[];
+  /** 底部 CTA 关联的服务 id */
+  ctaServiceId: string | null;
+  isFeatured: boolean;
+  published: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ==================== 个人画像（单文档，后台可管理） ====================
+
+export interface TimelineEntry {
+  date: string;
+  title: string;
+  desc: string;
+}
+
+export interface CapabilityEntry {
+  title: string;
+  desc: string;
+  evidenceLabel: string;
+  evidenceUrl: string;
+}
+
+/** 精力分配模型（45/35/15/5） */
+export interface EffortLayer {
+  layer: string;
+  percent: number;
+  focus: string;
+}
+
+export interface Profile {
+  id: 'me';
+  /** 对外称呼 */
+  nickname: string;
+  realName: string;
+  avatarUrl: string | null;
+  /** IP 品牌与 slogan */
+  brand: string;
+  slogan: string;
+  /** 一句话身份定位 */
+  identity: string;
+  location: string;
+  /** 主攻方向 */
+  focus: string;
+  /** 个人故事（关于页） */
+  story: string;
+  timeline: TimelineEntry[];
+  capabilities: CapabilityEntry[];
+  effortModel: EffortLayer[];
+  /** 价值观标签 */
+  values: string[];
+  githubUrl: string;
+  blogUrl: string;
+  updatedAt: string;
+}
+
+// ==================== 需求报价表单 ====================
+
+export type QuoteStatus = '待处理' | '已回复' | '已成交' | '无效';
+
+export interface Quote {
+  id: string;
+  name: string;
+  contact: string;
+  serviceType: string;
+  budget: string;
+  deadline: string;
+  /** 来源渠道（GitHub/博客/搜索…） */
+  channel: string;
+  message: string;
+  /** 来源页面引用（如 portfolio slug / 服务 id），用于归因 */
+  ref: string;
+  status: QuoteStatus;
+  createdAt: string;
+}
+
+// ==================== 活数据快照（API 只读，非后台管理） ====================
+
+export interface RepoInfo {
+  name: string;
+  description: string;
+  language: string | null;
+  pushedAt: string;
+  htmlUrl: string;
+  topics: string[];
+}
+
+/** /api/github：cron 定时拉取 GitHub API 后写入 KV 的快照 */
+export interface GithubSnapshot {
+  fetchedAt: string;
+  user: { login: string; publicRepos: number };
+  repos: RepoInfo[];
+  /** 距最近一次 push 的天数 */
+  lastPushDays: number | null;
+}
+
+export interface BlogPost {
+  title: string;
+  url: string;
+  date: string;
+  summary: string;
+}
+
+/** /api/blog：cron 定时解析 Hexo atom.xml 后写入 KV 的快照 */
+export interface BlogFeed {
+  fetchedAt: string;
+  posts: BlogPost[];
+}

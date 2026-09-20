@@ -27,9 +27,12 @@ import { useWechatModal } from '@/components/WeChatModal';
 import Breadcrumb from '@/components/Breadcrumb';
 import EmptyState from '@/components/EmptyState';
 import PaperBackground from '@/components/PaperBackground';
+import Seo from '@/components/Seo';
+import { siteConfig } from '@/config/site.config';
 import { SERVICE_TYPES } from '@/constants';
 import { useElasticEnter, useStaggerReveal } from '@/hooks/useGsap';
 import FormattedText from '@/components/FormattedText';
+import { SmartImage, SmartVideo } from '@/components/SmartMedia';
 import type { ServiceType } from '@/types';
 
 const iconMap: Record<ServiceType, LucideIcon> = {
@@ -77,8 +80,8 @@ export default function ServiceDetail() {
     return (
       <div className="relative min-h-screen overflow-hidden pt-16">
         <PaperBackground />
-        <div className="relative z-10 mx-auto max-w-4xl px-4 py-20 text-center font-hand-body text-sm text-[var(--ink-mute)]">
-          加载中...
+        <div className="relative z-10 mx-auto max-w-4xl px-4 py-20 text-center font-mono text-sm text-[var(--ink-mute)]">
+          <span className="text-[var(--accent)]">{'>'}</span> loading...
         </div>
       </div>
     );
@@ -113,8 +116,7 @@ export default function ServiceDetail() {
   const meta = SERVICE_TYPES.find((m) => m.id === service.type);
   const Icon = iconMap[service.type] ?? Wrench;
   const isEnterprise = service.type === 'enterprise';
-  const cardCls = isEnterprise ? 'hand-card hand-card-gold' : 'hand-card';
-  const accentColor = isEnterprise ? 'var(--mustard)' : 'var(--crimson)';
+  const cardCls = isEnterprise ? 'hand-card hand-card-accent' : 'hand-card';
 
   const hasScreenshots = !!(service.screenshots && service.screenshots.length > 0);
   const hasVideo = !!service.videoUrl;
@@ -127,6 +129,21 @@ export default function ServiceDetail() {
   return (
     <div className="relative min-h-screen overflow-hidden pt-16">
       <PaperBackground />
+      <Seo
+        title={service.name}
+        description={service.description}
+        path={`/services/${service.id}`}
+        jsonLd={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: service.name,
+            description: service.description,
+            provider: { '@type': 'Person', name: siteConfig.owner },
+            offers: { '@type': 'Offer', price: service.price, priceCurrency: 'CNY' },
+          },
+        ]}
+      />
 
       <div className="relative z-10 mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
         <Breadcrumb
@@ -137,29 +154,26 @@ export default function ServiceDetail() {
           ]}
         />
 
-        {/* 头部 */}
+        {/* 头部：终端面板风格 */}
         <section ref={heroRef}>
           <div
-            className={`${cardCls} mb-6 overflow-hidden p-0`}
+            className={`${cardCls} mb-6 overflow-hidden p-0 rgb-shift`}
             style={{ transform: 'rotate(-0.4deg)' }}
           >
             {/* 封面图 */}
             {service.coverImage ? (
               <div className="relative h-48 w-full overflow-hidden border-b-2 border-[var(--ink)] sm:h-60">
-                <img
+                <SmartImage
                   src={service.coverImage}
                   alt={service.name}
+                  eager
+                  fallbackLabel="封面信号丢失"
+                  wrapperClassName="h-full w-full"
                   className="h-full w-full object-cover"
-                  onError={(e) => {
-                    (e.currentTarget.parentElement as HTMLElement).style.display = 'none';
-                  }}
                 />
                 {service.isFeatured ? (
-                  <span
-                    className="hand-tag absolute right-3 top-3 text-xs"
-                    style={{ background: 'var(--mustard)', color: 'var(--ink)' }}
-                  >
-                    <Sparkles className="h-3 w-3" /> 招牌案例
+                  <span className="absolute right-3 top-3 z-10 border-2 border-[var(--ink)] bg-[var(--accent)] px-2 py-0.5 font-mono text-[10px] font-bold text-[var(--bg)] shadow-[2px_2px_0_var(--ink)]">
+                    <Sparkles className="mr-1 inline h-3 w-3" />FEATURED
                   </span>
                 ) : null}
               </div>
@@ -168,39 +182,40 @@ export default function ServiceDetail() {
             <div className="p-6">
               <div className="flex items-start gap-4">
                 <div
-                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border-2 border-[var(--ink)] shadow-[3px_3px_0_var(--ink)]"
-                  style={{ background: accentColor, transform: 'rotate(-3deg)' }}
+                  className="flex h-14 w-14 shrink-0 items-center justify-center border-2 border-[var(--ink)] shadow-[3px_3px_0_var(--ink)]"
+                  style={{ background: 'var(--accent)', transform: 'rotate(-3deg)' }}
                 >
-                  <Icon className={`h-7 w-7 ${isEnterprise ? 'text-[var(--ink)]' : 'text-[var(--paper-light)]'}`} />
+                  <Icon className="h-7 w-7 text-[var(--bg)]" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <h1 className="font-hand-title text-2xl text-[var(--ink)] sm:text-3xl">{service.name}</h1>
+                    <h1
+                      className="font-display text-2xl text-[var(--ink)] sm:text-3xl glitch-text"
+                      data-text={service.name}
+                    >
+                      {service.name}
+                    </h1>
                     {meta ? (
                       <span className="hand-tag text-xs">{meta.name}</span>
                     ) : null}
                     {service.isFeatured && !service.coverImage ? (
-                      <span
-                        className="hand-tag text-xs"
-                        style={{ background: 'var(--mustard)', color: 'var(--ink)' }}
-                      >
-                        <Sparkles className="h-3 w-3" /> 招牌案例
+                      <span className="border-2 border-[var(--ink)] bg-[var(--accent)] px-2 py-0.5 font-mono text-[10px] font-bold text-[var(--bg)]">
+                        <Sparkles className="mr-1 inline h-3 w-3" />FEATURED
                       </span>
                     ) : null}
                   </div>
                   <div className="mt-2 flex flex-wrap items-center gap-2">
-                    <p className="font-hand-title text-lg font-bold text-[var(--crimson)]">
-                      {service.priceRange || service.price}
+                    <p className="font-mono text-lg font-bold text-[var(--accent)]">
+                      <span className="text-[var(--ink-mute)]">$</span> {service.priceRange || service.price}
                     </p>
                     {hasMetrics ? (
                       <div className="flex flex-wrap gap-1">
                         {service.metrics.map((m) => (
                           <span
                             key={m.label}
-                            className="hand-tag text-xs"
-                            style={{ background: 'var(--teal)', color: 'var(--paper-light)' }}
+                            className="border-2 border-[var(--ink)] bg-[var(--accent-cyan)] px-2 py-0.5 font-mono text-[10px] font-bold text-[var(--bg)]"
                           >
-                            <TrendingUp className="h-3 w-3" /> {m.value} {m.label}
+                            <TrendingUp className="mr-1 inline h-3 w-3" />{m.value} {m.label}
                           </span>
                         ))}
                       </div>
@@ -237,11 +252,12 @@ export default function ServiceDetail() {
 
         {/* 详情 */}
         <div
-          className="hand-card mb-6 p-6"
+          className="hand-card mb-6 p-6 rgb-shift"
           style={{ transform: 'rotate(0.3deg)' }}
         >
-          <h2 className="mb-3 font-hand-title text-base text-[var(--ink)]">
-            <span className="hand-underline inline-block">服务详情</span>
+          <h2 className="mb-3 font-display text-base text-[var(--ink)]">
+            <span className="text-[var(--accent)]">{'// '}</span>
+            服务详情
           </h2>
           <FormattedText text={service.details} />
         </div>
@@ -249,8 +265,9 @@ export default function ServiceDetail() {
         {/* 截图画廊 */}
         {hasScreenshots ? (
           <div className="mb-6">
-            <h2 className="mb-3 font-hand-title text-base text-[var(--ink)]">
-              <span className="hand-underline inline-block">案例截图</span>
+            <h2 className="mb-3 font-display text-base text-[var(--ink)]">
+              <span className="text-[var(--accent)]">{'// '}</span>
+              案例截图
             </h2>
             <div
               ref={galleryRef}
@@ -262,68 +279,65 @@ export default function ServiceDetail() {
                   type="button"
                   key={`${i}-${shot}`}
                   onClick={() => setActiveShot(shot)}
-                  className="shot-item hand-card ink-spread shrink-0 overflow-hidden p-0"
+                  className="shot-item hand-card rgb-shift shrink-0 overflow-hidden p-0"
                   style={{ transform: `rotate(${(i % 2 ? 1 : -1) * 0.4}deg)`, width: '16rem' }}
                   aria-label={`查看案例截图 ${i + 1}`}
                 >
                   <div className="relative h-40 w-full overflow-hidden border-b-2 border-[var(--ink)]">
-                    <img
+                    <SmartImage
                       src={shot}
                       alt={`案例截图 ${i + 1}`}
-                      className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-                      onError={(e) => {
-                        (e.currentTarget.parentElement as HTMLElement).style.display = 'none';
-                      }}
+                      fallbackLabel={`截图 ${i + 1} 丢失`}
+                      wrapperClassName="h-full w-full"
+                      className="h-full w-full object-cover"
                     />
-                    <span
-                      className="hand-tag absolute right-2 top-2 text-xs"
-                      style={{ background: 'var(--paper-light)', color: 'var(--ink)' }}
-                    >
-                      <ImageIcon className="h-3 w-3" /> {i + 1}
+                    <span className="absolute right-2 top-2 z-10 border-2 border-[var(--ink)] bg-[var(--bg)] px-1.5 py-0.5 font-mono text-[10px] font-bold text-[var(--accent)]">
+                      <ImageIcon className="mr-1 inline h-3 w-3" />{i + 1}
                     </span>
                   </div>
                 </button>
               ))}
             </div>
-            <p className="mt-1 font-hand-body text-xs text-[var(--ink-mute)]">点击截图可放大查看 →</p>
+            <p className="mt-1 font-mono text-xs text-[var(--ink-mute)]">
+              <span className="text-[var(--accent)]">{'>'}</span> 点击截图可放大查看 →
+            </p>
           </div>
         ) : null}
 
         {/* 视频演示 */}
         {hasVideo ? (
           <div className="mb-6">
-            <h2 className="mb-3 font-hand-title text-base text-[var(--ink)]">
-              <span className="hand-underline inline-block">视频演示</span>
+            <h2 className="mb-3 font-display text-base text-[var(--ink)]">
+              <span className="text-[var(--accent)]">{'// '}</span>
+              视频演示
             </h2>
             {isDirectVideo ? (
               <div
-                className="hand-card overflow-hidden p-0"
+                className="hand-card overflow-hidden p-0 rgb-shift"
                 style={{ transform: 'rotate(-0.3deg)' }}
               >
-                <video
+                <SmartVideo
                   src={service.videoUrl as string}
-                  className="h-auto w-full"
-                  controls
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
+                  poster={service.coverImage || undefined}
+                  wrapperClassName="aspect-video w-full"
+                  className="aspect-video w-full object-cover"
+                  fallbackLabel="视频信号丢失"
                 />
               </div>
             ) : (
               <div
-                className="hand-card p-5"
+                className="hand-card p-5 rgb-shift"
                 style={{ transform: 'rotate(-0.3deg)' }}
               >
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border-2 border-[var(--ink)] bg-[var(--crimson)] shadow-[2px_2px_0_var(--ink)]">
-                    <PlayCircle className="h-5 w-5 text-[var(--paper-light)]" />
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent-alt)] shadow-[2px_2px_0_var(--ink)]">
+                    <PlayCircle className="h-5 w-5 text-[var(--ink)]" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="font-hand-title text-sm text-[var(--ink)]">
+                    <p className="font-display text-sm text-[var(--ink)]">
                       {isDouyinUrl(service.videoUrl as string) ? '抖音视频演示' : '视频演示'}
                     </p>
-                    <p className="truncate font-hand-body text-xs text-[var(--ink-mute)]">
+                    <p className="truncate font-mono text-xs text-[var(--ink-mute)]">
                       {service.videoUrl}
                     </p>
                   </div>
@@ -356,53 +370,52 @@ export default function ServiceDetail() {
         {/* 案例研究 */}
         {hasCaseStudy && service.caseStudy ? (
           <div className="mb-6">
-            <h2 className="mb-1 font-hand-title text-base text-[var(--ink)]">
-              <span className="hand-underline inline-block">
-                {service.caseStudy.title || '案例研究'}
-              </span>
+            <h2 className="mb-1 font-display text-base text-[var(--ink)]">
+              <span className="text-[var(--accent)]">{'// '}</span>
+              {service.caseStudy.title || '案例研究'}
             </h2>
-            <p className="mb-3 font-hand-body text-xs text-[var(--ink-mute)]">用真实故事说话</p>
+            <p className="mb-3 font-mono text-xs text-[var(--ink-mute)]">{'>'} 用真实故事说话</p>
             <div ref={caseRef} className="grid gap-3 sm:grid-cols-3">
               <div
-                className="cs-card hand-card p-4"
+                className="cs-card hand-card p-4 rgb-shift"
                 style={{ transform: 'rotate(-0.5deg)' }}
               >
                 <div className="mb-2 flex items-center gap-2">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg border-2 border-[var(--ink)] bg-[var(--indigo)] shadow-[1px_1px_0_var(--ink)]">
-                    <Lightbulb className="h-3.5 w-3.5 text-[var(--paper-light)]" />
+                  <div className="flex h-7 w-7 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent-blue)] shadow-[1px_1px_0_var(--ink)]">
+                    <Lightbulb className="h-3.5 w-3.5 text-[var(--ink)]" />
                   </div>
-                  <h3 className="font-hand-title text-sm text-[var(--ink)]">项目背景</h3>
+                  <h3 className="font-display text-sm text-[var(--ink)]">项目背景</h3>
                 </div>
                 <FormattedText text={service.caseStudy.background} />
               </div>
               <div
-                className="cs-card hand-card p-4"
+                className="cs-card hand-card p-4 rgb-shift"
                 style={{ transform: 'rotate(0.4deg)' }}
               >
                 <div className="mb-2 flex items-center gap-2">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg border-2 border-[var(--ink)] bg-[var(--teal)] shadow-[1px_1px_0_var(--ink)]">
-                    <Target className="h-3.5 w-3.5 text-[var(--paper-light)]" />
+                  <div className="flex h-7 w-7 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent-cyan)] shadow-[1px_1px_0_var(--ink)]">
+                    <Target className="h-3.5 w-3.5 text-[var(--bg)]" />
                   </div>
-                  <h3 className="font-hand-title text-sm text-[var(--ink)]">解决方案</h3>
+                  <h3 className="font-display text-sm text-[var(--ink)]">解决方案</h3>
                 </div>
                 <FormattedText text={service.caseStudy.solution} />
               </div>
               <div
-                className="cs-card hand-card p-4"
+                className="cs-card hand-card p-4 rgb-shift"
                 style={{ transform: 'rotate(-0.3deg)' }}
               >
                 <div className="mb-2 flex items-center gap-2">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg border-2 border-[var(--ink)] bg-[var(--mustard)] shadow-[1px_1px_0_var(--ink)]">
-                    <TrendingUp className="h-3.5 w-3.5 text-[var(--ink)]" />
+                  <div className="flex h-7 w-7 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent)] shadow-[1px_1px_0_var(--ink)]">
+                    <TrendingUp className="h-3.5 w-3.5 text-[var(--bg)]" />
                   </div>
-                  <h3 className="font-hand-title text-sm text-[var(--ink)]">实际成果</h3>
+                  <h3 className="font-display text-sm text-[var(--ink)]">实际成果</h3>
                 </div>
                 <FormattedText text={service.caseStudy.result} />
               </div>
             </div>
             {service.caseStudy.techStack && service.caseStudy.techStack.length > 0 ? (
               <div className="mt-3 flex flex-wrap items-center gap-1">
-                <span className="font-hand-body text-xs text-[var(--ink-mute)]">技术栈：</span>
+                <span className="font-mono text-xs text-[var(--ink-mute)]">{'>'} 技术栈：</span>
                 {service.caseStudy.techStack.map((t) => (
                   <span key={t} className="hand-tag text-xs">{t}</span>
                 ))}
@@ -424,26 +437,26 @@ export default function ServiceDetail() {
         {/* 交付信息 */}
         <div className="mb-6 grid gap-4 sm:grid-cols-2">
           <div
-            className="hand-card p-5"
+            className="hand-card p-5 rgb-shift"
             style={{ transform: 'rotate(-0.5deg)' }}
           >
             <div className="mb-3 flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg border-2 border-[var(--ink)] bg-[var(--indigo)] shadow-[1px_1px_0_var(--ink)]">
-                <Package className="h-3.5 w-3.5 text-[var(--paper-light)]" />
+              <div className="flex h-7 w-7 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent-blue)] shadow-[1px_1px_0_var(--ink)]">
+                <Package className="h-3.5 w-3.5 text-[var(--ink)]" />
               </div>
-              <h3 className="font-hand-title text-sm text-[var(--ink)]">交付信息</h3>
+              <h3 className="font-display text-sm text-[var(--ink)]">交付信息</h3>
             </div>
-            <dl className="space-y-2 font-hand-body text-sm">
+            <dl className="space-y-2 font-mono text-xs">
               <div className="flex justify-between gap-2">
-                <dt className="text-[var(--ink-mute)]">交付方式</dt>
+                <dt className="text-[var(--ink-mute)]">{'>'} 交付方式</dt>
                 <dd className="text-right text-[var(--ink)]">{service.delivery.method}</dd>
               </div>
               <div className="flex justify-between gap-2">
-                <dt className="text-[var(--ink-mute)]">交付时间</dt>
+                <dt className="text-[var(--ink-mute)]">{'>'} 交付时间</dt>
                 <dd className="text-right text-[var(--ink)]">{service.delivery.time}</dd>
               </div>
               <div className="flex justify-between gap-2">
-                <dt className="text-[var(--ink-mute)]">免费修改</dt>
+                <dt className="text-[var(--ink-mute)]">{'>'} 免费修改</dt>
                 <dd className="text-right text-[var(--ink)]">
                   {service.delivery.revisions > 0 ? `${service.delivery.revisions} 次` : '—'}
                 </dd>
@@ -452,27 +465,27 @@ export default function ServiceDetail() {
           </div>
 
           <div
-            className="hand-card p-5"
+            className="hand-card p-5 rgb-shift"
             style={{ transform: 'rotate(0.5deg)' }}
           >
             <div className="mb-3 flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg border-2 border-[var(--ink)] bg-[var(--teal)] shadow-[1px_1px_0_var(--ink)]">
-                <Check className="h-3.5 w-3.5 text-[var(--paper-light)]" />
+              <div className="flex h-7 w-7 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent-cyan)] shadow-[1px_1px_0_var(--ink)]">
+                <Check className="h-3.5 w-3.5 text-[var(--bg)]" />
               </div>
-              <h3 className="font-hand-title text-sm text-[var(--ink)]">保障与下单</h3>
+              <h3 className="font-display text-sm text-[var(--ink)]">保障与下单</h3>
             </div>
-            <dl className="space-y-2 font-hand-body text-sm">
+            <dl className="space-y-2 font-mono text-xs">
               <div className="flex justify-between gap-2">
-                <dt className="text-[var(--ink-mute)]">保障承诺</dt>
+                <dt className="text-[var(--ink-mute)]">{'>'} 保障承诺</dt>
                 <dd className="text-right text-[var(--ink)]">{service.guarantee || '—'}</dd>
               </div>
               <div className="flex justify-between gap-2">
-                <dt className="text-[var(--ink-mute)]">下单方式</dt>
+                <dt className="text-[var(--ink-mute)]">{'>'} 下单方式</dt>
                 <dd className="text-right text-[var(--ink)]">{service.orderMethod}</dd>
               </div>
               {service.maintenancePeriod ? (
                 <div className="flex justify-between gap-2">
-                  <dt className="text-[var(--ink-mute)]">维护期</dt>
+                  <dt className="text-[var(--ink-mute)]">{'>'} 维护期</dt>
                   <dd className="text-right text-[var(--ink)]">{service.maintenancePeriod}</dd>
                 </div>
               ) : null}
@@ -485,28 +498,28 @@ export default function ServiceDetail() {
           <div className="mb-6 grid gap-4 sm:grid-cols-2">
             {service.applicableScene ? (
               <div
-                className="hand-card p-5"
+                className="hand-card p-5 rgb-shift"
                 style={{ transform: 'rotate(-0.3deg)' }}
               >
                 <div className="mb-2 flex items-center gap-2">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg border-2 border-[var(--ink)] bg-[var(--indigo)] shadow-[1px_1px_0_var(--ink)]">
-                    <Clock className="h-3.5 w-3.5 text-[var(--paper-light)]" />
+                  <div className="flex h-7 w-7 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent-blue)] shadow-[1px_1px_0_var(--ink)]">
+                    <Clock className="h-3.5 w-3.5 text-[var(--ink)]" />
                   </div>
-                  <h3 className="font-hand-title text-sm text-[var(--ink)]">适用场景</h3>
+                  <h3 className="font-display text-sm text-[var(--ink)]">适用场景</h3>
                 </div>
                 <FormattedText text={service.applicableScene} />
               </div>
             ) : null}
             {service.expectedEffect ? (
               <div
-                className="hand-card p-5"
+                className="hand-card p-5 rgb-shift"
                 style={{ transform: 'rotate(0.3deg)' }}
               >
                 <div className="mb-2 flex items-center gap-2">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg border-2 border-[var(--ink)] bg-[var(--mustard)] shadow-[1px_1px_0_var(--ink)]">
-                    <ArrowRight className="h-3.5 w-3.5 text-[var(--ink)]" />
+                  <div className="flex h-7 w-7 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent)] shadow-[1px_1px_0_var(--ink)]">
+                    <ArrowRight className="h-3.5 w-3.5 text-[var(--bg)]" />
                   </div>
-                  <h3 className="font-hand-title text-sm text-[var(--ink)]">预期效果</h3>
+                  <h3 className="font-display text-sm text-[var(--ink)]">预期效果</h3>
                 </div>
                 <FormattedText text={service.expectedEffect} />
               </div>
@@ -516,11 +529,13 @@ export default function ServiceDetail() {
 
         {/* CTA */}
         <div
-          className={`${cardCls} p-6 text-center`}
+          className={`${cardCls} p-6 text-center rgb-shift`}
           style={{ transform: 'rotate(0.4deg)' }}
         >
-          <h3 className="mb-2 font-hand-title text-lg text-[var(--ink)] sm:text-xl">聊聊你的需求</h3>
-          <p className="mb-4 font-hand-body text-sm text-[var(--ink-soft)]">免费咨询，不收费，搞不定不收费。</p>
+          <h3 className="mb-2 font-display text-lg text-[var(--ink)] sm:text-xl glitch-text" data-text="聊聊你的需求">
+            聊聊你的需求
+          </h3>
+          <p className="mb-4 font-mono text-sm text-[var(--ink-soft)]">{'>'} 免费咨询，不收费，搞不定不收费。</p>
           <button
             onClick={() => open(service.type)}
             className={`hand-btn ${isEnterprise ? 'hand-btn-gold' : 'hand-btn-primary'}`}
@@ -533,20 +548,23 @@ export default function ServiceDetail() {
         {/* 相关服务 */}
         {related.length > 0 ? (
           <div className="mt-10">
-            <h2 className="mb-4 font-hand-title text-base text-[var(--ink)]">
-              <span className="hand-underline inline-block">相关服务</span>
+            <h2 className="mb-4 font-display text-base text-[var(--ink)]">
+              <span className="text-[var(--accent)]">{'// '}</span>
+              相关服务
             </h2>
             <div ref={relatedRef} className="grid gap-3 sm:grid-cols-3">
               {related.map((s, i) => (
                 <Link
                   key={s.id}
                   to={`/services/${s.id}`}
-                  className={`rel-svc hand-card ink-spread block p-4`}
+                  className={`rel-svc hand-card rgb-shift block p-4`}
                   style={{ transform: `rotate(${(i % 2 ? 1 : -1) * 0.5}deg)` }}
                 >
-                  <h3 className="line-clamp-1 font-hand-title text-sm text-[var(--ink)]">{s.name}</h3>
-                  <p className="mt-1 line-clamp-2 font-hand-body text-xs text-[var(--ink-soft)]">{s.description}</p>
-                  <p className="mt-2 font-hand-title text-xs font-bold text-[var(--crimson)]">{s.price}</p>
+                  <h3 className="line-clamp-1 font-display text-sm text-[var(--ink)]">{s.name}</h3>
+                  <p className="mt-1 line-clamp-2 font-mono text-xs text-[var(--ink-soft)]">{s.description}</p>
+                  <p className="mt-2 font-mono text-xs font-bold text-[var(--accent)]">
+                    <span className="text-[var(--ink-mute)]">$</span> {s.price}
+                  </p>
                 </Link>
               ))}
             </div>
@@ -557,7 +575,7 @@ export default function ServiceDetail() {
       {/* 截图放大模态 */}
       {activeShot ? (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
           onClick={() => setActiveShot(null)}
           role="dialog"
           aria-modal="true"
@@ -570,15 +588,17 @@ export default function ServiceDetail() {
               type="button"
               onClick={() => setActiveShot(null)}
               className="hand-btn absolute -right-3 -top-3 z-10 h-9 w-9 p-0"
-              style={{ background: 'var(--crimson)', color: 'var(--paper-light)' }}
+              style={{ background: 'var(--accent-alt)', color: 'var(--ink)' }}
               aria-label="关闭"
             >
               <X className="h-4 w-4" />
             </button>
-            <img
+            <SmartImage
               src={activeShot}
               alt="案例截图放大"
-              className="max-h-[80vh] w-auto rounded-lg border-2 border-[var(--ink)] shadow-[6px_6px_0_var(--ink)]"
+              wrapperClassName="max-h-[80vh] w-auto border-2 border-[var(--ink)] shadow-[6px_6px_0_var(--ink)]"
+              className="max-h-[80vh] w-auto object-contain"
+              fallbackLabel="放大查看失败"
             />
           </div>
         </div>

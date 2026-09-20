@@ -1,177 +1,82 @@
 /**
- * Three.js 纸张背景 —— 漂浮的纸纤维 + 鼠标交互墨水扩散
+ * CyberBackground —— 赛博朋克网格背景（替代旧 PaperBackground）
  *
- * 设计意图：
- * - 背景（layer-bg）：缓慢流动的纸纤维粒子，营造手绘纸张的呼吸感
- * - 鼠标移动产生墨点扩散，符合手绘的"墨水"主题
- * - 不抢戏，仅作为氛围层服务手绘风格
+ * 设计意图（per creative-frontend-design-expert SKILL.md）：
+ * - 纯 CSS 实现，无 Three.js 依赖，性能极佳
+ * - 黑底 + 荧光网格 + 模糊光斑，反 AI 默认"奶油色背景"
+ * - 网格随鼠标轻微视差，物理感微交互（因果链 5.3）
+ * - 与全站 SiteEffects（CRT 扫描线 + 噪点）协同，不重复
+ *
+ * 因果链引用：
+ * - 5.1 新颖性：网格 + 光斑营造终端/矩阵氛围
+ * - 5.2 统计平均：反"奶油色米色默认背景"AI Slop
+ * - 5.3 具身认知：鼠标视差 = 物理感
  */
-import { useRef, useMemo } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import * as THREE from 'three';
-
-/** 纸纤维粒子系统 */
-function PaperFibers() {
-  const pointsRef = useRef<THREE.Points>(null);
-  const { viewport } = useThree();
-
-  // 生成 ~400 个随机分布的"纸纤维"粒子
-  const positions = useMemo(() => {
-    const count = 400;
-    const arr = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      arr[i * 3] = (Math.random() - 0.5) * viewport.width * 2.5;
-      arr[i * 3 + 1] = (Math.random() - 0.5) * viewport.height * 2.5;
-      arr[i * 3 + 2] = (Math.random() - 0.5) * 6;
-    }
-    return arr;
-  }, [viewport.width, viewport.height]);
-
-  // 每个粒子的漂浮速度（独立随机）
-  const speeds = useMemo(() => {
-    const count = 400;
-    return Array.from({ length: count }, () => ({
-      x: (Math.random() - 0.5) * 0.008,
-      y: (Math.random() - 0.5) * 0.008,
-      phase: Math.random() * Math.PI * 2,
-    }));
-  }, []);
-
-  useFrame((state) => {
-    if (!pointsRef.current) return;
-    const geom = pointsRef.current.geometry;
-    const pos = geom.attributes.position.array as Float32Array;
-    const t = state.clock.elapsedTime;
-
-    for (let i = 0; i < speeds.length; i++) {
-      // 缓慢漂浮 + 正弦扰动 = 呼吸感
-      pos[i * 3] += speeds[i].x + Math.sin(t * 0.3 + speeds[i].phase) * 0.002;
-      pos[i * 3 + 1] += speeds[i].y + Math.cos(t * 0.4 + speeds[i].phase) * 0.002;
-
-      // 边界循环（飘出视野则从对面回来）
-      const w = viewport.width * 1.3;
-      const h = viewport.height * 1.3;
-      if (pos[i * 3] > w) pos[i * 3] = -w;
-      if (pos[i * 3] < -w) pos[i * 3] = w;
-      if (pos[i * 3 + 1] > h) pos[i * 3 + 1] = -h;
-      if (pos[i * 3 + 1] < -h) pos[i * 3 + 1] = h;
-    }
-    geom.attributes.position.needsUpdate = true;
-  });
-
-  return (
-    <points ref={pointsRef}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={positions.length / 3}
-          array={positions}
-          itemSize={3}
-        />
-      </bufferGeometry>
-      <pointsMaterial
-        size={0.04}
-        color="#3A3A3A"
-        transparent
-        opacity={0.35}
-        sizeAttenuation
-        depthWrite={false}
-      />
-    </points>
-  );
-}
-
-/** 鼠标跟随的墨水光晕（大尺寸半透明球）*/
-function InkGlow() {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const { pointer } = useThree();
-  const targetPos = useRef(new THREE.Vector3(0, 0, -2));
-
-  useFrame((_, delta) => {
-    if (!meshRef.current) return;
-    // 弹性追踪鼠标：阻尼衰减模拟物理
-    targetPos.current.x = pointer.x * 4;
-    targetPos.current.y = pointer.y * 2.5;
-    meshRef.current.position.lerp(targetPos.current, 1 - Math.pow(0.001, delta));
-  });
-
-  return (
-    <mesh ref={meshRef} position={[0, 0, -2]}>
-      <circleGeometry args={[1.8, 32]} />
-      <meshBasicMaterial
-        color="#D7263D"
-        transparent
-        opacity={0.08}
-        depthWrite={false}
-      />
-    </mesh>
-  );
-}
-
-/** 几个漂浮的手绘风装饰几何（墨点/小方块）*/
-function FloatingDoodles() {
-  const groupRef = useRef<THREE.Group>(null);
-  const { viewport } = useThree();
-
-  const doodles = useMemo(() => {
-    const items = [];
-    const colors = ['#D7263D', '#1B6CA8', '#F4A261', '#2A9D8F'];
-    for (let i = 0; i < 8; i++) {
-      items.push({
-        x: (Math.random() - 0.5) * viewport.width * 2,
-        y: (Math.random() - 0.5) * viewport.height * 2,
-        z: (Math.random() - 0.5) * 3,
-        size: 0.05 + Math.random() * 0.08,
-        color: colors[i % colors.length],
-        rotSpeed: (Math.random() - 0.5) * 0.3,
-        floatSpeed: 0.2 + Math.random() * 0.3,
-        phase: Math.random() * Math.PI * 2,
-        type: i % 3, // 0:circle, 1:triangle, 2:square
-      });
-    }
-    return items;
-  }, [viewport.width, viewport.height]);
-
-  useFrame((state) => {
-    if (!groupRef.current) return;
-    const t = state.clock.elapsedTime;
-    groupRef.current.children.forEach((child, i) => {
-      const d = doodles[i];
-      child.position.y = d.y + Math.sin(t * d.floatSpeed + d.phase) * 0.3;
-      child.position.x = d.x + Math.cos(t * d.floatSpeed * 0.7 + d.phase) * 0.2;
-      child.rotation.z = t * d.rotSpeed;
-    });
-  });
-
-  return (
-    <group ref={groupRef}>
-      {doodles.map((d, i) => (
-        <mesh key={i} position={[d.x, d.y, d.z]} rotation={[0, 0, d.phase]}>
-          {d.type === 0 && <circleGeometry args={[d.size, 16]} />}
-          {d.type === 1 && <circleGeometry args={[d.size, 3]} />}
-          {d.type === 2 && <planeGeometry args={[d.size * 1.4, d.size * 1.4]} />}
-          <meshBasicMaterial color={d.color} transparent opacity={0.4} depthWrite={false} />
-        </mesh>
-      ))}
-    </group>
-  );
-}
+import { useEffect, useRef } from 'react';
 
 export default function PaperBackground() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    // 鼠标视差：网格轻微跟随，营造物理感（阻尼衰减）
+    let raf = 0;
+    let tx = 0, ty = 0, cx = 0, cy = 0;
+    const onMove = (e: MouseEvent) => {
+      tx = (e.clientX / window.innerWidth - 0.5) * 20;
+      ty = (e.clientY / window.innerHeight - 0.5) * 20;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        cx += (tx - cx) * 0.08;
+        cy += (ty - cy) * 0.08;
+        el.style.setProperty('--grid-x', `${cx}px`);
+        el.style.setProperty('--grid-y', `${cy}px`);
+      });
+    };
+    window.addEventListener('mousemove', onMove, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
     <div
-      className="fixed inset-0 -z-10 pointer-events-none"
+      ref={ref}
+      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
       aria-hidden="true"
+      style={{ '--grid-x': '0px', '--grid-y': '0px' } as React.CSSProperties}
     >
-      <Canvas
-        camera={{ position: [0, 0, 5], fov: 60 }}
-        dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true }}
-      >
-        <PaperFibers />
-        <FloatingDoodles />
-        <InkGlow />
-      </Canvas>
+      {/* 基础纯黑底 */}
+      <div className="absolute inset-0 bg-[var(--bg)]" />
+
+      {/* 荧光光斑：模糊大色块，反 AI"极光渐变"——这里用纯色低透明度 */}
+      <div className="absolute -left-[10%] top-[10%] h-[40vw] w-[40vw] rounded-full bg-[var(--accent)] opacity-[0.05] blur-[100px]" />
+      <div className="absolute -right-[10%] bottom-[15%] h-[35vw] w-[35vw] rounded-full bg-[var(--accent-alt)] opacity-[0.06] blur-[100px]" />
+      <div className="absolute left-[30%] top-[60%] h-[30vw] w-[30vw] rounded-full bg-[var(--accent-cyan)] opacity-[0.04] blur-[120px]" />
+
+      {/* 网格底纹：极淡，带鼠标视差 */}
+      <div
+        className="absolute inset-0 opacity-[0.04]"
+        style={{
+          transform: 'translate(var(--grid-x), var(--grid-y))',
+          backgroundImage:
+            'linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)',
+          backgroundSize: '60px 60px',
+        }}
+      />
+
+      {/* 细密次级网格：更小格子，强化层次 */}
+      <div
+        className="absolute inset-0 opacity-[0.02]"
+        style={{
+          transform: 'translate(calc(var(--grid-x) * 0.5), calc(var(--grid-y) * 0.5))',
+          backgroundImage:
+            'linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)',
+          backgroundSize: '20px 20px',
+        }}
+      />
     </div>
   );
 }

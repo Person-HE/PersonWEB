@@ -8,27 +8,27 @@ interface ResourceCardProps {
 }
 
 const categoryColor: Record<string, string> = {
-  个人产品: 'bg-[var(--crimson)] text-[var(--paper-light)]',
-  教程资料: 'bg-[var(--indigo)] text-[var(--paper-light)]',
-  AI资料: 'bg-[var(--violet)] text-[var(--paper-light)]',
+  个人产品: 'bg-[var(--accent-alt)] text-[var(--ink)]',
+  教程资料: 'bg-[var(--accent-cyan)] text-[var(--bg)]',
+  AI资料: 'bg-[var(--accent)] text-[var(--bg)]',
 };
 
 export default function ResourceCard({ resource, compact = false }: ResourceCardProps) {
   return (
-    <div className="hand-card ink-spread group flex h-full flex-col p-5">
+    <div className="hand-card rgb-shift group flex h-full flex-col p-5">
       {/* 顶部：图标 + 标签 */}
       <div className="mb-3 flex items-start gap-3">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 border-[var(--ink)] bg-[var(--paper)] shadow-[2px_2px_0_var(--ink)]">
-          <FileText className="h-5 w-5 text-[var(--ink-soft)]" />
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center border-2 border-[var(--ink)] bg-[var(--bg-surface)] shadow-[2px_2px_0_var(--ink)]">
+          <FileText className="h-5 w-5 text-[var(--accent)]" />
         </div>
         <div className="min-w-0 flex-1">
-          <h3 className="line-clamp-1 font-hand-title text-base text-[var(--ink)]">
+          <h3 className="line-clamp-1 font-display text-base text-[var(--ink)]">
             {resource.title}
           </h3>
           <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
             <span
-              className={`rounded-md border-2 border-[var(--ink)] px-2 py-0.5 text-[10px] font-bold ${
-                categoryColor[resource.category] ?? 'bg-[var(--paper-light)] text-[var(--ink)]'
+              className={`border-2 border-[var(--ink)] px-2 py-0.5 font-mono text-[10px] font-bold ${
+                categoryColor[resource.category] ?? 'bg-[var(--bg-elevated)] text-[var(--ink)]'
               }`}
             >
               {resource.category}
@@ -37,12 +37,12 @@ export default function ResourceCard({ resource, compact = false }: ResourceCard
               <span className="hand-tag">{resource.subCategory}</span>
             ) : null}
             {resource.isNew ? (
-              <span className="rounded-md border-2 border-[var(--ink)] bg-[var(--teal)] px-2 py-0.5 text-[10px] font-bold text-[var(--paper-light)]">
+              <span className="border-2 border-[var(--ink)] bg-[var(--accent-cyan)] px-2 py-0.5 font-mono text-[10px] font-bold text-[var(--bg)]">
                 NEW
               </span>
             ) : null}
             {resource.isHot ? (
-              <span className="rounded-md border-2 border-[var(--ink)] bg-[var(--mustard)] px-2 py-0.5 text-[10px] font-bold text-[var(--ink)]">
+              <span className="border-2 border-[var(--ink)] bg-[var(--accent)] px-2 py-0.5 font-mono text-[10px] font-bold text-[var(--bg)]">
                 HOT
               </span>
             ) : null}
@@ -50,7 +50,7 @@ export default function ResourceCard({ resource, compact = false }: ResourceCard
         </div>
       </div>
 
-      <p className={`mb-4 font-hand-body text-sm leading-relaxed text-[var(--ink-soft)] ${compact ? 'line-clamp-2' : 'line-clamp-3'}`}>
+      <p className={`mb-4 font-mono text-xs leading-relaxed text-[var(--ink-soft)] ${compact ? 'line-clamp-2' : 'line-clamp-3'}`}>
         {resource.description}
       </p>
 
@@ -59,10 +59,10 @@ export default function ResourceCard({ resource, compact = false }: ResourceCard
           href={resource.videoUrl}
           target="_blank"
           rel="noreferrer"
-          className="mb-4 flex items-center gap-2 rounded-lg border-2 border-[var(--indigo)] bg-[var(--indigo)]/10 px-3 py-2 font-hand-body text-xs text-[var(--indigo)] transition-colors hover:bg-[var(--indigo)]/20"
+          className="mb-4 flex items-center gap-2 border-2 border-[var(--accent-cyan)] bg-[var(--accent-cyan)]/10 px-3 py-2 font-mono text-xs text-[var(--accent-cyan)] transition-colors hover:bg-[var(--accent-cyan)]/20"
         >
           <PlayCircle className="h-4 w-4 shrink-0" />
-          <span className="line-clamp-1">抖音视频</span>
+          <span className="line-clamp-1">{'>'} 抖音视频</span>
         </a>
       ) : null}
 

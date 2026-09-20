@@ -1,5 +1,6 @@
 import { json, getCollection, setCollection, hashPassword } from '../_helper';
 import type { APIContext, UserRecord } from '../_helper';
+import { PROFILE_KEY } from './profile';
 
 async function createAdmin(env: any, results: Record<string, string>) {
   const users = await getCollection(env.KV, 'users');
@@ -42,23 +43,38 @@ function checkKey(request: Request, env: any): boolean {
   return !!env.SETUP_KEY && key === env.SETUP_KEY;
 }
 
-// POST: 直接传入种子数据 { resources: [...], tools: [...], services: [...] }
+// POST: 直接传入种子数据 { resources: [...], tools: [...], services: [...], portfolio: [...], profile: {...} }
 export async function onRequestPost(context: APIContext): Promise<Response> {
   const { request, env } = context;
   if (!checkKey(request, env)) {
     return json({ error: '密钥错误' }, 403);
   }
 
-  const body = await request.json() as Record<string, any[]>;
+  const body = await request.json() as Record<string, any>;
   const results: Record<string, string> = {};
 
   await createAdmin(env, results);
 
-  for (const collection of ['resources', 'tools', 'services']) {
+  for (const collection of ['resources', 'tools', 'services', 'portfolio']) {
     await importCollection(env, collection, body[collection] || [], results);
   }
+  await importProfile(env, body.profile, results);
 
   return json({ message: '初始化完成', results });
+}
+
+async function importProfile(env: any, profile: any, results: Record<string, string>) {
+  if (!profile || typeof profile !== 'object') {
+    results.profile = '无数据';
+    return;
+  }
+  const existing = await env.KV.get(PROFILE_KEY, 'json');
+  if (existing) {
+    results.profile = '已存在，跳过';
+    return;
+  }
+  await env.KV.put(PROFILE_KEY, JSON.stringify({ ...profile, id: 'me', updatedAt: new Date().toISOString() }));
+  results.profile = '导入成功';
 }
 
 // GET: 尝试从静态文件加载（备用）
@@ -77,6 +93,7 @@ export async function onRequestGet(context: APIContext): Promise<Response> {
     { collection: 'resources', path: '/data/resources.json' },
     { collection: 'tools', path: '/data/tools.json' },
     { collection: 'services', path: '/data/services.json' },
+    { collection: 'portfolio', path: '/data/portfolio.json' },
   ];
 
   for (const { collection, path } of seedFiles) {
@@ -97,6 +114,17 @@ export async function onRequestGet(context: APIContext): Promise<Response> {
     } catch (e: any) {
       results[collection] = `错误: ${e.message}`;
     }
+  }
+
+  try {
+    const resp = await fetch(`${baseUrl}/data/profile.json`);
+    if (resp.ok && !resp.headers.get('content-type')?.includes('text/html')) {
+      await importProfile(env, await resp.json(), results);
+    } else {
+      results.profile = '静态文件不可用';
+    }
+  } catch (e: any) {
+    results.profile = `错误: ${e.message}`;
   }
 
   return json({ message: '初始化完成（GET模式）', results });
