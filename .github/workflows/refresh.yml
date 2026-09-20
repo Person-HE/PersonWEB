@@ -1,0 +1,20 @@
+name: hourly-refresh
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping-cron:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Trigger site /cron (refresh GitHub + blog snapshots)
+        env:
+          KEY: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$KEY" ]; then echo "请在 GitHub 仓库 Settings→Secrets→Actions 添加 CRON_SECRET"; exit 1; fi
+          curl -sf --max-time 60 "https://person-web-cwf.pages.dev/cron?key=$KEY" | head -c 500
+          echo
+          echo "done"
