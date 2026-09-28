@@ -288,10 +288,10 @@
     "slug": "personweb",
     "name": "本站 · 阿维的个人 IP 站",
     "tagline": "你正在看的网站：作品集×博客×GitHub 数据级串联，零成本全栈",
-    "status": "维护中",
+    "status": "已上线",
     "category": "site",
     "repo": "PersonWEB",
-    "demoUrl": null,
+    "demoUrl": "https://person-web-cwf.pages.dev",
     "coverImage": null,
     "screenshots": [],
     "techStack": ["React", "TypeScript", "Cloudflare Pages + Functions + KV + Cron"],
@@ -317,6 +317,166 @@
     "isFeatured": false,
     "published": true,
     "createdAt": "2026-09-20",
-    "updatedAt": "2026-09-20"
+    "updatedAt": "2026-09-28"
+  },
+  {
+    "id": "material-fetcher",
+    "slug": "material-fetcher",
+    "name": "Material Fetcher",
+    "tagline": "科普文案→LLM分镜→多智能体自动获取/生成全部素材：手绘渲染、白名单爬取、ComfyUI 生图三渠道编排",
+    "status": "已完成",
+    "category": "desktop",
+    "repo": null,
+    "demoUrl": null,
+    "coverImage": null,
+    "screenshots": [],
+    "techStack": ["Python", "PyQt5", "pydantic", "Playwright", "ComfyUI", "LLM 编排"],
+    "role": "独立完成",
+    "period": "2026",
+    "problem": "科普视频需要图表示意、手绘图、写实素材等多类素材，逐个手搜手下载，素材采集吃掉了大半产能。",
+    "solution": "输入一整段科普文案，StoryboardAnalyzer（LLM）先分镜，OrchestratorAgent 分析每个素材该走哪个渠道再分派：WebCreateAgent 调自研 webcreate CLI 产手绘图，ScraperAgent 用 Playwright 在三站白名单内爬示意图，ComfyUIAgent 走本地生图产写实素材。输出 fetch_report + deliverables + preview.html，全程 GUI（PyQt5）与 CLI 双入口。私有仓库，本地交付。",
+    "highlights": [
+      { "title": "缺素材不编造", "desc": "渠道产不出时上报 needs_data，由人定夺，而不是塞占位图" },
+      { "title": "白名单爬取", "desc": "ScraperAgent 限定三站来源，采集范围可审计" }
+    ],
+    "decisions": [
+      {
+        "question": "Agent 编排为什么按「先分析再分派」而不是各自抢活？",
+        "choice": "OrchestratorAgent 统一做渠道分析、依赖分发、失败归因",
+        "reason": "三个渠道成本和能力不同（手绘/爬取/生图），让执行体自己决定来源会导致同一需求随机走不同路径，结果不可复现。"
+      }
+    ],
+    "metrics": [
+      { "label": "冒烟测试", "value": "6 通过 · 0 失败", "source": "仓库 README 实测记录（2026-09-17，Windows 11）" },
+      { "label": "渠道探测", "value": "scraper=True · comfyui=True", "source": "同上 README 采集记录" }
+    ],
+    "relatedPosts": [],
+    "relatedFiles": [],
+    "ctaServiceId": null,
+    "isFeatured": false,
+    "published": true,
+    "createdAt": "2026-09-28",
+    "updatedAt": "2026-09-28"
+  },
+  {
+    "id": "know",
+    "slug": "know",
+    "name": "Know 个人知识库",
+    "tagline": "单机本地 AI 知识管理：多格式文档解析、知识图谱、AI 问答、可续传任务，数据不出机",
+    "status": "已完成",
+    "category": "desktop",
+    "repo": null,
+    "demoUrl": null,
+    "coverImage": null,
+    "screenshots": [],
+    "techStack": ["React 18", "Electron", "Express", "SQLite + sqlite-vec", "transformers.js", "tesseract.js"],
+    "role": "独立完成",
+    "period": "2026",
+    "problem": "笔记越积越多却查不动：剪藏式摘要把文章压成失去结构的碎片，回答问题时模型根本不知道我读过什么。",
+    "solution": "Electron 桌面 UI 与 CLI 双客户端，统一经 HTTP 调同一个本地 Express 服务：PDF/Word/图片(OCR)/网页多格式解析，SQLite + sqlite-vec 做向量检索，Cytoscape 知识图谱可视化，AI 问答带来源，长任务可续传。理解式摘要抽取主张/边界/关键洞见（claim/boundary/insights 字段）沉淀为结构化知识卡。嵌入与 OCR 全部本地跑（transformers.js / tesseract.js），数据不出机器。私有仓库，本地打包交付。",
+    "highlights": [
+      { "title": "数据不出机", "desc": "向量库、图谱、模型推理全在本地，无任何云端数据面" },
+      { "title": "双客户端同服务面", "desc": "Electron UI 与 CLI 复用同一本地 Express，行为一致可脚本化" },
+      { "title": "理解式摘要", "desc": "不是缩写，是抽取 claim/boundary/insights 结构化知识卡" }
+    ],
+    "decisions": [
+      {
+        "question": "UI 和 CLI 各做一套逻辑，还是共用服务层？",
+        "choice": "都作薄客户端，调同一本地 Express 服务",
+        "reason": "知识写入路径只有一份才能保证图谱和向量库的一致性；CLI 能做的 UI 必须都能做，反之亦然。"
+      }
+    ],
+    "metrics": [
+      { "label": "Vitest 测试", "value": "5 文件 · 30 用例全通过（15.9s）", "source": "仓库 README 实测记录（2026-09-19）" },
+      { "label": "Typecheck", "value": "四套配置 0 error", "source": "仓库 README" },
+      { "label": "需求/设计文档", "value": "27 份", "source": "仓库 README 文档索引" }
+    ],
+    "relatedPosts": [],
+    "relatedFiles": [],
+    "ctaServiceId": null,
+    "isFeatured": false,
+    "published": true,
+    "createdAt": "2026-09-28",
+    "updatedAt": "2026-09-28"
+  },
+  {
+    "id": "mediasop",
+    "slug": "mediasop",
+    "name": "MediaSOP 自媒体运营系统",
+    "tagline": "自媒体创作全流程 SOP 智能体平台：热点采集→内容分析→选题→创作→发布→数据面板→账号定位 7 模块，多智能体有界并行",
+    "status": "已完成",
+    "category": "desktop",
+    "repo": null,
+    "demoUrl": null,
+    "coverImage": null,
+    "screenshots": [],
+    "techStack": ["React", "Vite", "Electron", "Python", "Playwright"],
+    "role": "独立完成",
+    "period": "2026",
+    "problem": "一人做自媒体，选题、写稿、发布、复盘全靠手工切换工具，流程没有系统兜底，产能和稳定性都上不去。",
+    "solution": "Electron 桌面应用 + Python 本地后端（打包进便携版，监听 127.0.0.1:8770），按 7 大模块固化创作 SOP：热点采集(3)、内容分析(5)、选题策划(4)、内容创作(4)、发布运营、数据面板(4)、账号定位(5)。多智能体层在 llm/multi_agent.py：Agent 声明→依赖图分波→有界并行，跨模块全景数据层让每个 Agent 看到全账号上下文再动作。已产出 Windows 1.0.0 便携版 exe。",
+    "highlights": [
+      { "title": "SOP 即产品", "desc": "把一人公司的操作流程固化成模块，而不是又一个散工具" },
+      { "title": "有界并行", "desc": "Agent 依赖图分波执行，并发可控、结果可追溯" }
+    ],
+    "decisions": [
+      {
+        "question": "文档驱动怎么落地？",
+        "choice": "docs 留 13 份过程文档：功能重构蓝图、多智能体架构与数据一致性、端到端质量审计报告、逐功能真人操作审查",
+        "reason": "「人写文档、AI 写代码」的方法论在自己的产品上执行：7 模块蓝图先定边界，再让实现和审计对着蓝图走。"
+      }
+    ],
+    "metrics": [
+      { "label": "打包产物", "value": "MediaSOP-1.0.0-portable.exe（Electron + PyInstaller 后端）", "source": "仓库 dist/ 目录（2026-09-28 实测存在）" },
+      { "label": "功能模块", "value": "7 大模块", "source": "docs/功能重构蓝图_7模块_2026-09-23.md" },
+      { "label": "过程文档", "value": "13 份", "source": "仓库 docs/ 目录" }
+    ],
+    "relatedPosts": [],
+    "relatedFiles": [],
+    "ctaServiceId": null,
+    "isFeatured": false,
+    "published": true,
+    "createdAt": "2026-09-28",
+    "updatedAt": "2026-09-28"
+  },
+  {
+    "id": "study-loop",
+    "slug": "study-loop",
+    "name": "学习闭环系统",
+    "tagline": "面试知识闭环：真实 AI 出题→作答→关键点裁决评分→缺口入库→SM-2 间隔重复调度，每天 2~4 分钟",
+    "status": "已完成",
+    "category": "web-app",
+    "repo": null,
+    "demoUrl": null,
+    "coverImage": null,
+    "screenshots": [],
+    "techStack": ["React", "Vite", "Node.js", "Express", "SM-2 算法", "Agnes AI"],
+    "role": "独立完成",
+    "period": "2026",
+    "problem": "刷笔记复习没有反馈闭环：答得好不好没人裁，该复习什么全凭感觉，518 份知识库文档背了又忘。",
+    "solution": "全栈自用系统（React + Node/Express，21 个 API 端点）：真实 AI（agnes-2.5-flash）从后端知识库出题，作答后由评分裁决——v3 起用关键点覆盖 M/N 制（判「说到没说到」），六维权重 25/25/20/15/10/5 降为旁注；未达标内容自动进六标签缺口库，按 SM-2（R=e^(−Δt/S)）排复习队列，每日 2~4 分钟、队列 ≤5 题。含简历与项目面试模块。本地 Express 托管 client/dist 即可运行。",
+    "highlights": [
+      { "title": "闭环可验证", "desc": "出题→评分→缺口→复习每一环都有数据和界面，README 留全链路验收表" },
+      { "title": "裁决制评分", "desc": "从主观六维打分转向关键点覆盖 M/N 裁决，评分标准可复核" }
+    ],
+    "decisions": [
+      {
+        "question": "评分用主观多维打分还是可复核标准？",
+        "choice": "v3：关键点覆盖 M/N 裁决制为主，六维分作旁注",
+        "reason": "「答得好」不可审计，「该说的点说没说到」可审计；评分标准换了，缺口判定和复习调度才可信。"
+      }
+    ],
+    "metrics": [
+      { "label": "API 端点", "value": "21", "source": "项目 README（routes.js 路由清单）" },
+      { "label": "真实 AI 出题 E2E", "value": "5/5 · 8 视图 0 控制台错误", "source": "项目 README 验收记录" },
+      { "label": "复习调度", "value": "SM-2，R=e^(−Δt/S)", "source": "项目 README" }
+    ],
+    "relatedPosts": [],
+    "relatedFiles": [],
+    "ctaServiceId": null,
+    "isFeatured": false,
+    "published": true,
+    "createdAt": "2026-09-28",
+    "updatedAt": "2026-09-28"
   }
 ]

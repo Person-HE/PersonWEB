@@ -33,7 +33,7 @@ export const SERVICE_TYPES: ServiceTypeMeta[] = [
     id: 'custom',
     name: '定制服务',
     description: '针对你的具体场景，量身定制AI解决方案。不是通用模板，是为你量身打造的。',
-    priceRange: '29.9 元起',
+    priceRange: '29.9 元起 · 定制开发 2000+ 元',
   },
   {
     id: 'product-pro',
