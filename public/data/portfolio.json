@@ -491,5 +491,97 @@
     "published": true,
     "createdAt": "2026-09-28",
     "updatedAt": "2026-09-28"
+  },
+  {
+    "id": "webmanager",
+    "slug": "webmanager",
+    "name": "WebManager 产品统一管理控制台",
+    "tagline": "散在 D:\\project 下的二十多个项目收进一个 Electron 控制台：扫描批量建档、四条构建流水线、五种部署目标，部署成功自动回写项目档案",
+    "status": "已完成",
+    "category": "desktop",
+    "repo": null,
+    "demoUrl": null,
+    "coverImage": null,
+    "screenshots": [],
+    "techStack": ["React", "TypeScript", "Vite", "Electron", "electron-builder", "ssh2", "Zustand"],
+    "role": "独立完成",
+    "period": "2026",
+    "problem": "项目越做越多之后管不过来：代码在十几个目录里，部署散在四个托管平台和自己的 VPS 上，访问地址、构建状态、功能清单各有一套。「项目智库」和「部署上线」是两份互不相认的数据——关联字段 localProjectId 定义了却从没被写入，部署成功也不会回写档案状态。",
+    "solution": "一套 Electron 桌面应用把两侧缝起来：扫描 D:\\project 批量登记本地项目与智库档案（嵌套子包按「祖先已是项目」过滤，app/electron 这类通用目录名回退父目录名，重名再拼上级）；部署编排 src/lib/orchestrator/deploy.ts 按 docker / nodejs / spring-boot / static-site 四条流水线构建，目标覆盖 Cloudflare Pages、GitHub Pages、Netlify、Vercel 与 VPS SSH；部署与回滚成功后回写智库 status 与 demoUrl 形成闭环。凭证、git、ssh、docker、扫描各自拆成 electron/services 下的独立服务模块。",
+    "highlights": [
+      { "title": "闭环回写", "desc": "部署成功即回写智库状态与访问地址，档案不会停在「上次手动记的那版」" },
+      { "title": "扫描即建档", "desc": "一键把真实项目登记为本地项目 + 智库档案，并按部署配置推断上线状态" },
+      { "title": "多平台一个口", "desc": "四个静态托管平台加自建 VPS 在同一套流水线与历史视图下操作" }
+    ],
+    "decisions": [
+      {
+        "question": "智库档案与本地项目靠什么关联？",
+        "choice": "localProjectId 为唯一链接键，规范化路径作辅助匹配",
+        "reason": "纯按名称匹配会把无关档案误绑（重名项目真实存在）；收敛为 id/path 优先，只在「同名且未绑他人」时兜底。"
+      },
+      {
+        "question": "批量扫描怎么处理子包与重名？",
+        "choice": "祖先已是项目则跳过；通用目录名回退父目录，重名拼上级",
+        "reason": "Note-Plan/electron、zhiyuanFlow/miniprogram 会被当成独立项目重复建档；Tool\\sensenova-proxy 需拼成 Tool-sensenova-proxy 才唯一。"
+      }
+    ],
+    "metrics": [
+      { "label": "闭环验证", "value": "22 项目全关联 · 9 个推断已上线", "source": "docs/compose/spec/hub-deploy-loop.md（node scripts/verify-hub-deploy-loop.cjs，2026-09-19）" },
+      { "label": "源码规模", "value": "100 文件 · 18,949 行", "source": "src/ 与 electron/ 实测统计（2026-09-29）" },
+      { "label": "部署目标 / 流水线", "value": "5 种 / 4 条", "source": "src/lib/providers、src/lib/pipelines 模块清单" },
+      { "label": "打包产物", "value": "产品统一管理控制台-1.0.0-portable.exe", "source": "release2/ 构建输出" }
+    ],
+    "relatedPosts": [],
+    "relatedFiles": [],
+    "ctaServiceId": null,
+    "isFeatured": false,
+    "published": true,
+    "createdAt": "2026-09-29",
+    "updatedAt": "2026-09-29"
+  },
+  {
+    "id": "sensenova-proxy",
+    "slug": "sensenova-proxy",
+    "name": "SenseNova 本地中转站",
+    "tagline": "把 5 个免费模型缝成一个 OpenAI 兼容端点：轮询负载均衡 + 429 指数退避自动切换 + SSE 流式，本地一个端口喂饱所有工具",
+    "status": "已完成",
+    "category": "backend",
+    "repo": null,
+    "demoUrl": null,
+    "coverImage": null,
+    "screenshots": [],
+    "techStack": ["Node.js", "Express", "原生 https", "SSE"],
+    "role": "独立完成",
+    "period": "2026",
+    "problem": "免费模型单个限流很凶，工具里只配一个模型名就会被 429 打死。要的是一个「不拒绝请求」的本地端点，让配了它的工具一直能跑下去。",
+    "solution": "Node + Express 起 OpenAI 兼容层（/v1/chat/completions、/v1/models、/health、/status）：ModelBalancer 在 5 个免费模型间轮询，命中 429 就进指数退避冷却并最多切换 3 次重试；上游用原生 https 模块而不是 axios（实测 axios 在该上游报 EPROTO）；额度监控、限流、排队各拆成独立模块，GET /status 实时看每个模型的健康与冷却状态。",
+    "highlights": [
+      { "title": "不设全局并发上限", "desc": "不拒绝任何请求，只靠切换模型把限流消化在代理层" },
+      { "title": "状态可观测", "desc": "/status 直接暴露各模型健康度与冷却，出问题不用猜" }
+    ],
+    "decisions": [
+      {
+        "question": "限流来了是排队拒请求，还是换模型？",
+        "choice": "无全局并发限制，429 触发模型切换 + 指数退避冷却",
+        "reason": "目标是让工具一直能跑：拒请求等于把错误抛回客户端，换模型才是把限流消化掉。"
+      },
+      {
+        "question": "上游请求用 axios 还是原生 https？",
+        "choice": "原生 https 模块",
+        "reason": "实测 axios 在该上游出现 EPROTO，换原生模块后稳定。"
+      }
+    ],
+    "metrics": [
+      { "label": "压测", "value": "15 并发 15/15 成功 · 0 个 503", "source": "项目 README 实测记录 + test-stress.js" },
+      { "label": "轮询模型", "value": "5 个免费模型 · 最多切换 3 次", "source": "README + src/baliancer.js、src/retry.js" },
+      { "label": "源码规模", "value": "8 文件 · 758 行", "source": "wc -l 实测（2026-09-29）" }
+    ],
+    "relatedPosts": [],
+    "relatedFiles": [],
+    "ctaServiceId": null,
+    "isFeatured": false,
+    "published": true,
+    "createdAt": "2026-09-29",
+    "updatedAt": "2026-09-29"
   }
 ]

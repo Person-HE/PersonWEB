@@ -30,8 +30,9 @@ export default function Enterprise() {
     loadAll();
   }, [loadAll]);
 
+  // 企业服务条目：type=enterprise 或约定的 custom-enterprise-ai
   const enterpriseServices = useMemo(() => {
-    return services.filter((s) => s.type === 'enterprise');
+    return services.filter((s) => s.type === 'enterprise' || s.id === 'custom-enterprise-ai');
   }, [services]);
 
   const heroRef = useElasticEnter<HTMLDivElement>([], { y: 40, delay: 0.1 });

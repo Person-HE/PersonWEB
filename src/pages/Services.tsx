@@ -95,7 +95,7 @@ export default function Services() {
 
   // 企业服务价格从 services 集合读取，不硬编码
   const enterpriseService = useMemo(
-    () => services.find((s) => s.type === 'enterprise') || null,
+    () => services.find((s) => s.type === 'enterprise' || s.id === 'custom-enterprise-ai') || null,
     [services],
   );
 
@@ -104,7 +104,7 @@ export default function Services() {
       <PaperBackground />
       <Seo
         title="技术服务"
-        description={`${siteConfig.name}的技术服务：提示词与 Skills 定制、软件开发（Web / 桌面端 / 小程序）、工作流自动化、PPT 代做、AI 绘画、Agent 智能体搭建。搞不定不收费，验收不通过不收尾款。`}
+        description={`${siteConfig.name}的技术服务：提示词与 Skills 定制、软件开发（Web / 桌面端 / 小程序）、工作流自动化、PPT 代做、AI 绘画、Agent 智能体搭建、企业 AI 落地。搞不定不收费，验收不通过不收尾款。`}
         path="/services"
       />
 
