@@ -136,7 +136,7 @@
       { "label": "冷缓存首屏", "value": "首传约 269KB · load 2.33s", "source": "README 实测记录（部署站冷缓存）" }
     ],
     "relatedPosts": [
-      { "label": "Agent Harness 驾驭工程", "url": "https://person-he.github.io/2026-06-30/Agent-Harness-Engineering驾驭工程/" }
+      { "label": "Agent Harness 驾驭工程", "url": "https://person-he.github.io/2026/06/30/Agent-Harness-Engineering驾驭工程/" }
     ],
     "relatedFiles": [{ "label": "源码仓库", "url": "https://github.com/Person-HE/AutoEdit" }],
     "ctaServiceId": null,
@@ -233,7 +233,7 @@
       { "label": "引擎实渲染证明", "value": "22 个动效格 + Spring 循环依赖场景帧图", "source": "app/scripts/render_proof.mjs（headless 跑引擎 bundle，输出 scripts/_render/，README 已展示）" }
     ],
     "relatedPosts": [
-      { "label": "Agent Harness 驾驭工程", "url": "https://person-he.github.io/2026-06-30/Agent-Harness-Engineering驾驭工程/" }
+      { "label": "Agent Harness 驾驭工程", "url": "https://person-he.github.io/2026/06/30/Agent-Harness-Engineering驾驭工程/" }
     ],
     "relatedFiles": [
       { "label": "源码仓库", "url": "https://github.com/Person-HE/jimu-mg" },
@@ -293,11 +293,11 @@
       { "label": "LLM 熔断 / 评论索引", "value": "~1.6s → 8ms（-99.5%）· EXPLAIN rows=50 无 filesort vs 全表 397,293", "source": "同上 8.7~8.9（matrix_fresh_aux.csv、fresh_explain_comment.txt）" }
     ],
     "relatedPosts": [
-      { "label": "知源项目总览和架构设计", "url": "https://person-he.github.io/2026-09-17/知源项目总览和架构设计/" },
-      { "label": "项目全景图", "url": "https://person-he.github.io/2026-09-17/项目全景图/" },
-      { "label": "项目起源与设计初衷", "url": "https://person-he.github.io/2026-09-17/项目起源与设计初衷/" },
-      { "label": "核心代码的设计取舍", "url": "https://person-he.github.io/2026-09-17/核心代码的设计取舍/" },
-      { "label": "真实性能采集：多级缓存开环 A/B 量化", "url": "https://person-he.github.io/2026-09-17/知源Flow社区平台做真实性能采集/" }
+      { "label": "知源项目总览和架构设计", "url": "https://person-he.github.io/2026/09/17/知源项目总览和架构设计/" },
+      { "label": "项目全景图", "url": "https://person-he.github.io/2026/09/17/项目全景图/" },
+      { "label": "项目起源与设计初衷", "url": "https://person-he.github.io/2026/09/17/项目起源与设计初衷/" },
+      { "label": "核心代码的设计取舍", "url": "https://person-he.github.io/2026/09/17/核心代码的设计取舍/" },
+      { "label": "真实性能采集：多级缓存开环 A/B 量化", "url": "https://person-he.github.io/2026/09/17/知源Flow社区平台做真实性能采集/" }
     ],
     "relatedFiles": [
       { "label": "前端仓库", "url": "https://github.com/Person-HE/zhiyuanFlow" },
