@@ -58,8 +58,13 @@
     "category": "web-app",
     "repo": "Note-Plan",
     "demoUrl": "https://note-plan-bwm.pages.dev",
-    "coverImage": null,
-    "screenshots": [],
+    "coverImage": "/showcase-real/NotePlan/notes.png",
+    "screenshots": [
+      "/showcase-real/NotePlan/notes.png",
+      "/showcase-real/NotePlan/tasks.png",
+      "/showcase-real/NotePlan/inspiration.png",
+      "/showcase-real/NotePlan/statistics.png"
+    ],
     "techStack": ["TypeScript", "TipTap", "IndexedDB/Dexie", "PWA", "WebDAV", "Electron/Capacitor"],
     "role": "独立完成",
     "period": "2026",
@@ -101,8 +106,12 @@
     "category": "web-app",
     "repo": "AutoEdit",
     "demoUrl": "https://nanoedit-pro.pages.dev",
-    "coverImage": null,
-    "screenshots": [],
+    "coverImage": "/showcase-real/AutoEdit/director.png",
+    "screenshots": [
+      "/showcase-real/AutoEdit/director.png",
+      "/showcase-real/AutoEdit/dashboard.png",
+      "/showcase-real/AutoEdit/templates.png"
+    ],
     "techStack": ["React 19", "Vite 6", "MediaPipe", "WebAudio", "Jest"],
     "role": "独立完成",
     "period": "2026",
@@ -145,8 +154,12 @@
     "category": "web-app",
     "repo": "webcreate",
     "demoUrl": "https://webcreate.pages.dev",
-    "coverImage": null,
-    "screenshots": [],
+    "coverImage": "/showcase-real/webcreate/brushes.png",
+    "screenshots": [
+      "/showcase-real/webcreate/brushes.png",
+      "/showcase-real/webcreate/layers.png",
+      "/showcase-real/webcreate/canvas.png"
+    ],
     "techStack": ["TypeScript", "React", "Canvas", "rough.js", "Playwright"],
     "role": "独立完成",
     "period": "2026",

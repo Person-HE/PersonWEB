@@ -20,41 +20,31 @@ const SERVICE_SECTIONS: {
   types: ServiceType[];
 }[] = [
   {
-    key: 'tool-config',
-    eyebrow: '01 / 工具配置',
-    title: '工具配置服务',
-    desc: '远程帮你安装、配置、调试各种AI工具。你不用折腾，我来搞定。',
-    types: ['tool-config'],
-  },
-  {
-    key: 'ai-output',
-    eyebrow: '02 / AI成品',
-    title: 'AI成品代做',
-    desc: '你说需求，我出成品。不教你用AI，直接给你AI做好的东西。',
-    types: ['ai-output'],
-  },
-  {
     key: 'custom',
-    eyebrow: '03 / 定制开发',
+    eyebrow: '01 / 定制开发',
     title: '定制服务',
-    desc: '针对你的具体场景，量身定制AI解决方案。不是通用模板，是为你量身打造的。',
+    desc: '提示词与 Skills 定制、软件开发（Web / 桌面端 / 小程序）、Agent 智能体搭建。针对你的具体场景，不是通用模板。',
     types: ['custom'],
   },
   {
-    key: 'product-automation',
-    eyebrow: '04 / 产品与自动化',
-    title: '产品与自动化',
-    desc: '我自己做的AI产品、付费工具，以及能把重复工作自动化的流水线。',
-    types: ['product-pro', 'product', 'automation'],
+    key: 'automation',
+    eyebrow: '02 / 自动化',
+    title: '工作流自动化',
+    desc: '把你每天重复的那套动作接成一条能自己跑的流程，人工只做终审。',
+    types: ['automation'],
+  },
+  {
+    key: 'ai-output',
+    eyebrow: '03 / AI成品',
+    title: 'AI成品代做',
+    desc: '你说需求，我出成品。不教你用AI，直接给你AI做好的东西。',
+    types: ['ai-output'],
   },
 ];
 
 function sectionKeyForType(type: ServiceType | null): string {
   if (!type) return '';
-  if (type === 'tool-config' || type === 'ai-output' || type === 'custom') return type;
-  if (type === 'product-pro' || type === 'product' || type === 'automation') {
-    return 'product-automation';
-  }
+  if (type === 'custom' || type === 'automation' || type === 'ai-output') return type;
   return '';
 }
 
@@ -85,10 +75,9 @@ export default function Services() {
 
   const grouped = useMemo(() => {
     const map: Record<string, Service[]> = {
-      'tool-config': [],
-      'ai-output': [],
       custom: [],
-      'product-automation': [],
+      automation: [],
+      'ai-output': [],
     };
     services.forEach((s) => {
       SERVICE_SECTIONS.forEach((sec) => {
@@ -115,7 +104,7 @@ export default function Services() {
       <PaperBackground />
       <Seo
         title="技术服务"
-        description={`${siteConfig.name}的技术服务：工具配置、AI 成品代做、定制开发、自动化流水线与企业 AI 落地。搞不定不收费，验收不通过不收尾款。`}
+        description={`${siteConfig.name}的技术服务：提示词与 Skills 定制、软件开发（Web / 桌面端 / 小程序）、工作流自动化、PPT 代做、AI 绘画、Agent 智能体搭建。搞不定不收费，验收不通过不收尾款。`}
         path="/services"
       />
 
@@ -191,39 +180,41 @@ export default function Services() {
           </div>
         )}
 
-        {/* 企业服务单独引导 */}
-        <div className="mt-20">
-          <Link
-            to="/enterprise"
-            className="hand-card-gold rgb-shift group flex flex-col items-center justify-between gap-4 p-6 sm:flex-row"
-            style={{ transform: 'rotate(0.5deg)' }}
-          >
-            <div className="flex items-center gap-4">
-              <div className="flex h-14 w-14 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent)] text-[var(--bg)] shadow-[3px_3px_0_var(--ink)]">
-                <Building2 className="h-7 w-7" />
-              </div>
-              <div>
-                <h3
-                  className="font-display text-xl font-bold text-[var(--ink)] glitch-text"
-                  data-text="企业AI落地服务"
-                >
-                  企业AI落地服务
-                </h3>
-                <p className="mt-1 font-mono text-sm text-[var(--ink-soft)]">
-                  <span className="text-[var(--accent)]">{'>'}</span> 不卖概念不写PPT，帮企业把AI装到每个工位上
-                </p>
-                {enterpriseService?.priceRange ? (
-                  <p className="mt-1 font-mono text-sm font-bold text-[var(--accent)]">
-                    <span className="text-[var(--ink-mute)]">$</span> {enterpriseService.priceRange}
+        {/* 企业服务单独引导：仅当 services 数据里仍有 enterprise 项时出现 */}
+        {enterpriseService ? (
+          <div className="mt-20">
+            <Link
+              to="/enterprise"
+              className="hand-card-gold rgb-shift group flex flex-col items-center justify-between gap-4 p-6 sm:flex-row"
+              style={{ transform: 'rotate(0.5deg)' }}
+            >
+              <div className="flex items-center gap-4">
+                <div className="flex h-14 w-14 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent)] text-[var(--bg)] shadow-[3px_3px_0_var(--ink)]">
+                  <Building2 className="h-7 w-7" />
+                </div>
+                <div>
+                  <h3
+                    className="font-display text-xl font-bold text-[var(--ink)] glitch-text"
+                    data-text="企业AI落地服务"
+                  >
+                    企业AI落地服务
+                  </h3>
+                  <p className="mt-1 font-mono text-sm text-[var(--ink-soft)]">
+                    <span className="text-[var(--accent)]">{'>'}</span> 不卖概念不写PPT，帮企业把AI装到每个工位上
                   </p>
-                ) : null}
+                  {enterpriseService.priceRange ? (
+                    <p className="mt-1 font-mono text-sm font-bold text-[var(--accent)]">
+                      <span className="text-[var(--ink-mute)]">$</span> {enterpriseService.priceRange}
+                    </p>
+                  ) : null}
+                </div>
               </div>
-            </div>
-            <span className="hand-btn hand-btn-gold shrink-0 text-sm">
-              查看详细方案 <ArrowRight className="h-4 w-4" />
-            </span>
-          </Link>
-        </div>
+              <span className="hand-btn hand-btn-gold shrink-0 text-sm">
+                查看详细方案 <ArrowRight className="h-4 w-4" />
+              </span>
+            </Link>
+          </div>
+        ) : null}
 
         {/* 底部统一 CTA */}
         <div

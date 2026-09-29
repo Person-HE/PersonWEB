@@ -23,6 +23,12 @@ import {
   type CSSProperties,
 } from 'react';
 import { ImageOff, PlayCircle } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+/** 本地视频文件（不能当 <img> 封面渲染） */
+export function isVideoAsset(url: string | null | undefined): boolean {
+  return !!url && /\.(webm|mp4|mov|m4v|ogv)(\?.*)?$/i.test(url);
+}
 
 type LoadStatus = 'loading' | 'loaded' | 'error';
 
@@ -149,9 +155,11 @@ export function SmartImage({
         decoding="async"
         onLoad={() => setStatus('loaded')}
         onError={() => setStatus('error')}
-        className={`h-full w-full object-cover transition-opacity duration-500 ${
-          status === 'loaded' ? 'opacity-100' : 'opacity-0'
-        } ${className}`}
+        className={cn(
+          'h-full w-full object-cover transition-opacity duration-500',
+          status === 'loaded' ? 'opacity-100' : 'opacity-0',
+          className,
+        )}
         draggable={false}
       />
     </div>
@@ -269,9 +277,7 @@ export function SmartVideo({
         ref={videoRef}
         src={src}
         poster={poster || undefined}
-        className={`h-full w-full object-cover transition-opacity duration-500 ${
-          status === 'loaded' ? 'opacity-100' : 'opacity-0'
-        } ${className}`}
+        className={cn('h-full w-full object-cover transition-opacity duration-500', status === 'loaded' ? 'opacity-100' : 'opacity-0', className)}
         controls={controls}
         autoPlay={autoPlay}
         muted

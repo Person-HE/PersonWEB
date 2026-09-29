@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Play, ArrowRight, TrendingUp } from 'lucide-react';
 import type { Service } from '@/types';
 import { useWechatModal } from '@/components/WeChatModal';
-import { SmartImage, SmartVideo } from '@/components/SmartMedia';
+import { SmartImage, SmartVideo, isVideoAsset } from '@/components/SmartMedia';
 
 interface ServiceCardProps {
   service: Service;
@@ -21,12 +21,20 @@ export default function ServiceCard({ service }: ServiceCardProps) {
       {/* 左侧：封面图 / 视频（40%） */}
       {hasVisual ? (
         <div className="relative aspect-[16/10] w-full overflow-hidden border-b-2 border-[var(--border)] lg:aspect-auto lg:w-[40%] lg:border-b-0 lg:border-r-2">
-          {service.coverImage ? (
+          {isVideoAsset(service.coverImage) ? (
+            <SmartVideo
+              src={service.coverImage as string}
+              controls={false}
+              wrapperClassName="h-full w-full bg-[var(--bg-surface)]"
+              className="h-full w-full object-contain"
+              fallbackLabel="封面信号丢失"
+            />
+          ) : service.coverImage ? (
             <SmartImage
               src={service.coverImage}
               alt={service.name}
-              wrapperClassName="h-full w-full"
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              wrapperClassName="h-full w-full bg-[var(--bg-surface)]"
+              className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
               fallbackLabel="封面信号丢失"
             />
           ) : null}

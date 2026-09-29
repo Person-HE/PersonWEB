@@ -32,7 +32,7 @@ import { siteConfig } from '@/config/site.config';
 import { SERVICE_TYPES } from '@/constants';
 import { useElasticEnter, useStaggerReveal } from '@/hooks/useGsap';
 import FormattedText from '@/components/FormattedText';
-import { SmartImage, SmartVideo } from '@/components/SmartMedia';
+import { SmartImage, SmartVideo, isVideoAsset } from '@/components/SmartMedia';
 import type { ServiceType } from '@/types';
 
 const iconMap: Record<ServiceType, LucideIcon> = {
@@ -162,15 +162,25 @@ export default function ServiceDetail() {
           >
             {/* 封面图 */}
             {service.coverImage ? (
-              <div className="relative h-48 w-full overflow-hidden border-b-2 border-[var(--ink)] sm:h-60">
-                <SmartImage
-                  src={service.coverImage}
-                  alt={service.name}
-                  eager
-                  fallbackLabel="封面信号丢失"
-                  wrapperClassName="h-full w-full"
-                  className="h-full w-full object-cover"
-                />
+              <div className="relative h-48 w-full overflow-hidden border-b-2 border-[var(--ink)] bg-[var(--bg-surface)] sm:h-60">
+                {isVideoAsset(service.coverImage) ? (
+                  <SmartVideo
+                    src={service.coverImage}
+                    controls={false}
+                    wrapperClassName="h-full w-full"
+                    className="h-full w-full object-contain"
+                    fallbackLabel="封面信号丢失"
+                  />
+                ) : (
+                  <SmartImage
+                    src={service.coverImage}
+                    alt={service.name}
+                    eager
+                    fallbackLabel="封面信号丢失"
+                    wrapperClassName="h-full w-full"
+                    className="h-full w-full object-contain"
+                  />
+                )}
                 {service.isFeatured ? (
                   <span className="absolute right-3 top-3 z-10 border-2 border-[var(--ink)] bg-[var(--accent)] px-2 py-0.5 font-mono text-[10px] font-bold text-[var(--bg)] shadow-[2px_2px_0_var(--ink)]">
                     <Sparkles className="mr-1 inline h-3 w-3" />FEATURED
@@ -283,13 +293,13 @@ export default function ServiceDetail() {
                   style={{ transform: `rotate(${(i % 2 ? 1 : -1) * 0.4}deg)`, width: '16rem' }}
                   aria-label={`查看案例截图 ${i + 1}`}
                 >
-                  <div className="relative h-40 w-full overflow-hidden border-b-2 border-[var(--ink)]">
+                  <div className="relative h-40 w-full overflow-hidden border-b-2 border-[var(--ink)] bg-[var(--bg-surface)]">
                     <SmartImage
                       src={shot}
                       alt={`案例截图 ${i + 1}`}
                       fallbackLabel={`截图 ${i + 1} 丢失`}
                       wrapperClassName="h-full w-full"
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-contain"
                     />
                     <span className="absolute right-2 top-2 z-10 border-2 border-[var(--ink)] bg-[var(--bg)] px-1.5 py-0.5 font-mono text-[10px] font-bold text-[var(--accent)]">
                       <ImageIcon className="mr-1 inline h-3 w-3" />{i + 1}
@@ -318,7 +328,7 @@ export default function ServiceDetail() {
               >
                 <SmartVideo
                   src={service.videoUrl as string}
-                  poster={service.coverImage || undefined}
+                  poster={service.coverImage && !isVideoAsset(service.coverImage) ? service.coverImage : undefined}
                   wrapperClassName="aspect-video w-full"
                   className="aspect-video w-full object-cover"
                   fallbackLabel="视频信号丢失"

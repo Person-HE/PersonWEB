@@ -189,8 +189,8 @@ export interface Portfolio {
   tagline: string;
   status: PortfolioStatus;
   category: PortfolioCategory;
-  /** GitHub 仓库名（用于与 /api/github 活数据按名匹配），无仓库留空 */
-  repo: string;
+  /** GitHub 仓库名（用于与 /api/github 活数据按名匹配），私有/无仓库为 null */
+  repo: string | null;
   demoUrl: string | null;
   coverImage: string | null;
   screenshots: string[];

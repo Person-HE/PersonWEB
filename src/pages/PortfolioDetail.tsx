@@ -117,7 +117,8 @@ export default function PortfolioDetail() {
               src={project.coverImage}
               alt={project.name}
               eager
-              wrapperClassName="h-56 w-full border-b-2 border-[var(--ink)] sm:h-72"
+              className="object-contain"
+              wrapperClassName="h-56 w-full border-b-2 border-[var(--ink)] bg-[var(--bg-surface)] sm:h-72"
               fallbackLabel="暂无封面"
             />
           ) : null}
@@ -259,7 +260,8 @@ export default function PortfolioDetail() {
                   <SmartImage
                     src={src}
                     alt={`${project.name} 截图`}
-                    wrapperClassName="h-48 w-full border-2 border-[var(--ink)] shadow-[2px_2px_0_var(--ink)]"
+                    className="object-contain"
+                    wrapperClassName="h-48 w-full border-2 border-[var(--ink)] bg-[var(--bg-surface)] shadow-[2px_2px_0_var(--ink)]"
                     fallbackLabel="截图待上传"
                   />
                 </button>

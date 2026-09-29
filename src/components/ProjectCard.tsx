@@ -29,7 +29,7 @@ export default function ProjectCard({ project }: { project: Portfolio }) {
             src={project.coverImage}
             alt={project.name}
             loading="lazy"
-            className="h-40 w-full object-cover object-left"
+            className="h-40 w-full bg-[var(--bg-surface)] object-contain"
           />
         </div>
       ) : null}

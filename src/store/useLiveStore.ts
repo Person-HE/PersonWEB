@@ -37,9 +37,9 @@ export const useLiveStore = create<LiveState>((set, get) => ({
   },
 }));
 
-/** 按仓库名取活数据条目（portfolio.repo 匹配） */
-export function repoOf(snapshot: GithubSnapshot | null, name: string) {
-  if (!snapshot) return null;
+/** 按仓库名取活数据条目（portfolio.repo 匹配）；私有项目 repo 为 null，直接不匹配 */
+export function repoOf(snapshot: GithubSnapshot | null, name: string | null | undefined) {
+  if (!snapshot || !name) return null;
   return snapshot.repos.find(r => r.name.toLowerCase() === name.toLowerCase()) || null;
 }
 

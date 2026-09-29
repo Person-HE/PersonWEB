@@ -25,7 +25,7 @@ import MarqueeStrip from '@/components/MarqueeStrip';
 import ProjectCard from '@/components/ProjectCard';
 import BlogList from '@/components/BlogList';
 import Seo, { personJsonLd } from '@/components/Seo';
-import { SmartImage } from '@/components/SmartMedia';
+import { SmartImage, SmartVideo, isVideoAsset } from '@/components/SmartMedia';
 import { useElasticEnter, useScrollReveal } from '@/hooks/useGsap';
 import { siteConfig } from '@/config/site.config';
 import type { Service } from '@/types';
@@ -56,7 +56,7 @@ export default function Home() {
     [portfolio],
   );
   const heroProject = featuredProjects[0] || null;
-  const featuredServices = useMemo(() => services.filter((s) => s.isFeatured).slice(0, 3), [services]);
+  const featuredServices = useMemo(() => services.filter((s) => s.isFeatured).slice(0, 4), [services]);
 
   const marqueeItems = useMemo(() => {
     if (!profile) return [];
@@ -344,13 +344,35 @@ function ShowcaseRow({ service, index }: { service: Service; index: number }) {
           isReversed ? 'lg:border-l-2' : 'lg:border-r-2'
         }`}
       >
-        <SmartImage
-          src={service.coverImage || null}
-          alt={service.name}
-          fallbackLabel="案例截图丢失"
-          wrapperClassName="h-full w-full"
-          className="transition-transform duration-700 group-hover:scale-[1.03]"
-        />
+        {isVideoAsset(service.coverImage) ? (
+          <SmartVideo
+            src={service.coverImage as string}
+            wrapperClassName="h-full w-full bg-[var(--bg-surface)]"
+            className="h-full w-full object-contain"
+            controls={false}
+            fallbackLabel="案例演示视频丢失"
+          />
+        ) : service.coverImage ? (
+          <SmartImage
+            src={service.coverImage}
+            alt={service.name}
+            fallbackLabel="案例截图丢失"
+            wrapperClassName="h-full w-full bg-[var(--bg-surface)]"
+            className="transition-transform duration-700 group-hover:scale-[1.03] object-contain"
+          />
+        ) : (
+          <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-[var(--bg-surface)] p-6 text-center">
+            <div className="font-mono text-xs uppercase tracking-widest text-[var(--accent)]">
+              {'//'} 真实案例
+            </div>
+            <div className="max-w-md font-display text-xl font-bold leading-snug text-[var(--ink)]">
+              {service.caseStudy?.title ?? service.name}
+            </div>
+            <div className="font-mono text-xs text-[var(--ink-mute)]">
+              拆解写在服务详情页
+            </div>
+          </div>
+        )}
         <span className="absolute left-4 top-4 z-10 font-mono text-xs font-bold text-[var(--accent)] mix-blend-difference">
           #{String(index + 1).padStart(2, '0')}
         </span>
