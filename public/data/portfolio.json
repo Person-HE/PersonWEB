@@ -33,9 +33,9 @@
       }
     ],
     "metrics": [
-      { "label": "浏览器端工具数", "value": "112 · 13 分类", "source": "仓库 README（src/router/categories.js 注册表）" },
-      { "label": "预渲染静态路由", "value": "131", "source": "仓库 docs/metrics.json（npm run metrics 生成）" },
-      { "label": "源码规模", "value": "143 文件 · 33,489 行", "source": "仓库 docs/metrics.json" },
+      { "label": "浏览器端工具数", "value": "112 · 13 分类", "source": "仓库 README 与 src/router/categories.js 注册表" },
+      { "label": "预渲染静态路由", "value": "131", "source": "仓库 README（npm run build:prerender 输出）" },
+      { "label": "源码规模", "value": "143 文件 · 33,489 行（src + scripts）", "source": "仓库 docs/metrics.json（npm run metrics 生成，2026-09-19）" },
       { "label": "冷缓存首页", "value": "TTFB 740ms · load 2.66s", "source": "README 实测记录（部署站冷缓存）" },
       { "label": "服务器成本", "value": "¥0/月", "source": "Cloudflare Pages 免费层账单" }
     ],
@@ -47,7 +47,7 @@
     "isFeatured": true,
     "published": true,
     "createdAt": "2026-09-20",
-    "updatedAt": "2026-09-20"
+    "updatedAt": "2026-09-29"
   },
   {
     "id": "note-plan",
@@ -85,7 +85,7 @@
     ],
     "metrics": [
       { "label": "交付端数", "value": "4（Web/桌面/安卓/iOS）", "source": "仓库 README（npm run electron:build:win / build:android / build:ios）" },
-      { "label": "源码规模", "value": "93 文件 · 20,177 行", "source": "仓库 docs/metrics.json（npm run metrics 生成）" },
+      { "label": "源码规模", "value": "93 文件 · 20,177 行（src + electron）", "source": "仓库 docs/metrics.json（npm run metrics 生成，2026-09-19）" },
       { "label": "构建产物", "value": "2.18 MB gzip · 零服务器", "source": "仓库 docs/metrics.json" },
       { "label": "许可证", "value": "Apache-2.0", "source": "仓库 LICENSE" }
     ],
@@ -95,7 +95,7 @@
     "isFeatured": true,
     "published": true,
     "createdAt": "2026-09-20",
-    "updatedAt": "2026-09-20"
+    "updatedAt": "2026-09-29"
   },
   {
     "id": "autoedit",
@@ -131,8 +131,8 @@
     ],
     "metrics": [
       { "label": "动效预设 / 模板", "value": "95 / 28", "source": "仓库 README（scripts/count-assets.mjs）" },
-      { "label": "Jest 测试", "value": "71 通过 · 0 失败（共 75）", "source": "仓库 docs/metrics.json（npm run metrics 生成）" },
-      { "label": "源码规模", "value": "314 文件 · 43,616 行", "source": "仓库 docs/metrics.json" },
+      { "label": "Jest 测试", "value": "71 通过 · 0 失败（共 75，4 项按设计跳过）", "source": "仓库 docs/metrics.json（npm run metrics 生成，2026-09-19）" },
+      { "label": "源码规模", "value": "314 文件 · 43,625 行（src + scripts）", "source": "仓库 docs/metrics.json" },
       { "label": "冷缓存首屏", "value": "首传约 269KB · load 2.33s", "source": "README 实测记录（部署站冷缓存）" }
     ],
     "relatedPosts": [
@@ -143,7 +143,7 @@
     "isFeatured": true,
     "published": true,
     "createdAt": "2026-09-20",
-    "updatedAt": "2026-09-20"
+    "updatedAt": "2026-09-29"
   },
   {
     "id": "webcreate",
@@ -179,7 +179,7 @@
     "metrics": [
       { "label": "模板数", "value": "24 静态 + 10 动画", "source": "仓库 README（scripts/count-templates.mjs）" },
       { "label": "构建产物", "value": "0.12 MB gzip", "source": "仓库 docs/metrics.json（npm run metrics 生成）" },
-      { "label": "源码规模", "value": "60 文件 · 13,633 行", "source": "仓库 docs/metrics.json" }
+      { "label": "源码规模", "value": "60 文件 · 13,633 行（统计根：. + components + services + cli）", "source": "仓库 docs/metrics.json（npm run metrics 生成，2026-09-19）" }
     ],
     "relatedPosts": [],
     "relatedFiles": [{ "label": "源码仓库", "url": "https://github.com/Person-HE/webcreate" }],
@@ -187,7 +187,7 @@
     "isFeatured": false,
     "published": true,
     "createdAt": "2026-09-20",
-    "updatedAt": "2026-09-20"
+    "updatedAt": "2026-09-29"
   },
   {
     "id": "jimu-mg",
@@ -198,8 +198,11 @@
     "category": "cli",
     "repo": "jimu-mg",
     "demoUrl": null,
-    "coverImage": null,
-    "screenshots": [],
+    "coverImage": "/showcase-real/jimu-mg/frame-spring.png",
+    "screenshots": [
+      "/showcase-real/jimu-mg/frame-spring.png",
+      "/showcase-real/jimu-mg/composite-frame.png"
+    ],
     "techStack": ["Node.js", "Electron", "@napi-rs/canvas", "perfect-freehand", "rough.js", "FFmpeg"],
     "role": "独立完成",
     "period": "2026",
@@ -226,7 +229,8 @@
       { "label": "效果目录 / 节点类型", "value": "74 / 17", "source": "mg catalog 输出（仓库 README 计数）" },
       { "label": "确定性验证", "value": "2 时间戳 × 3 渲染，SHA-256 组内 1 种", "source": "node scripts/mg-metrics.mjs → docs/metrics.json" },
       { "label": "手绘线条 RMS 偏差", "value": "4103.471 → 2.785", "source": "scripts/audit_handline.mjs 修复前后实测" },
-      { "label": "云端依赖", "value": "无（本地 CLI/Electron）", "source": "仓库 README" }
+      { "label": "云端依赖", "value": "无（本地 CLI/Electron）", "source": "仓库 README" },
+      { "label": "引擎实渲染证明", "value": "22 个动效格 + Spring 循环依赖场景帧图", "source": "app/scripts/render_proof.mjs（headless 跑引擎 bundle，输出 scripts/_render/，README 已展示）" }
     ],
     "relatedPosts": [
       { "label": "Agent Harness 驾驭工程", "url": "https://person-he.github.io/2026-06-30/Agent-Harness-Engineering驾驭工程/" }
@@ -239,52 +243,61 @@
     "isFeatured": true,
     "published": true,
     "createdAt": "2026-09-20",
-    "updatedAt": "2026-09-20"
+    "updatedAt": "2026-09-29"
   },
   {
     "id": "zhiyuanflow",
     "slug": "zhiyuanflow",
     "name": "知源Flow",
-    "tagline": "社交发现社区平台：Spring Boot 多模块后端 + React 前端，多级缓存用 JMeter 500 并发四组对照压测说话",
+    "tagline": "社交发现社区平台：Spring Boot 3.4.1 多模块后端 + React 18 前端 + Taro 小程序，多级缓存用 JMeter 开环 A/B 对照实测说话",
     "status": "已完成",
     "category": "backend",
     "repo": "zhiyuanFlow",
     "demoUrl": null,
     "coverImage": null,
     "screenshots": [],
-    "techStack": ["Java", "Spring Boot", "MySQL", "Redis", "Caffeine", "RabbitMQ", "JMeter"],
+    "techStack": ["Java 17", "Spring Boot 3.4.1", "MySQL", "Redis", "Caffeine", "RabbitMQ", "JMeter", "React 18", "TypeScript", "Ant Design 5", "Taro"],
     "role": "独立完成前后端",
     "period": "2025 - 2026",
     "problem": "校招项目普遍「只会 CRUD」。我要做一个有真实性能证据的完整系统：接口能不能扛，用 JMeter 在真实 MySQL + Redis 环境实测，不靠嘴说；而且缓存这种优化，没有对照组的数据面试官一句就能打回。",
-    "solution": "分层多模块架构（api/common/models），RabbitMQ 做异步解耦，Redis + Caffeine 构建 L1/L2 多级缓存。性能结论来自四组控制变量压测：500 并发 × 90 秒稳态采样，A 组无缓存基线、B 组仅 Redis、C/D 组 L1+L2 冷启动与预热后，只改缓存开关这一个变量；数据规模 10 万级帖子、近 100 万条互动记录，JMeter 用帕累托分布帖子 ID 模拟真实长尾访问。全过程与环境快照写进系列架构文章，指标可复现。",
+    "solution": "后端分层多模块（api / common / models），RabbitMQ 做异步解耦，Redis + Caffeine 构建 L1/L2 多级缓存；前端 React 18 + Ant Design 5，另有 Taro 小程序端。性能结论来自开环 A/B：同一个构建、同一套启动参数，只切 --cache.bypass 这一个开关，按 100 / 200 RPS 定速打，读数用 P99 与回源次数而不是平均 QPS。配套把限流、MQ 不可达降级、评论索引 EXPLAIN、LLM 熔断四个机制实验各自单独量化。数据规模不是造的：五张表 COUNT(*) 实测落进文章。全过程从环境、脚本、命令到原始数据表写进系列架构文章，每个数字旁边标出处文件。",
     "highlights": [
-      { "title": "对照组压测", "desc": "四组控制变量实验，证明的是「缓存的边际价值」而不是「有缓存很快」" },
-      { "title": "10 万级真实数据", "desc": "103,810 帖子 / 992,631 互动记录 / 帕累托长尾 ID 分布" },
-      { "title": "系列文章复盘", "desc": "从项目起源、架构设计到性能采集的完整公开复盘" }
+      { "title": "对照组压测", "desc": "开环 A/B 只切缓存开关这一个变量，证明的是「缓存的边际价值」而不是「有缓存很快」" },
+      { "title": "机制账与容量账分开", "desc": "回源次数、命中率、拦截率属于机制层；绝对 QPS 因为应用+MySQL+Redis+JMeter 同机，明确不外推为生产容量" },
+      { "title": "百万级真实数据", "desc": "帖子 100,255 / 评论 401,815 / 互动 1,000,049 / 圈子 498,729 / 用户 10,052，全部 COUNT(*) 实测" },
+      { "title": "系列文章复盘", "desc": "从项目起源、架构设计到性能采集的完整公开复盘，数字带出处文件" }
     ],
     "decisions": [
       {
         "question": "性能结论怎么来？",
-        "choice": "JMeter 真实压测：500 并发 × 90s，四组只切换缓存开关这一个变量",
-        "reason": "「带数据来，别带感觉」——这既是工程原则也是我做事的底线。前一轮只测有缓存没有对照组，被自己判定为不合格数据，重做了整套实验。"
+        "choice": "JMeter 开环定速 A/B：100 / 200 RPS，只切 --cache.bypass 这一个开关",
+        "reason": "「带数据来，别带感觉」——这既是工程原则也是我做事的底线。闭环压测里服务一慢客户端就自动少发，尾延迟看着温和却是假的；开环才测得出真实到达率下的 P99。前一轮只测有缓存、没有对照组，被我自己判定为不合格数据，整套实验重做。"
       },
       {
-        "question": "压测时 RabbitMQ 和限流怎么处理？",
-        "choice": "显式关闭（RABBITMQ_ENABLED=false、RATE_LIMIT_ENABLED=false）",
-        "reason": "测的是帖子详情接口的缓存分层，就要把消息队列波动和限流截断这两个混淆变量隔离掉，否则数据解释不了。"
+        "question": "为什么通篇不讲「QPS 提升了多少」？",
+        "choice": "绝对 QPS 不外推，只报同机同参的 A/B 差值与机制层读数",
+        "reason": "这一轮是应用 + MySQL + Redis + JMeter 同机跑的，施压机本身就是被压系统的一部分，把本机数字当生产容量是错的。容量结论只留给独立施压机上按 SLA（错误率 <0.1% 且 P99 <300ms）判的阶梯实验。"
+      },
+      {
+        "question": "压测环境哪些东西必须钉死？",
+        "choice": "JVM 堆 -Xms1g -Xmx2g、Hikari=50、L1 max-size=2000、Redis db=2、RABBITMQ_ENABLED=false",
+        "reason": "每一项都对应一个会把归因带偏的坑：堆大小不一致则 GC 行为不同；连接池默认 10 会打满制造假错误；L1 按 yml 默认 50000 能把热数据全装进本地内存、命中率虚高；混库则 key 残留对不上账；MQ 的异步波动要从主实验里抠出去。"
       }
     ],
     "metrics": [
-      { "label": "无缓存基线 QPS", "value": "1,742.9 · P99 395ms", "source": "博客《知源Flow社区平台多级缓存JMeter真实压测》A 组（2026-07-06）" },
-      { "label": "L1+L2 冷启动 QPS", "value": "5,769.1 · P99 140ms", "source": "同上 C 组，四组共 1,577,076 请求 0 错误" },
-      { "label": "数据规模", "value": "10 万帖子 · 近 100 万互动", "source": "同上文章压测数据规模表" },
-      { "label": "后端源码", "value": "Java ≈ 787KB · 前端 TS ≈ 495KB", "source": "GitHub Languages API（2026-09-20 快照）" }
+      { "label": "P99 @100 RPS", "value": "274ms → 6ms（-97.8%）", "source": "博客《知源 Flow 社区平台真实性能采集：多级缓存开环 A/B 量化》第 7 部分（出处 evidence-pack/matrix_post_median.csv）" },
+      { "label": "P99 @200 RPS", "value": "284ms → 19ms（-93.3%）", "source": "同上第 7 部分数字分层归位表" },
+      { "label": "回源次数", "value": "6,267 → 3 次/轮（-99.95%，热轮命中率 99.95%）", "source": "同上第 7 部分（matrix_post_median.csv、SUMMARY.md §1）" },
+      { "label": "限流拦截", "value": "同 IP 60 连发：放行 5 / 拦 55（91.7%）", "source": "同上 8.1~8.4（fresh_ratelimit_20260916_185953.json）" },
+      { "label": "MQ 不可达降级", "value": "发帖 50/50 成功 · avg 39.8ms", "source": "同上 8.5~8.6（fresh_mq_20260916_190531.json）" },
+      { "label": "LLM 熔断 / 评论索引", "value": "~1.6s → 8ms（-99.5%）· EXPLAIN rows=50 无 filesort vs 全表 397,293", "source": "同上 8.7~8.9（matrix_fresh_aux.csv、fresh_explain_comment.txt）" }
     ],
     "relatedPosts": [
-      { "label": "知源项目总览和架构设计", "url": "https://person-he.github.io/2026-04-05/知源项目总览和架构设计/" },
-      { "label": "核心代码的设计取舍", "url": "https://person-he.github.io/2026-06-30/核心代码的设计取舍/" },
-      { "label": "项目起源与设计初衷", "url": "https://person-he.github.io/2026-06-30/项目起源与设计初衷/" },
-      { "label": "知源Flow社区平台多级缓存JMeter真实压测", "url": "https://person-he.github.io/2026-07-06/知源Flow社区平台做真实性能采集/" }
+      { "label": "知源项目总览和架构设计", "url": "https://person-he.github.io/2026-09-17/知源项目总览和架构设计/" },
+      { "label": "项目全景图", "url": "https://person-he.github.io/2026-09-17/项目全景图/" },
+      { "label": "项目起源与设计初衷", "url": "https://person-he.github.io/2026-09-17/项目起源与设计初衷/" },
+      { "label": "核心代码的设计取舍", "url": "https://person-he.github.io/2026-09-17/核心代码的设计取舍/" },
+      { "label": "真实性能采集：多级缓存开环 A/B 量化", "url": "https://person-he.github.io/2026-09-17/知源Flow社区平台做真实性能采集/" }
     ],
     "relatedFiles": [
       { "label": "前端仓库", "url": "https://github.com/Person-HE/zhiyuanFlow" },
@@ -294,7 +307,7 @@
     "isFeatured": false,
     "published": true,
     "createdAt": "2026-09-20",
-    "updatedAt": "2026-09-20"
+    "updatedAt": "2026-09-29"
   },
   {
     "id": "personweb",
@@ -323,14 +336,19 @@
         "reason": "访客不消耗 GitHub API 配额、不怕限流；快照时间本身也是数据的一部分，明确标注而不是假装实时。"
       }
     ],
-    "metrics": [],
+    "metrics": [
+      { "label": "数据面", "value": "作品集 13 条 · 服务 7 条 · 工具 37 条，全部后台可管理", "source": "public/data/*.json 条目计数（2026-09-29 实测），线上同源读 KV" },
+      { "label": "源码规模", "value": "src 54 文件 + functions 19 文件 · 10,072 行", "source": "find + wc -l 实测（*.ts / *.tsx，2026-09-29）" },
+      { "label": "快照刷新", "value": "每小时一次（GitHub Actions cron 调 /cron）", "source": ".github/workflows/refresh.yml（cron: 0 * * * *）" },
+      { "label": "服务器成本", "value": "¥0/月", "source": "Cloudflare Pages + Functions + KV 免费层账单" }
+    ],
     "relatedPosts": [],
     "relatedFiles": [{ "label": "源码仓库", "url": "https://github.com/Person-HE/PersonWEB" }],
     "ctaServiceId": null,
     "isFeatured": false,
     "published": true,
     "createdAt": "2026-09-20",
-    "updatedAt": "2026-09-28"
+    "updatedAt": "2026-09-29"
   },
   {
     "id": "material-fetcher",
@@ -341,16 +359,17 @@
     "category": "desktop",
     "repo": null,
     "demoUrl": null,
-    "coverImage": null,
-    "screenshots": [],
+    "coverImage": "/showcase-real/material/ai-market-chart.png",
+    "screenshots": ["/showcase-real/material/ai-market-chart.png"],
     "techStack": ["Python", "PyQt5", "pydantic", "Playwright", "ComfyUI", "LLM 编排"],
     "role": "独立完成",
     "period": "2026",
     "problem": "科普视频需要图表示意、手绘图、写实素材等多类素材，逐个手搜手下载，素材采集吃掉了大半产能。",
-    "solution": "输入一整段科普文案，StoryboardAnalyzer（LLM）先分镜，OrchestratorAgent 分析每个素材该走哪个渠道再分派：WebCreateAgent 调自研 webcreate CLI 产手绘图，ScraperAgent 用 Playwright 在三站白名单内爬示意图，ComfyUIAgent 走本地生图产写实素材。输出 fetch_report + deliverables + preview.html，全程 GUI（PyQt5）与 CLI 双入口。私有仓库，本地交付。",
+    "solution": "输入一整段科普文案，StoryboardAnalyzer（LLM）先分镜，OrchestratorAgent 分析每个素材该走哪个渠道再分派：WebCreateAgent 调自研 webcreate CLI 产手绘图，ScraperAgent 用 Playwright 在三站白名单内爬示意图，ComfyUIAgent 走本地生图产写实素材。输出 fetch_report + deliverables + preview.html，全程 GUI（PyQt5）与 CLI 双入口。私有仓库，本地交付。端到端跑真实 LLM 一次约 820 秒出 5 个分镜的素材包，报告里连「官方 success 4 张、人工核验只有 3 张能用」这种难看结论都原样记着——假成功被抓出来才算测过。",
     "highlights": [
       { "title": "缺素材不编造", "desc": "渠道产不出时上报 needs_data，由人定夺，而不是塞占位图" },
-      { "title": "白名单爬取", "desc": "ScraperAgent 限定三站来源，采集范围可审计" }
+      { "title": "白名单爬取", "desc": "ScraperAgent 限定三站来源，采集范围可审计" },
+      { "title": "官方口径与人工核验分开记", "desc": "E2E 报告同时写「管线 success 4/5」和「可用 3/5」，并定位到 mat_05 伪造 file_path 这个 P0" }
     ],
     "decisions": [
       {
@@ -360,8 +379,10 @@
       }
     ],
     "metrics": [
-      { "label": "冒烟测试", "value": "6 通过 · 0 失败", "source": "仓库 README 实测记录（2026-09-17，Windows 11）" },
-      { "label": "渠道探测", "value": "scraper=True · comfyui=True", "source": "同上 README 采集记录" }
+      { "label": "架构冒烟", "value": "6 通过 · 0 失败（其中 WebCreate 真实渲染项 SKIP）", "source": "仓库 README 实测记录（2026-09-17，Windows 11）" },
+      { "label": "渠道探测", "value": "scraper=True · comfyui=True · mode=cli · webcreate=False", "source": "同上 README 采集记录（webcreate 因本机路径未指向工程而 False）" },
+      { "label": "端到端真实 LLM", "value": "5 分镜 / 5 素材需求 · 官方 4/5 success · 人工核验 3/5 可用 · 约 820s", "source": "output/AI市场暴涨背后_73_企业项目为何惨败_/E2E_TEST_REPORT.md（2026-09-15）" },
+      { "label": "引擎源码", "value": "material_fetcher/ 33 个 .py · 6,396 行", "source": "find + wc -l 实测（2026-09-29）" }
     ],
     "relatedPosts": [],
     "relatedFiles": [],
@@ -369,7 +390,7 @@
     "isFeatured": false,
     "published": true,
     "createdAt": "2026-09-28",
-    "updatedAt": "2026-09-28"
+    "updatedAt": "2026-09-29"
   },
   {
     "id": "know",
@@ -400,9 +421,11 @@
       }
     ],
     "metrics": [
-      { "label": "Vitest 测试", "value": "5 文件 · 30 用例全通过（15.9s）", "source": "仓库 README 实测记录（2026-09-19）" },
-      { "label": "Typecheck", "value": "四套配置 0 error", "source": "仓库 README" },
-      { "label": "需求/设计文档", "value": "27 份", "source": "仓库 README 文档索引" }
+      { "label": "Vitest 测试", "value": "5 文件 · 30 用例全通过（15.9s，仅 src/**）", "source": "kb-tool/README.md 实测记录（2026-09-19 · Windows 11 · Node v24.12.0）" },
+      { "label": "Typecheck", "value": "server/client/main/cli 四套配置 0 error", "source": "同上 README（npm run typecheck）" },
+      { "label": "需求/设计文档", "value": "27 份", "source": "docs/ 目录实测计数，与 README 验收表一致" },
+      { "label": "CLI 覆盖面", "value": "系统/知识库/文档/AI 问答/图谱/任务/草稿/画像/认知/个人蒸馏", "source": "kb-tool/README.md（kb CLI 能力清单）" },
+      { "label": "打包交付", "value": "dist-pack/Know/Know.exe（181 MB，2026-09-29 构建）", "source": "kb-tool/dist-pack/ 目录实测" }
     ],
     "relatedPosts": [],
     "relatedFiles": [],
@@ -410,7 +433,7 @@
     "isFeatured": false,
     "published": true,
     "createdAt": "2026-09-28",
-    "updatedAt": "2026-09-28"
+    "updatedAt": "2026-09-29"
   },
   {
     "id": "mediasop",
@@ -421,28 +444,33 @@
     "category": "desktop",
     "repo": null,
     "demoUrl": null,
-    "coverImage": null,
-    "screenshots": [],
+    "coverImage": "/showcase-real/mediasop/workbench.png",
+    "screenshots": [
+      "/showcase-real/mediasop/workbench.png",
+      "/showcase-real/mediasop/hotspot-collect.png"
+    ],
     "techStack": ["React", "Vite", "Electron", "Python", "Playwright"],
     "role": "独立完成",
     "period": "2026",
     "problem": "一人做自媒体，选题、写稿、发布、复盘全靠手工切换工具，流程没有系统兜底，产能和稳定性都上不去。",
-    "solution": "Electron 桌面应用 + Python 本地后端（打包进便携版，监听 127.0.0.1:8770），按 7 大模块固化创作 SOP：热点采集(3)、内容分析(5)、选题策划(4)、内容创作(4)、发布运营、数据面板(4)、账号定位(5)。多智能体层在 llm/multi_agent.py：Agent 声明→依赖图分波→有界并行，跨模块全景数据层让每个 Agent 看到全账号上下文再动作。已产出 Windows 1.0.0 便携版 exe。",
+    "solution": "Electron 桌面应用 + Python 本地后端（打包进便携版，监听 127.0.0.1:8770），按 7 大模块固化创作 SOP：热点采集(3)、内容分析(5)、选题策划(4)、内容创作(4)、发布运营、数据面板(4)、账号定位(5)。多智能体层在 backend/server/llm/multi_agent.py：Agent 声明→依赖图分波→有界并行，跨模块全景数据层让每个 Agent 看到全账号上下文再动作。工作台截图里那 204 条视频样本、1,045 条热榜条目、138 条选题是真实采集进来的存量数据，不是占位。",
     "highlights": [
       { "title": "SOP 即产品", "desc": "把一人公司的操作流程固化成模块，而不是又一个散工具" },
-      { "title": "有界并行", "desc": "Agent 依赖图分波执行，并发可控、结果可追溯" }
+      { "title": "有界并行", "desc": "Agent 依赖图分波执行，并发可控、结果可追溯" },
+      { "title": "数据是真攒下来的", "desc": "工作台总览直接读本地库：视频样本 / 热榜条目 / 选题库 / 内容稿件四本账" }
     ],
     "decisions": [
       {
         "question": "文档驱动怎么落地？",
-        "choice": "docs 留 13 份过程文档：功能重构蓝图、多智能体架构与数据一致性、端到端质量审计报告、逐功能真人操作审查",
+        "choice": "docs 留 14 份过程文档：功能重构蓝图、多智能体架构与数据一致性、端到端质量审计报告、逐功能真人操作审查",
         "reason": "「人写文档、AI 写代码」的方法论在自己的产品上执行：7 模块蓝图先定边界，再让实现和审计对着蓝图走。"
       }
     ],
     "metrics": [
-      { "label": "打包产物", "value": "MediaSOP-1.0.0-portable.exe（Electron + PyInstaller 后端）", "source": "仓库 dist/ 目录（2026-09-28 实测存在）" },
+      { "label": "打包产物", "value": "dist/win-unpacked/MediaSOP.exe（188.9 MB，Electron + 随包 Python 后端）", "source": "dist/ 目录实测（2026-09-29 18:41 构建）" },
       { "label": "功能模块", "value": "7 大模块", "source": "docs/功能重构蓝图_7模块_2026-09-23.md" },
-      { "label": "过程文档", "value": "13 份", "source": "仓库 docs/ 目录" }
+      { "label": "过程文档", "value": "14 份", "source": "docs/ 目录实测计数（2026-09-29）" },
+      { "label": "本地数据量", "value": "视频样本 204 · 热榜条目 1,045 · 选题 138 · 稿件 30", "source": "工作台界面实测截图（2026-09-20 e2e 采集，数据量角标 21624）" }
     ],
     "relatedPosts": [],
     "relatedFiles": [],
@@ -450,47 +478,63 @@
     "isFeatured": false,
     "published": true,
     "createdAt": "2026-09-28",
-    "updatedAt": "2026-09-28"
+    "updatedAt": "2026-09-29"
   },
   {
     "id": "study-loop",
     "slug": "study-loop",
     "name": "学习闭环系统",
-    "tagline": "面试知识闭环：真实 AI 出题→作答→关键点裁决评分→缺口入库→SM-2 间隔重复调度，每天 2~4 分钟",
+    "tagline": "面试知识闭环：真实 AI 出题→关键点覆盖裁决评分→缺口入库→SM-2 排复习队列，Node 与 Spring Boot 双后端共享同一份数据，力扣 101 题全内置精讲",
     "status": "已完成",
     "category": "web-app",
-    "repo": null,
+    "repo": "learning-loop-java",
     "demoUrl": null,
     "coverImage": null,
     "screenshots": [],
-    "techStack": ["React", "Vite", "Node.js", "Express", "SM-2 算法", "Agnes AI"],
+    "techStack": ["React", "Vite", "Node.js", "Express", "Java 17", "Spring Boot 3.3.5", "LangChain4j", "SM-2 算法", "Ollama bge-m3"],
     "role": "独立完成",
     "period": "2026",
-    "problem": "刷笔记复习没有反馈闭环：答得好不好没人裁，该复习什么全凭感觉，518 份知识库文档背了又忘。",
-    "solution": "全栈自用系统（React + Node/Express，21 个 API 端点）：真实 AI（agnes-2.5-flash）从后端知识库出题，作答后由评分裁决——v3 起用关键点覆盖 M/N 制（判「说到没说到」），六维权重 25/25/20/15/10/5 降为旁注；未达标内容自动进六标签缺口库，按 SM-2（R=e^(−Δt/S)）排复习队列，每日 2~4 分钟、队列 ≤5 题。含简历与项目面试模块。本地 Express 托管 client/dist 即可运行。",
+    "problem": "刷笔记复习没有反馈闭环：答得好不好没人裁，该复习什么全凭感觉，本地知识库里 20 个域 201 篇文档背了又忘。",
+    "solution": "全栈自用系统（React 前端 + 33 个 API 端点）：真实 AI（agnes-2.5-flash）从本地知识库出题，作答后由评分裁决——v3 起以关键点覆盖 M/N 制判定「说到没说到」，六维分（完整性20 / 正确性25 / 因果链20 / 结构表达15 / 术语准确10 / 反例边界10）降为旁注；未达标内容自动进六标签缺口库，按 SM-2（R=e^(−Δt/S)）排复习队列，每天 2~4 分钟、队列 ≤5 题。力扣模块独立：101 题（力扣 TOP100）题面 + 精讲全部内置手写、不靠 AI 生成，每题 8 步零基础思考链 + 多解法 + 确定性动画帧 + 面试官验收点，答题走仿力扣代码编辑器手搓。另有一套 Spring Boot 3.3.5 后端与 Node 版行为逐一对齐（REST 契约、响应字段顺序、AI 容错语义），两套后端共享同一份数据文件、学习进度实时互通；嵌入检索本地跑 Ollama bge-m3（1024 维）。",
     "highlights": [
       { "title": "闭环可验证", "desc": "出题→评分→缺口→复习每一环都有数据和界面，README 留全链路验收表" },
-      { "title": "裁决制评分", "desc": "从主观六维打分转向关键点覆盖 M/N 裁决，评分标准可复核" }
+      { "title": "裁决制评分", "desc": "从主观六维打分转向关键点覆盖 M/N 裁决，评分标准可复核" },
+      { "title": "双后端行为对齐", "desc": "Node 与 Spring Boot 两套实现共用一份数据文件，前端零改动即可切换" },
+      { "title": "101 题精讲零 AI 生成", "desc": "题面、思考链、解法、动画帧全部内置编写，可离线复现" }
     ],
     "decisions": [
       {
         "question": "评分用主观多维打分还是可复核标准？",
         "choice": "v3：关键点覆盖 M/N 裁决制为主，六维分作旁注",
         "reason": "「答得好」不可审计，「该说的点说没说到」可审计；评分标准换了，缺口判定和复习调度才可信。"
+      },
+      {
+        "question": "已经有能跑的 Node 后端，为什么再写一套 Spring Boot？",
+        "choice": "Java 版做行为对齐重构，不改 Node 版一行，两套共享 ../server/data/",
+        "reason": "我要的是后端工程能力的可验证版本：分层（web/service/learning/ai/knowledge/state）、并发守卫、全局异常处理都用 Java 生态重做一遍，同时保证 REST 契约与容错语义和 Node 版逐一对齐——前端不改动就能切，切换本身就是对齐性的验收。"
+      },
+      {
+        "question": "力扣精讲让 AI 生成还是自己写？",
+        "choice": "10 个批次文件 + 原有 6 题合并，101/101 全部内置手写",
+        "reason": "精讲是要拿去面试的，AI 生成的解释错一处我就得背一处；确定性动画帧同理——同输入必须同画面，否则复习时看到的是「另一版解释」。"
       }
     ],
     "metrics": [
-      { "label": "API 端点", "value": "21", "source": "项目 README（routes.js 路由清单）" },
-      { "label": "真实 AI 出题 E2E", "value": "5/5 · 8 视图 0 控制台错误", "source": "项目 README 验收记录" },
-      { "label": "复习调度", "value": "SM-2，R=e^(−Δt/S)", "source": "项目 README" }
+      { "label": "API 端点", "value": "33（12 GET + 21 POST）", "source": "server/routes.js 路由注册实测（2026-09-29）" },
+      { "label": "出题知识库", "value": "20 个域 · 201 篇文档", "source": "server/data/kb.json 扫描缓存（域内 docs 求和 = 201），与 README 验收记录「重新扫描(201篇)」一致" },
+      { "label": "力扣模块", "value": "101 题 · 精讲 101/101 内置", "source": "server/data/lc100.json + lc-part1~10.js 合并（README 第十七节校验无缺失）" },
+      { "label": "Java 后端", "value": "98 个 .java · 8,807 行 · 端口 3002", "source": "server-java/ 目录实测 + server-java/README.md（Spring Boot 3.3.5 / Java 17）" },
+      { "label": "端到端验收", "value": "真实 AI 出题 5/5 · 简历评分 89/100 · 8 个视图 0 控制台错误", "source": "项目 README 第十一节 v2.3 全链路验收记录" }
     ],
     "relatedPosts": [],
-    "relatedFiles": [],
+    "relatedFiles": [
+      { "label": "Java 版后端 + 前端（开源）", "url": "https://github.com/Person-HE/learning-loop-java" }
+    ],
     "ctaServiceId": null,
     "isFeatured": false,
     "published": true,
     "createdAt": "2026-09-28",
-    "updatedAt": "2026-09-28"
+    "updatedAt": "2026-09-29"
   },
   {
     "id": "webmanager",
@@ -526,10 +570,10 @@
       }
     ],
     "metrics": [
-      { "label": "闭环验证", "value": "22 项目全关联 · 9 个推断已上线", "source": "docs/compose/spec/hub-deploy-loop.md（node scripts/verify-hub-deploy-loop.cjs，2026-09-19）" },
-      { "label": "源码规模", "value": "100 文件 · 18,949 行", "source": "src/ 与 electron/ 实测统计（2026-09-29）" },
-      { "label": "部署目标 / 流水线", "value": "5 种 / 4 条", "source": "src/lib/providers、src/lib/pipelines 模块清单" },
-      { "label": "打包产物", "value": "产品统一管理控制台-1.0.0-portable.exe", "source": "release2/ 构建输出" }
+      { "label": "闭环验证", "value": "22 项目全关联 · 9 个推断已上线", "source": "docs/compose/spec/hub-deploy-loop.md（node scripts/verify-hub-deploy-loop.cjs PASS，2026-09-19）" },
+      { "label": "源码规模", "value": "src + electron 101 文件 · 19,050 行", "source": "find + wc -l 实测（*.ts / *.tsx / *.cjs / *.css，2026-09-29）" },
+      { "label": "部署目标 / 流水线", "value": "5 种 / 4 条", "source": "src/lib/providers（cloudflare-pages、github-pages、netlify、vercel、vps-ssh）、src/lib/pipelines（docker、nodejs、spring-boot、static-site）目录实测" },
+      { "label": "打包产物", "value": "release2/win-unpacked/产品统一管理控制台.exe（188.9 MB）", "source": "release2/ 目录实测（2026-09-29 17:48 构建，electron-builder --win dir）" }
     ],
     "relatedPosts": [],
     "relatedFiles": [],
@@ -554,16 +598,17 @@
     "role": "独立完成",
     "period": "2026",
     "problem": "免费模型单个限流很凶，工具里只配一个模型名就会被 429 打死。要的是一个「不拒绝请求」的本地端点，让配了它的工具一直能跑下去。",
-    "solution": "Node + Express 起 OpenAI 兼容层（/v1/chat/completions、/v1/models、/health、/status）：ModelBalancer 在 5 个免费模型间轮询，命中 429 就进指数退避冷却并最多切换 3 次重试；上游用原生 https 模块而不是 axios（实测 axios 在该上游报 EPROTO）；额度监控、限流、排队各拆成独立模块，GET /status 实时看每个模型的健康与冷却状态。",
+    "solution": "Node + Express 起 OpenAI 兼容层：/health、/status、/v1/models 三个只读接口，其余 /v1/* 由一条 app.all('/v1/*') 通配转发（chat/completions、embeddings 等都从这里走）。转发用原生 https 模块而不是 axios（实测 axios 在该上游报 EPROTO），SSE 直接 upstreamRes.pipe(res) 流式回吐；ModelBalancer 在 5 个免费模型间轮询，命中 429 就按 2^n×1s（上限 30s）指数退避冷却并切换下一个模型，单请求最多切换 3 次。src/ 下另有 rate-limiter、queue、credit-monitor 三个模块，但目前只有 server.js → src/proxy.js → src/baliancer.js 这条链路真正接线在跑——并发上限参数读进来了却没被使用，所以「不拒绝任何请求」是实现的现状而不是设定目标。",
     "highlights": [
-      { "title": "不设全局并发上限", "desc": "不拒绝任何请求，只靠切换模型把限流消化在代理层" },
-      { "title": "状态可观测", "desc": "/status 直接暴露各模型健康度与冷却，出问题不用猜" }
+      { "title": "不设全局并发上限", "desc": "接线路径里没有并发闸，只靠切换模型把限流消化在代理层" },
+      { "title": "状态可观测", "desc": "/status 直接暴露各模型健康度、连续 429 次数与冷却到期时间" },
+      { "title": "零依赖转发", "desc": "上游请求用 Node 原生 https，绕开 axios 在该上游的 EPROTO" }
     ],
     "decisions": [
       {
         "question": "限流来了是排队拒请求，还是换模型？",
         "choice": "无全局并发限制，429 触发模型切换 + 指数退避冷却",
-        "reason": "目标是让工具一直能跑：拒请求等于把错误抛回客户端，换模型才是把限流消化掉。"
+        "reason": "目标是让工具一直能跑：拒请求等于把错误抛回客户端，换模型才是把限流消化掉。排队模块写好了但没接进来——接进来就等于引入了「不拒绝」承诺的例外。"
       },
       {
         "question": "上游请求用 axios 还是原生 https？",
@@ -572,9 +617,10 @@
       }
     ],
     "metrics": [
-      { "label": "压测", "value": "15 并发 15/15 成功 · 0 个 503", "source": "项目 README 实测记录 + test-stress.js" },
-      { "label": "轮询模型", "value": "5 个免费模型 · 最多切换 3 次", "source": "README + src/baliancer.js、src/retry.js" },
-      { "label": "源码规模", "value": "8 文件 · 758 行", "source": "wc -l 实测（2026-09-29）" }
+      { "label": "压测", "value": "15 并发 15/15 成功 · 0 个 503", "source": "README 实测记录 + test-stress.js" },
+      { "label": "轮询模型", "value": "5 个免费模型 · 单请求最多切换 3 次", "source": "src/proxy.js:17-23（modelIds）、src/proxy.js:101（maxRetries）" },
+      { "label": "冷却策略", "value": "2^n × 1s，上限 30s", "source": "src/baliancer.js:66 实测" },
+      { "label": "源码规模", "value": "8 个 .js · 758 行（含未接入模块与压测脚本）", "source": "find + wc -l 实测（2026-09-29，排除 node_modules）" }
     ],
     "relatedPosts": [],
     "relatedFiles": [],

@@ -37,25 +37,32 @@ async function fetchStaticJson<T>(url: string): Promise<T> {
   return (await resp.json()) as T;
 }
 
-/** 单类数据加载：优先 API，失败则回退静态 JSON */
+/** 单类数据加载：优先 API，失败或返回结构不对则回退静态 JSON */
 async function loadWithFallback<T>(
   apiFn: () => Promise<T[]>,
   staticUrl: string,
 ): Promise<{ data: T[]; source: 'api' | 'static' }> {
   try {
     const data = await apiFn();
+    // API 可能返回 HTML 壳（Pages 函数未生效）、错误对象或被错误包裹的集合；
+    // 这里不校验结构，页面就会拿非数组去 filter，整页白屏。
+    if (!Array.isArray(data)) throw new Error(`API 返回结构不是数组：${staticUrl}`);
     return { data, source: 'api' };
   } catch (e) {
     console.warn(`[useDataStore] 后端 API 不可用，回退静态 JSON: ${staticUrl}`, e);
     const data = await fetchStaticJson<T[]>(staticUrl);
-    return { data, source: 'static' };
+    return { data: Array.isArray(data) ? data : [], source: 'static' };
   }
 }
 
 /** 画像单文档加载：API 优先，失败回落静态 JSON */
 async function loadProfile(): Promise<Profile | null> {
   try {
-    return await profileApi.get();
+    const profile = await profileApi.get();
+    if (!profile || typeof profile !== 'object' || Array.isArray(profile)) {
+      throw new Error('API 返回的画像不是对象');
+    }
+    return profile;
   } catch {
     try {
       return await fetchStaticJson<Profile>('/data/profile.json');

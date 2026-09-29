@@ -39,7 +39,7 @@
     "price": "2000 元起",
     "priceRange": "2000 - 5000 元",
     "description": "从需求到能装能跑的产品：Web 站点、Electron 桌面应用、小程序，源码和安装包一起交。",
-    "details": "先诊断需求再报价，能帮才接。我做过的形态：一套代码交付 Web / Electron 桌面 / Capacitor 安卓 / iOS 四端（Note-Plan）；112 个纯浏览器端文件工具、131 条路由构建期预渲染（FileCut）；Spring Boot 多模块后端 + React 前端 + 小程序端，带 JMeter 四组对照压测（知源Flow）。交付内容：源码 + 可安装包或线上地址 + 部署与使用说明。",
+    "details": "先诊断需求再报价，能帮才接。我做过的形态：一套代码交付 Web / Electron 桌面 / Capacitor 安卓 / iOS 四端（Note-Plan）；112 个纯浏览器端文件工具、131 条路由构建期预渲染（FileCut）；Spring Boot 多模块后端 + React 前端 + 小程序端，带 JMeter 开环 A/B 对照压测（知源Flow）。交付内容：源码 + 可安装包或线上地址 + 部署与使用说明。",
     "delivery": { "method": "源码+安装包+文档", "time": "2-4 周", "revisions": 3 },
     "guarantee": "验收不通过不收尾款",
     "orderMethod": "微信下单",

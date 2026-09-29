@@ -29,17 +29,31 @@ export const useLiveStore = create<LiveState>((set, get) => ({
     set({ loading: true });
     const [gh, blog] = await Promise.allSettled([liveApi.github(), liveApi.blog()]);
     set({
-      github: gh.status === 'fulfilled' ? gh.value : null,
-      blog: blog.status === 'fulfilled' ? blog.value : null,
+      github: asGithubSnapshot(gh.status === 'fulfilled' ? gh.value : null),
+      blog: asBlogFeed(blog.status === 'fulfilled' ? blog.value : null),
       loading: false,
       loaded: true,
     });
   },
 }));
 
+/**
+ * 快照接口在函数未生效时会返回 HTML 壳（200 + text/html），
+ * 直接塞进 store 会让下游 snapshot.repos.find 崩掉整页；结构不对一律降级为 null。
+ */
+function asGithubSnapshot(v: unknown): GithubSnapshot | null {
+  return v && typeof v === 'object' && Array.isArray((v as GithubSnapshot).repos)
+    ? (v as GithubSnapshot)
+    : null;
+}
+
+function asBlogFeed(v: unknown): BlogFeed | null {
+  return v && typeof v === 'object' && Array.isArray((v as BlogFeed).posts) ? (v as BlogFeed) : null;
+}
+
 /** 按仓库名取活数据条目（portfolio.repo 匹配）；私有项目 repo 为 null，直接不匹配 */
 export function repoOf(snapshot: GithubSnapshot | null, name: string | null | undefined) {
-  if (!snapshot || !name) return null;
+  if (!snapshot || !name || !Array.isArray(snapshot.repos)) return null;
   return snapshot.repos.find(r => r.name.toLowerCase() === name.toLowerCase()) || null;
 }
 
