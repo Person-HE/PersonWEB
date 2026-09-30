@@ -188,11 +188,10 @@
     "category": "web-app",
     "repo": "AutoEdit",
     "demoUrl": "https://nanoedit-pro.pages.dev",
-    "coverImage": "/showcase-real/AutoEdit/director.png",
+    "coverImage": "/showcase-real/AutoEdit/editor.png",
     "screenshots": [
-      "/showcase-real/AutoEdit/director.png",
-      "/showcase-real/AutoEdit/dashboard.png",
-      "/showcase-real/AutoEdit/templates.png"
+      "/showcase-real/AutoEdit/editor.png",
+      "/showcase-real/AutoEdit/director.png"
     ],
     "techStack": [
       "React 19",
@@ -264,7 +263,7 @@
     "isFeatured": true,
     "published": true,
     "createdAt": "2026-09-20",
-    "updatedAt": "2026-09-29"
+    "updatedAt": "2026-09-30"
   },
   {
     "id": "webcreate",
@@ -348,10 +347,10 @@
     "category": "cli",
     "repo": "jimu-mg",
     "demoUrl": null,
-    "coverImage": "/showcase-real/jimu-mg/frame-spring.png",
+    "coverImage": "/showcase-real/jimu-mg/editor-spring.png",
     "screenshots": [
-      "/showcase-real/jimu-mg/frame-spring.png",
-      "/showcase-real/jimu-mg/composite-frame.png"
+      "/showcase-real/jimu-mg/editor-spring.png",
+      "/showcase-real/jimu-mg/editor-overview.png"
     ],
     "techStack": [
       "Node.js",
@@ -438,7 +437,7 @@
     "isFeatured": true,
     "published": true,
     "createdAt": "2026-09-20",
-    "updatedAt": "2026-09-29"
+    "updatedAt": "2026-09-30"
   },
   {
     "id": "zhiyuanflow",
