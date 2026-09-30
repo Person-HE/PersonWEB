@@ -118,7 +118,7 @@ export default function PortfolioDetail() {
               alt={project.name}
               eager
               className="object-contain"
-              wrapperClassName="h-56 w-full border-b-2 border-[var(--ink)] bg-[var(--bg-surface)] sm:h-72"
+              wrapperClassName="aspect-[16/10] w-full border-b-2 border-[var(--ink)] bg-[var(--bg-surface)]"
               fallbackLabel="暂无封面"
             />
           ) : null}
@@ -261,7 +261,7 @@ export default function PortfolioDetail() {
                     src={src}
                     alt={`${project.name} 截图`}
                     className="object-contain"
-                    wrapperClassName="h-48 w-full border-2 border-[var(--ink)] bg-[var(--bg-surface)] shadow-[2px_2px_0_var(--ink)]"
+                    wrapperClassName="aspect-[16/10] w-full border-2 border-[var(--ink)] bg-[var(--bg-surface)] shadow-[2px_2px_0_var(--ink)]"
                     fallbackLabel="截图待上传"
                   />
                 </button>
