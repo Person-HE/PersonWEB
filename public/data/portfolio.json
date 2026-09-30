@@ -8,8 +8,8 @@
     "category": "web-app",
     "repo": "filecut",
     "demoUrl": "https://filecut.pages.dev",
-    "coverImage": null,
-    "screenshots": [],
+    "coverImage": "/showcase-real/filecut/home.png",
+    "screenshots": ["/showcase-real/filecut/home.png","/showcase-real/filecut/convert-wizard.png","/showcase-real/filecut/media-convert.png"],
     "techStack": ["Vue", "Vite", "WASM", "Web Worker", "Cloudflare Pages"],
     "role": "独立完成（设计/开发/部署）",
     "period": "2026 - 持续迭代",
@@ -47,7 +47,7 @@
     "isFeatured": true,
     "published": true,
     "createdAt": "2026-09-20",
-    "updatedAt": "2026-09-29"
+    "updatedAt": "2026-09-30"
   },
   {
     "id": "note-plan",
@@ -254,8 +254,8 @@
     "category": "backend",
     "repo": "zhiyuanFlow",
     "demoUrl": null,
-    "coverImage": null,
-    "screenshots": [],
+    "coverImage": "/showcase-real/zhiyuanflow/circle-map.png",
+    "screenshots": ["/showcase-real/zhiyuanflow/circle-map.png","/showcase-real/zhiyuanflow/emotion-cabin.png"],
     "techStack": ["Java 17", "Spring Boot 3.4.1", "MySQL", "Redis", "Caffeine", "RabbitMQ", "JMeter", "React 18", "TypeScript", "Ant Design 5", "Taro"],
     "role": "独立完成前后端",
     "period": "2025 - 2026",
@@ -307,7 +307,7 @@
     "isFeatured": false,
     "published": true,
     "createdAt": "2026-09-20",
-    "updatedAt": "2026-09-29"
+    "updatedAt": "2026-09-30"
   },
   {
     "id": "personweb",
@@ -318,8 +318,8 @@
     "category": "site",
     "repo": "PersonWEB",
     "demoUrl": "https://person-web-cwf.pages.dev",
-    "coverImage": null,
-    "screenshots": [],
+    "coverImage": "/showcase-real/personweb/portfolio.png",
+    "screenshots": ["/showcase-real/personweb/portfolio.png","/showcase-real/personweb/detail-zhiyuanflow.png"],
     "techStack": ["React", "TypeScript", "Cloudflare Pages + Functions + KV + Cron"],
     "role": "独立完成",
     "period": "2025 - 持续迭代",
@@ -348,7 +348,7 @@
     "isFeatured": false,
     "published": true,
     "createdAt": "2026-09-20",
-    "updatedAt": "2026-09-29"
+    "updatedAt": "2026-09-30"
   },
   {
     "id": "material-fetcher",
@@ -401,8 +401,8 @@
     "category": "desktop",
     "repo": null,
     "demoUrl": null,
-    "coverImage": null,
-    "screenshots": [],
+    "coverImage": "/showcase-real/know/editor.png",
+    "screenshots": ["/showcase-real/know/editor.png","/showcase-real/know/graph.png"],
     "techStack": ["React 18", "Electron", "Express", "SQLite + sqlite-vec", "transformers.js", "tesseract.js"],
     "role": "独立完成",
     "period": "2026",
@@ -433,7 +433,7 @@
     "isFeatured": false,
     "published": true,
     "createdAt": "2026-09-28",
-    "updatedAt": "2026-09-29"
+    "updatedAt": "2026-09-30"
   },
   {
     "id": "mediasop",
@@ -489,8 +489,8 @@
     "category": "web-app",
     "repo": "learning-loop-java",
     "demoUrl": null,
-    "coverImage": null,
-    "screenshots": [],
+    "coverImage": "/showcase-real/study-loop/today.png",
+    "screenshots": ["/showcase-real/study-loop/today.png","/showcase-real/study-loop/kb-map.png"],
     "techStack": ["React", "Vite", "Node.js", "Express", "Java 17", "Spring Boot 3.3.5", "LangChain4j", "SM-2 算法", "Ollama bge-m3"],
     "role": "独立完成",
     "period": "2026",
@@ -534,7 +534,7 @@
     "isFeatured": false,
     "published": true,
     "createdAt": "2026-09-28",
-    "updatedAt": "2026-09-29"
+    "updatedAt": "2026-09-30"
   },
   {
     "id": "webmanager",
@@ -545,8 +545,8 @@
     "category": "desktop",
     "repo": null,
     "demoUrl": null,
-    "coverImage": null,
-    "screenshots": [],
+    "coverImage": "/showcase-real/webmanager/hub.png",
+    "screenshots": ["/showcase-real/webmanager/hub.png"],
     "techStack": ["React", "TypeScript", "Vite", "Electron", "electron-builder", "ssh2", "Zustand"],
     "role": "独立完成",
     "period": "2026",
@@ -581,7 +581,7 @@
     "isFeatured": false,
     "published": true,
     "createdAt": "2026-09-29",
-    "updatedAt": "2026-09-29"
+    "updatedAt": "2026-09-30"
   },
   {
     "id": "sensenova-proxy",

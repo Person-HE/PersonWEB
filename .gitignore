@@ -28,3 +28,7 @@ server/
 .env
 .wrangler/
 pw-tools/
+
+# 本地临时核验产物，不入库
+tmp-*/
+prototype/
