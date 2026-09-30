@@ -11,6 +11,7 @@
  * - json: JSON 编辑（小对象）
  * - url: URL（带验证）
  * - gallery: 图片URL数组（多行输入，带预览）
+ * - skuList: SKU 档位列表（名称/价格/说明 三列行编辑）
  */
 import type { Resource, Tool, Service, Portfolio, Quote, ResourceCategory, ToolCategory, AccessType, Pricing, ServiceType, PortfolioStatus, PortfolioCategory, QuoteStatus } from '@/types';
 
@@ -23,7 +24,8 @@ export type FieldType =
   | 'boolean'
   | 'json'
   | 'url'
-  | 'gallery';
+  | 'gallery'
+  | 'skuList';
 
 export interface FieldDef {
   key: string;
@@ -159,6 +161,7 @@ export const serviceConfig: CrudConfig<Service> = {
     videoUrl: null,
     liveDemoUrl: null,
     caseStudy: null,
+    skus: [],
     metrics: [],
     isFeatured: false,
   }),
@@ -180,6 +183,7 @@ export const serviceConfig: CrudConfig<Service> = {
     { key: 'productUrl', label: '产品链接（product 类型用）', type: 'url', full: true },
     { key: 'metrics', label: '量化指标（JSON数组）', type: 'json', full: true, placeholder: '[{"label":"GitHub Star","value":"9k+"}]' },
     { key: 'caseStudy', label: '案例研究（JSON对象）', type: 'json', full: true },
+    { key: 'skus', label: 'SKU 档位明细', type: 'skuList', full: true, placeholder: '每行三列：档位名称 / 价格 / 包含内容' },
     { key: 'delivery.method', label: '交付方式', type: 'text', path: 'delivery.method' },
     { key: 'delivery.time', label: '交付时间', type: 'text', path: 'delivery.time' },
     { key: 'delivery.revisions', label: '修改次数', type: 'number', path: 'delivery.revisions' },

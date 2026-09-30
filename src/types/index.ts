@@ -102,6 +102,16 @@ export interface ServiceMetric {
   value: string;
 }
 
+/** 服务 SKU 档位 */
+export interface ServiceSku {
+  /** 档位名称，如「单流程搭建」 */
+  name: string;
+  /** 价格，如「99 元」/「1999 元起」 */
+  price: string;
+  /** 档位包含内容（可选） */
+  desc?: string | null;
+}
+
 /** 服务 */
 export interface Service {
   id: string;
@@ -131,6 +141,8 @@ export interface Service {
   liveDemoUrl: string | null;
   /** 案例研究 */
   caseStudy: ServiceCaseStudy | null;
+  /** SKU 档位明细 */
+  skus?: ServiceSku[] | null;
   /** 量化指标 */
   metrics: ServiceMetric[];
   /** 是否为招牌展示案例 */

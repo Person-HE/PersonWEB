@@ -64,6 +64,7 @@ export default function ServiceDetail() {
   const heroRef = useElasticEnter<HTMLDivElement>([], { y: 30, delay: 0.05 });
   const galleryRef = useStaggerReveal<HTMLDivElement>('.shot-item', [], { stagger: 0.06 });
   const caseRef = useStaggerReveal<HTMLDivElement>('.cs-card', [], { stagger: 0.1 });
+  const skuRef = useStaggerReveal<HTMLDivElement>('.sku-item', [], { stagger: 0.06 });
   const relatedRef = useStaggerReveal<HTMLDivElement>('.rel-svc', [], { stagger: 0.08 });
 
   useEffect(() => {
@@ -272,6 +273,36 @@ export default function ServiceDetail() {
           <FormattedText text={service.details} />
         </div>
 
+        {/* SKU 档位 */}
+        {service.skus && service.skus.length > 0 ? (
+          <div className="mb-6">
+            <h2 className="mb-1 font-display text-base text-[var(--ink)]">
+              <span className="text-[var(--accent)]">{'// '}</span>
+              服务 SKU
+            </h2>
+            <p className="mb-3 font-mono text-xs text-[var(--ink-mute)]">{'>'} 每档都有明确的交付清单，按需选</p>
+            <div ref={skuRef} className="grid gap-3 sm:grid-cols-2">
+              {service.skus.map((sku, i) => (
+                <div
+                  key={`${i}-${sku.name}`}
+                  className="sku-item hand-card p-4 rgb-shift"
+                  style={{ transform: `rotate(${(i % 2 ? 1 : -1) * 0.3}deg)` }}
+                >
+                  <div className="flex items-baseline justify-between gap-2">
+                    <h3 className="font-display text-sm text-[var(--ink)]">{sku.name}</h3>
+                    <p className="shrink-0 font-mono text-sm font-bold text-[var(--accent)]">
+                      <span className="text-[var(--ink-mute)]">$</span> {sku.price}
+                    </p>
+                  </div>
+                  {sku.desc ? (
+                    <FormattedText text={sku.desc} className="mt-1.5" />
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
         {/* 截图画廊 */}
         {hasScreenshots ? (
           <div className="mb-6">
@@ -384,7 +415,7 @@ export default function ServiceDetail() {
               <span className="text-[var(--accent)]">{'// '}</span>
               {service.caseStudy.title || '案例研究'}
             </h2>
-            <p className="mb-3 font-mono text-xs text-[var(--ink-mute)]">{'>'} 用真实故事说话</p>
+            <p className="mb-3 font-mono text-xs text-[var(--ink-mute)]">{'>'} 真实产品案例：本服务交付什么水准的东西，看它就知道</p>
             <div ref={caseRef} className="grid gap-3 sm:grid-cols-3">
               <div
                 className="cs-card hand-card p-4 rgb-shift"
@@ -394,7 +425,7 @@ export default function ServiceDetail() {
                   <div className="flex h-7 w-7 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent-blue)] shadow-[1px_1px_0_var(--ink)]">
                     <Lightbulb className="h-3.5 w-3.5 text-[var(--ink)]" />
                   </div>
-                  <h3 className="font-display text-sm text-[var(--ink)]">项目背景</h3>
+                  <h3 className="font-display text-sm text-[var(--ink)]">解决什么问题</h3>
                 </div>
                 <FormattedText text={service.caseStudy.background} />
               </div>
@@ -406,7 +437,7 @@ export default function ServiceDetail() {
                   <div className="flex h-7 w-7 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent-cyan)] shadow-[1px_1px_0_var(--ink)]">
                     <Target className="h-3.5 w-3.5 text-[var(--bg)]" />
                   </div>
-                  <h3 className="font-display text-sm text-[var(--ink)]">解决方案</h3>
+                  <h3 className="font-display text-sm text-[var(--ink)]">产品内容</h3>
                 </div>
                 <FormattedText text={service.caseStudy.solution} />
               </div>
@@ -418,7 +449,7 @@ export default function ServiceDetail() {
                   <div className="flex h-7 w-7 items-center justify-center border-2 border-[var(--ink)] bg-[var(--accent)] shadow-[1px_1px_0_var(--ink)]">
                     <TrendingUp className="h-3.5 w-3.5 text-[var(--bg)]" />
                   </div>
-                  <h3 className="font-display text-sm text-[var(--ink)]">实际成果</h3>
+                  <h3 className="font-display text-sm text-[var(--ink)]">现状与验证</h3>
                 </div>
                 <FormattedText text={service.caseStudy.result} />
               </div>

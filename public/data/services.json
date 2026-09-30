@@ -4,31 +4,83 @@
     "type": "custom",
     "name": "提示词 · Skills 定制",
     "price": "29.9 元",
-    "priceRange": "29.9 - 99 元",
+    "priceRange": "29.9 - 1999 元",
     "description": "把你的重复判断写成可复用的提示词与 Skills 规则文档：不是抄模板，是把场景、边界和验收标准写清楚。",
-    "details": "交付三样东西：① 针对你场景的提示词（含输入输出约束、失败分支）；② 能直接放进项目的 Skills / 规则文档；③ 一份实测记录——我自己先跑通一遍再交。参考我做积木MG 的写法：把 74 项手绘效果、17 种节点类型、11 色固定色板、7 条硬性视觉规则导出成一份机器可读的效果目录，模型只从目录里选，校验器按同一份目录判——目录即 API，改一次惠及之后所有剧本。",
-    "delivery": { "method": "微信交付文档", "time": "2-3 天", "revisions": 3 },
+    "details": "交付三样东西：\n\n- 针对你场景的**提示词**：含输入输出约束、失败分支，不是一句笼统的咒语\n- 能直接放进项目的 **Skills / 规则文档**：把场景、边界和验收标准写成机器可执行的规则\n- 一份**实测记录**：每一份都先在我自己的工作区跑通一遍再交\n\n流程：你描述场景 → 我确认输入输出格式 → 写初稿 → 真实跑一遍贴结果 → 交付后按反馈调优。",
+    "delivery": {
+      "method": "微信交付文档",
+      "time": "2-3 天",
+      "revisions": 3
+    },
     "guarantee": "验收不通过不收尾款",
     "orderMethod": "微信下单",
     "applicableScene": "内容创作、文档驱动开发、需要 AI 稳定产出固定格式的个人和小团队",
     "expectedEffect": null,
-    "maintenancePeriod": null,
+    "maintenancePeriod": "30 天",
     "productUrl": null,
-    "tags": ["提示词", "Skills", "规则文档", "效果目录"],
+    "tags": [
+      "提示词",
+      "Skills",
+      "规则文档",
+      "效果目录"
+    ],
     "coverImage": null,
     "screenshots": [],
     "videoUrl": null,
     "liveDemoUrl": null,
     "caseStudy": {
-      "title": "积木MG 渲染器：LLM 只写剧本 JSON，像素级决定全部交给引擎",
-      "background": "让 LLM 直接生成动画，每次结果都不一样、画面随机漂移——不可复现就不可测试，也不可用于生产。",
-      "solution": "职责切分：模型唯一职责是产出 MGProject JSON，输入是一份机器可读的效果目录（74 项手绘效果、17 种节点类型、11 色固定色板、7 条硬性视觉规则，mg catalog 一次导出）；mg validate 校验，mg render 用 @napi-rs/canvas + perfect-freehand + rough.js 逐帧光栅化，FFmpeg 合成。",
-      "result": "同一时间戳连续渲 3 帧 SHA-256 完全一致，一条命令（node scripts/mg-metrics.mjs）即可复现；手绘线条 RMS 偏差 4103.471 → 2.785。",
-      "techStack": ["Node.js", "Electron", "@napi-rs/canvas", "perfect-freehand", "rough.js", "FFmpeg"]
+      "title": "产品案例：我的提示词 · Skills 工作区",
+      "background": "提示词服务最容易翻车的点：交付的是网上抄来的模板，换个场景就废。我的做法是把交付物限制在这套自己每天在用的库里裁剪、改写——它跑不通的写法，不会交给你。",
+      "solution": "这套工作区分四块：\n\n- **AI技能库**：11 个场景分类——内容增长、电商运营、求职职业、调研情报、一人公司、人物沟通、工程造课、虚构创作、游戏设计、元技能、工具链（含共享规则，345 份）\n- **AI文档驱动开发**：S0-S8 全流程的 prompts / checklists / templates / scripts，按步骤拆成单文件（109 个文件）\n- **提示词合集**：元提示词、创业调研六步链、商业情报、认知与决策\n- **Skills工作区**：SKILL.md / TOOLS.md / memory 等智能体运行文件",
+      "result": "规模可复现：全库 **517 份 Markdown**（`find . -type f -name \"*.md\" | wc -l` 可验）。每个分类、每个文件都是日常真实使用的，不存模板坟场。",
+      "techStack": [
+        "Prompt Engineering",
+        "SKILL.md",
+        "规则文档",
+        "文档驱动开发"
+      ]
     },
+    "skus": [
+      {
+        "name": "提示词定制 · 个人单场景",
+        "price": "29.9 元",
+        "desc": "3 个核心场景 Prompt 模板 + 使用说明 + 3 个真实测试案例 + 1 次调优"
+      },
+      {
+        "name": "提示词定制 · 3 场景套餐",
+        "price": "69.9 元",
+        "desc": "3 个场景打包，场景间可互相引用"
+      },
+      {
+        "name": "单个 Skill 定制",
+        "price": "199 元",
+        "desc": "SKILL.md 完整文件 + 示例调用结果 + 调试与 30 天答疑"
+      },
+      {
+        "name": "企业提示词库",
+        "price": "199 元起",
+        "desc": "按团队场景批量定制，含使用规范"
+      },
+      {
+        "name": "3 个联动 Skill 套餐",
+        "price": "499 元",
+        "desc": "3 个 Skill 组成一条工作流，互相衔接"
+      },
+      {
+        "name": "企业级技能库",
+        "price": "1999 元起",
+        "desc": "整套方法论沉淀为企业技能库"
+      }
+    ],
     "metrics": [
-      { "label": "效果目录", "value": "74 项 · 17 节点 · 11 色" },
-      { "label": "可复现验证", "value": "同输入同 SHA-256" }
+      {
+        "label": "工作区规模",
+        "value": "517 份 md"
+      },
+      {
+        "label": "场景分类",
+        "value": "11 类"
+      }
     ],
     "isFeatured": true
   },
@@ -37,17 +89,26 @@
     "type": "custom",
     "name": "软件开发（Web / 桌面端 / 小程序）",
     "price": "2000 元起",
-    "priceRange": "2000 - 5000 元",
+    "priceRange": "300 - 10000 元",
     "description": "从需求到能装能跑的产品：Web 站点、Electron 桌面应用、小程序，源码和安装包一起交。",
-    "details": "先诊断需求再报价，能帮才接。我做过的形态：一套代码交付 Web / Electron 桌面 / Capacitor 安卓 / iOS 四端（Note-Plan）；112 个纯浏览器端文件工具、131 条路由构建期预渲染（FileCut）；Spring Boot 多模块后端 + React 前端 + 小程序端，带 JMeter 开环 A/B 对照压测（知源Flow）。交付内容：源码 + 可安装包或线上地址 + 部署与使用说明。",
-    "delivery": { "method": "源码+安装包+文档", "time": "2-4 周", "revisions": 3 },
+    "details": "先诊断需求再报价，能帮才接。\n\n**交付内容**\n\n- 全部源码\n- 可安装包（.exe / .dmg）或线上地址\n- 部署与使用说明\n\n**能做的形态**\n\n- **Web 站点**：React / Vite 前端，构建期预渲染，静态托管零成本部署\n- **Electron 桌面应用**：Windows / Mac 跨平台打包\n- **移动端 / 小程序**：一套代码多端交付\n- **Java 后端**：Spring Boot + MySQL + Redis，接口文档、单元测试、部署脚本齐全\n\n验收不通过不收尾款；交付后 30 天维护期。",
+    "delivery": {
+      "method": "源码+安装包+文档",
+      "time": "2-4 周",
+      "revisions": 3
+    },
     "guarantee": "验收不通过不收尾款",
     "orderMethod": "微信下单",
     "applicableScene": "个人效率工具、小团队内部工具、需要自己掌控数据与部署的产品",
     "expectedEffect": "拿到可安装包与全部源码，可自行迭代",
     "maintenancePeriod": "30 天",
     "productUrl": null,
-    "tags": ["Web", "Electron", "小程序", "源码交付"],
+    "tags": [
+      "Web",
+      "Electron",
+      "小程序",
+      "源码交付"
+    ],
     "coverImage": "/showcase-real/NotePlan/notes.png",
     "screenshots": [
       "/showcase-real/NotePlan/notes.png",
@@ -58,15 +119,65 @@
     "videoUrl": null,
     "liveDemoUrl": "https://note-plan-bwm.pages.dev",
     "caseStudy": {
-      "title": "Note-Plan：本地优先的笔记·任务·灵感应用",
-      "background": "笔记工具的数据都在别人服务器上，断网即失能，换端靠云同步还得买它家的会员。",
-      "solution": "IndexedDB（Dexie）作主存储，PWA 首访后可离线；同步走 WebDAV——接你自己的 Nextcloud 或坚果云，不经过任何官方后端；AI 助手指向你自己配置的兼容端点。同一份代码四处交付：Web、Electron 桌面、Capacitor 安卓/iOS。约 128MB 演示视频挂 GitHub Release 资产而不是提交进仓库树。",
-      "result": "已上线可体验；源码 93 文件 · 20,177 行，构建产物 2.18 MB gzip，服务器成本 ¥0。",
-      "techStack": ["TypeScript", "TipTap", "IndexedDB/Dexie", "PWA", "WebDAV", "Electron/Capacitor"]
+      "title": "产品案例：Note-Plan —— 本地优先的笔记 · 任务 · 灵感应用",
+      "background": "笔记数据放在别人服务器上，断网即失能，换端要买它家会员。这个服务交出的就是这种级别的完整产品：能装、能跑、源码齐全。",
+      "solution": "- **本地优先**：IndexedDB（Dexie）主存储，PWA 首访后离线可用\n- **同步走你自己的 WebDAV**：接 Nextcloud 或坚果云，不经过任何官方后端\n- **一套代码四端交付**：Web、Electron 桌面、Capacitor 安卓 / iOS\n- **AI 助手自己配端点**：指向你自己的兼容服务",
+      "result": "**已上线可体验**：https://note-plan-bwm.pages.dev\n\n源码 93 文件 · 20,177 行，构建产物 2.18 MB gzip，服务器成本 ¥0。",
+      "techStack": [
+        "TypeScript",
+        "TipTap",
+        "IndexedDB/Dexie",
+        "PWA",
+        "WebDAV",
+        "Electron/Capacitor"
+      ]
     },
+    "skus": [
+      {
+        "name": "Java 小功能模块",
+        "price": "300 元起",
+        "desc": "接口开发 / 问题排查 / 小工具，按需求评估"
+      },
+      {
+        "name": "Electron 基础桌面工具",
+        "price": "2000 元",
+        "desc": "源码 + 安装包（.exe/.dmg）+ 自动更新配置 + 部署文档 + 90 天维护"
+      },
+      {
+        "name": "创意前端单页特效",
+        "price": "1000 元",
+        "desc": "手绘风格 / Three.js / WebGL / GSAP 动效，源码交付"
+      },
+      {
+        "name": "Java 完整系统",
+        "price": "3000 元起",
+        "desc": "需求分析 + 数据库设计 + RESTful API + 权限认证 + 接口文档 + 单元测试 + 部署脚本"
+      },
+      {
+        "name": "创意前端整站",
+        "price": "3000 元起",
+        "desc": "设计 + 前端实现 + 响应式适配 + 动效调优，源码交付"
+      },
+      {
+        "name": "Electron 复杂应用",
+        "price": "5000 元起",
+        "desc": "多模块桌面应用，按需求评估"
+      },
+      {
+        "name": "企业级微服务",
+        "price": "10000 元起",
+        "desc": "SpringBoot / SpringCloud 微服务架构"
+      }
+    ],
     "metrics": [
-      { "label": "交付端数", "value": "4（Web/桌面/安卓/iOS）" },
-      { "label": "源码规模", "value": "93 文件 · 20,177 行" }
+      {
+        "label": "交付端数",
+        "value": "4（Web/桌面/安卓/iOS）"
+      },
+      {
+        "label": "源码规模",
+        "value": "93 文件 · 20,177 行"
+      }
     ],
     "isFeatured": true
   },
@@ -75,31 +186,70 @@
     "type": "automation",
     "name": "工作流自动化",
     "price": "99 元",
-    "priceRange": "99 - 299 元",
+    "priceRange": "99 - 1999 元",
     "description": "把你每天重复的那套动作接成一条能自己跑的流程：抓取、批量处理、生成、归档，人工只做终审。",
-    "details": "先看你现在的流程哪几步真的值得自动化，不为了自动而自动。我做过的：一段科普文案 → LLM 分镜 → 多智能体自动获取/生成全部素材（自研手绘 CLI、三站白名单爬取、本地 ComfyUI 生图三渠道编排），GUI（PyQt5）与 CLI 双入口，产出 fetch_report + deliverables + preview.html；某渠道产不出时上报 needs_data 交人定夺，不塞占位图。",
-    "delivery": { "method": "远程交付+文档", "time": "3-5 天", "revisions": 3 },
+    "details": "先看你现在的流程哪几步真的值得自动化，不为了自动而自动。\n\n**服务内容**\n\n- 流程梳理与工具选型\n- 完整工作流搭建\n- 测试调优\n- 操作视频教程\n- 30 天答疑\n\n**可自动化场景**\n\n- 每日数据抓取 + 总结\n- 周报 / 月报自动生成\n- 多平台内容一键分发\n- 客户咨询自动回复\n- 文档翻译 + 排版",
+    "delivery": {
+      "method": "远程交付+文档",
+      "time": "3-5 天",
+      "revisions": 3
+    },
     "guarantee": "验收不通过不收尾款",
     "orderMethod": "微信下单",
     "applicableScene": "内容生产、素材采集、周期性数据处理这类重复步骤串起来的流程",
     "expectedEffect": null,
     "maintenancePeriod": "7 天",
     "productUrl": null,
-    "tags": ["流程编排", "批量处理", "CLI", "GUI"],
+    "tags": [
+      "流程编排",
+      "批量处理",
+      "CLI",
+      "GUI"
+    ],
     "coverImage": null,
     "screenshots": [],
     "videoUrl": null,
     "liveDemoUrl": null,
     "caseStudy": {
-      "title": "Material Fetcher：文案进，全套素材出",
-      "background": "科普视频需要图表示意、手绘图、写实素材等多类素材，逐个手搜手下载，素材采集吃掉了大半产能。",
-      "solution": "StoryboardAnalyzer（LLM）先分镜，OrchestratorAgent 分析每个素材该走哪个渠道再分派：WebCreateAgent 调自研 webcreate CLI 产手绘图，ScraperAgent 用 Playwright 在三站白名单内爬示意图，ComfyUIAgent 走本地生图产写实素材。渠道分析、依赖分发、失败归因统一由编排层做，不让执行体自己决定来源。",
-      "result": "本地可跑的桌面 + CLI 双入口系统；README 实测记录：冒烟测试 6 通过 · 0 失败，渠道探测 scraper=True · comfyui=True（2026-09-17，Windows 11）。",
-      "techStack": ["Python", "PyQt5", "pydantic", "Playwright", "ComfyUI", "LLM 编排"]
+      "title": "产品案例：Material Fetcher —— 文案进，全套素材出",
+      "background": "科普视频要图表示意、手绘图、写实素材，逐个手搜手下载，素材采集吃掉大半产能。",
+      "solution": "一段科普文案进去，系统自动跑完全程：\n\n- **LLM 分镜**：StoryboardAnalyzer 先把文案拆成镜头需求\n- **多渠道分派**：自研手绘 CLI 产手绘图 / Playwright 三站白名单爬示意图 / 本地 ComfyUI 生写实素材\n- **产物齐全**：fetch_report + deliverables + preview.html\n- **失败不糊弄**：某渠道产不出时上报 needs_data 交人定夺，不塞占位图\n\nGUI（PyQt5）与 CLI 双入口。",
+      "result": "本地可跑的桌面 + CLI 双入口系统；README 实测记录：冒烟测试 **6 通过 · 0 失败**，渠道探测 scraper=True · comfyui=True（2026-09-17，Windows 11）。",
+      "techStack": [
+        "Python",
+        "PyQt5",
+        "pydantic",
+        "Playwright",
+        "ComfyUI",
+        "LLM 编排"
+      ]
     },
+    "skus": [
+      {
+        "name": "单流程搭建",
+        "price": "99 元",
+        "desc": "流程梳理与工具选型 + 完整工作流搭建 + 测试调优 + 操作视频教程 + 30 天答疑"
+      },
+      {
+        "name": "多流程联动",
+        "price": "299 元",
+        "desc": "多条流程互相衔接，统一编排"
+      },
+      {
+        "name": "企业级自动化系统",
+        "price": "1999 元起",
+        "desc": "按企业场景定制整条自动化链路"
+      }
+    ],
     "metrics": [
-      { "label": "冒烟测试", "value": "6 通过 · 0 失败" },
-      { "label": "采集渠道", "value": "手绘 / 白名单爬取 / 本地生图" }
+      {
+        "label": "冒烟测试",
+        "value": "6 通过 · 0 失败"
+      },
+      {
+        "label": "采集渠道",
+        "value": "手绘 / 白名单爬取 / 本地生图"
+      }
     ],
     "isFeatured": true
   },
@@ -108,32 +258,73 @@
     "type": "custom",
     "name": "Agent 智能体搭建",
     "price": "299 元",
-    "priceRange": "299 - 999 元",
+    "priceRange": "299 - 3999 元",
     "description": "按你的业务模块拆出多个 Agent，声明依赖再分波执行：每一步都是可检查的工具调用，跑完能回看它做了什么。",
-    "details": "我做的 Agent 不是聊天框。Agent 声明 → 依赖图分波 → 有界并行，跨模块数据层让每个 Agent 看到全账号上下文再动作；Agent 的每一步都与手工操作走同一套工具调用，人可随时接管。已按这套做出自媒体全流程 SOP 桌面系统（7 大模块）与本地知识库（向量检索 + 知识图谱 + AI 问答带来源，数据不出机）。",
-    "delivery": { "method": "源码+部署+文档", "time": "1-2 周", "revisions": 3 },
+    "details": "我做的 Agent 不是聊天框：每一步都是可检查的工具调用，跑完能回看它做了什么。\n\n**服务内容**\n\n- 知识库整理与上传\n- 多 Agent 工作流设计：依赖声明 → 分波执行 → 有界并行\n- 自动回复 / 自动执行逻辑配置\n- 测试调优 + 30 天答疑\n\n**架构特点**\n\n- Agent 的每一步与手工操作走同一套工具调用，人可随时接管\n- 跨模块数据层让每个 Agent 看到完整上下文再动作\n- 全部本地运行，数据不出机",
+    "delivery": {
+      "method": "源码+部署+文档",
+      "time": "1-2 周",
+      "revisions": 3
+    },
     "guarantee": "验收不通过不收尾款",
     "orderMethod": "微信下单",
     "applicableScene": "多步骤内容生产、知识库问答、需要可追溯执行的自动化场景",
     "expectedEffect": null,
     "maintenancePeriod": "30 天",
     "productUrl": null,
-    "tags": ["多智能体", "有界并行", "本地知识库", "可追溯"],
+    "tags": [
+      "多智能体",
+      "有界并行",
+      "本地知识库",
+      "可追溯"
+    ],
     "coverImage": null,
     "screenshots": [],
     "videoUrl": null,
     "liveDemoUrl": null,
     "caseStudy": {
-      "title": "MediaSOP 自媒体运营系统：一人公司的操作流程固化成 7 个模块",
+      "title": "产品案例：MediaSOP 自媒体运营系统 —— SOP 固化成 7 个模块",
       "background": "一人做自媒体，选题、写稿、发布、复盘全靠手工切换工具，流程没有系统兜底，产能和稳定性都上不去。",
-      "solution": "Electron 桌面应用 + Python 本地后端（打包进便携版，监听 127.0.0.1:8770），按 7 大模块固化创作 SOP：热点采集(3)、内容分析(5)、选题策划(4)、内容创作(4)、发布运营、数据面板(4)、账号定位(5)。多智能体层在 llm/multi_agent.py：Agent 声明→依赖图分波→有界并行。",
-      "result": "已产出 Windows 1.0.0 便携版 exe；docs 留 13 份过程文档（功能重构蓝图、多智能体架构与数据一致性、端到端质量审计报告、逐功能真人操作审查）。",
-      "techStack": ["React", "Vite", "Electron", "Python", "Playwright"]
+      "solution": "- **形态**：Electron 桌面应用 + Python 本地后端（打包进便携版，监听 127.0.0.1:8770）\n- **7 大模块固化创作 SOP**：热点采集、内容分析、选题策划、内容创作、发布运营、数据面板、账号定位\n- **多智能体层编排**：Agent 声明 → 依赖图分波 → 有界并行",
+      "result": "已产出 Windows **1.0.0 便携版 exe**；docs 留 **13 份过程文档**（功能重构蓝图、多智能体架构与数据一致性、端到端质量审计报告、逐功能真人操作审查）。",
+      "techStack": [
+        "React",
+        "Vite",
+        "Electron",
+        "Python",
+        "Playwright"
+      ]
     },
+    "skus": [
+      {
+        "name": "基础客服 Bot",
+        "price": "299 元",
+        "desc": "知识库整理与上传 + 自动回复逻辑配置 + 测试调优 + 30 天答疑"
+      },
+      {
+        "name": "多 Agent + 知识库",
+        "price": "999 元",
+        "desc": "多 Agent 工作流设计，可接入微信 / 钉钉 / 飞书（按平台）"
+      },
+      {
+        "name": "企业级定制",
+        "price": "3999 元起",
+        "desc": "按企业业务场景定制整套智能体系统"
+      }
+    ],
     "metrics": [
-      { "label": "功能模块", "value": "7 大模块" },
-      { "label": "打包产物", "value": "MediaSOP-1.0.0-portable.exe" },
-      { "label": "过程文档", "value": "13 份" }
+      {
+        "label": "功能模块",
+        "value": "7 大模块"
+      },
+      {
+        "label": "打包产物",
+        "value": "MediaSOP-1.0.0-portable.exe"
+      },
+      {
+        "label": "过程文档",
+        "value": "13 份"
+      }
     ],
     "isFeatured": true
   },
@@ -142,23 +333,67 @@
     "type": "custom",
     "name": "企业AI落地方案",
     "price": "3000 元起",
-    "priceRange": "3000 元起（按阶段报价）",
+    "priceRange": "999 - 10000 元",
     "description": "AI培训 + 工作流自动化 + 知识库建设的分阶段落地：现状诊断→试点→SOP固化→培训推广。",
-    "details": "六步路径：现状诊断（流程梳理）、场景选型（ROI评估）、试点落地（工作流搭建）、SOP固化（知识库建设）、培训推广（员工赋能）、复盘优化（持续迭代）。我自己按这套方法运营一人公司全链路（自媒体 SOP 系统、内容流水线、本地知识库工具都是自用产出）。",
-    "delivery": { "method": "方案+部署+培训", "time": "按阶段，首期 1-2 周", "revisions": 3 },
+    "details": "六步路径，分阶段落地：\n\n1. **现状诊断**：流程梳理\n2. **场景选型**：ROI 评估\n3. **试点落地**：工作流搭建\n4. **SOP 固化**：知识库建设\n5. **培训推广**：员工赋能\n6. **复盘优化**：持续迭代\n\n我自己按这套方法运营一人公司全链路——自媒体 SOP 系统、内容流水线、本地知识库工具都是自用产出，方案里写的每一步我都自己跑过。",
+    "delivery": {
+      "method": "方案+部署+培训",
+      "time": "按阶段，首期 1-2 周",
+      "revisions": 3
+    },
     "guarantee": "验收不通过不收尾款",
     "orderMethod": "微信下单",
     "applicableScene": "中小企业数字化转型、团队AI提效、新媒体部门",
     "expectedEffect": "重复性工作自动化，ROI 分阶段可量化",
     "maintenancePeriod": "30 天",
     "productUrl": null,
-    "tags": ["企业AI", "数字化转型", "工作流自动化", "知识库", "AI培训"],
+    "tags": [
+      "企业AI",
+      "数字化转型",
+      "工作流自动化",
+      "知识库",
+      "AI培训"
+    ],
     "coverImage": null,
     "screenshots": [],
     "videoUrl": null,
     "liveDemoUrl": null,
-    "caseStudy": null,
-    "metrics": [],
+    "caseStudy": {
+      "title": "产品案例：一人公司全链路自用系统",
+      "background": "企业AI落地最常见的坑：做方案的人自己不用 AI，交付的 SOP 是纸上谈兵。",
+      "solution": "这套方法先在自己身上跑通，三个自用系统各管一段：\n\n- **自媒体 SOP 桌面系统**：7 大模块固化创作流程\n- **内容流水线**：素材采集与生产自动化\n- **本地知识库**：向量检索 + 知识图谱 + 带来源的 AI 问答，数据不出机",
+      "result": "全链路自用中；这三个系统在作品集里逐个可查，每个都有实现细节与实测记录。",
+      "techStack": [
+        "工作流自动化",
+        "本地知识库",
+        "向量检索",
+        "知识图谱",
+        "SOP"
+      ]
+    },
+    "skus": [
+      {
+        "name": "诊断咨询",
+        "price": "999 元",
+        "desc": "现状诊断与流程梳理，输出 AI 场景选型与 ROI 评估"
+      },
+      {
+        "name": "试点落地",
+        "price": "3000 元起",
+        "desc": "工作流自动化搭建 + SOP 制作与知识库建设"
+      },
+      {
+        "name": "完整方案",
+        "price": "10000 元起",
+        "desc": "含员工培训与后续陪跑"
+      }
+    ],
+    "metrics": [
+      {
+        "label": "自用系统",
+        "value": "3 套全链路"
+      }
+    ],
     "isFeatured": false
   },
   {
@@ -168,20 +403,29 @@
     "price": "19.9 元/份",
     "priceRange": "19.9 - 49.9 元/份",
     "description": "把大纲、讲稿或一份文档交给我，给你能直接讲的 PPT：结构、文案、排版一起收拾干净。",
-    "details": "下单时说清场合（答辩 / 汇报 / 课程 / 路演）、时长和期望页数，我出成品文件，24 小时内交付，含 2 次修改。",
-    "delivery": { "method": "微信交付文件", "time": "24 小时内", "revisions": 2 },
+    "details": "下单时说清三件事：\n\n- **场合**：答辩 / 汇报 / 课程 / 路演\n- **时长与期望页数**\n- 有没有指定模板或风格\n\n我出成品文件，24 小时内交付，含 2 次修改。",
+    "delivery": {
+      "method": "微信交付文件",
+      "time": "24 小时内",
+      "revisions": 2
+    },
     "guarantee": "不满意重做",
     "orderMethod": "微信下单",
     "applicableScene": null,
     "expectedEffect": null,
     "maintenancePeriod": null,
     "productUrl": null,
-    "tags": ["PPT", "汇报", "答辩"],
+    "tags": [
+      "PPT",
+      "汇报",
+      "答辩"
+    ],
     "coverImage": null,
     "screenshots": [],
     "videoUrl": null,
     "liveDemoUrl": null,
     "caseStudy": null,
+    "skus": [],
     "metrics": [],
     "isFeatured": false
   },
@@ -192,20 +436,29 @@
     "price": "9.9 元/张",
     "priceRange": "9.9 - 29.9 元/张",
     "description": "按用途出图：头像、封面、配图、海报底图。说清风格、尺寸和用途，我出成品图。",
-    "details": "本地 ComfyUI 出图，按你给的参考和约束迭代到满意；交付原图与本次使用的提示词记录，24 小时内交付，含 2 次修改。",
-    "delivery": { "method": "微信交付文件", "time": "24 小时内", "revisions": 2 },
+    "details": "下单时说清三件事：\n\n- **用途**：头像 / 封面 / 配图 / 海报底图\n- **风格与尺寸**\n- 参考图（有就发）\n\n本地 ComfyUI 出图，按你的参考和约束迭代到满意；交付成品图 + 本次使用的提示词记录，24 小时内交付，含 2 次修改。",
+    "delivery": {
+      "method": "微信交付文件",
+      "time": "24 小时内",
+      "revisions": 2
+    },
     "guarantee": "不满意重做",
     "orderMethod": "微信下单",
     "applicableScene": null,
     "expectedEffect": null,
     "maintenancePeriod": null,
     "productUrl": null,
-    "tags": ["ComfyUI", "封面", "配图"],
+    "tags": [
+      "ComfyUI",
+      "封面",
+      "配图"
+    ],
     "coverImage": null,
     "screenshots": [],
     "videoUrl": null,
     "liveDemoUrl": null,
     "caseStudy": null,
+    "skus": [],
     "metrics": [],
     "isFeatured": false
   }

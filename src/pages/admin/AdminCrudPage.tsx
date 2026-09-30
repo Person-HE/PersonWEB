@@ -11,6 +11,7 @@ import { Plus, Pencil, Trash2, X, Search, RefreshCw } from 'lucide-react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useDataStore } from '@/store/useDataStore';
 import { crudApi } from '@/lib/api';
+import FormattedText from '@/components/FormattedText';
 import type { CrudConfig, FieldDef } from '@/admin/config';
 
 interface Props {
@@ -436,6 +437,13 @@ function FieldRenderer({
           rows={3}
           className={inputCls}
         />
+        {/* 排版实时预览：所见即前台所得（支持空行分段 / - 列表 / **加粗** / `代码`） */}
+        {value ? (
+          <div className="mt-2 rounded-lg border border-dashed border-[var(--ink)]/30 bg-[var(--paper-light)] px-3 py-2">
+            <p className="mb-1 font-mono text-[10px] text-[var(--ink-mute)]">排版预览（前台效果）：</p>
+            <FormattedText text={value} />
+          </div>
+        ) : null}
       </div>
     );
   }
@@ -532,6 +540,62 @@ function FieldRenderer({
             ))}
           </div>
         ) : null}
+      </div>
+    );
+  }
+
+  if (field.type === 'skuList') {
+    // SKU 档位列表：每行 = { name, price, desc }，三列行编辑
+    const arr: { name: string; price: string; desc?: string | null }[] = Array.isArray(value) ? value : [];
+    const update = (i: number, key: 'name' | 'price' | 'desc', v: string) => {
+      const next = arr.map((row, j) => (j === i ? { ...row, [key]: v } : row));
+      onChange(next);
+    };
+    return (
+      <div className={colSpan}>
+        {labelEl}
+        <div className="space-y-2">
+          {arr.map((row, i) => (
+            <div key={i} className="flex items-start gap-2">
+              <input
+                type="text"
+                value={row.name ?? ''}
+                placeholder="档位名称"
+                onChange={(e) => update(i, 'name', e.target.value)}
+                className={`${inputCls} flex-[2]`}
+              />
+              <input
+                type="text"
+                value={row.price ?? ''}
+                placeholder="价格"
+                onChange={(e) => update(i, 'price', e.target.value)}
+                className={`${inputCls} flex-1`}
+              />
+              <input
+                type="text"
+                value={row.desc ?? ''}
+                placeholder="包含内容（可空）"
+                onChange={(e) => update(i, 'desc', e.target.value)}
+                className={`${inputCls} flex-[3]`}
+              />
+              <button
+                type="button"
+                onClick={() => onChange(arr.filter((_, j) => j !== i))}
+                className="shrink-0 rounded px-2 py-1 text-xs text-red-500 hover:bg-red-50"
+                aria-label="删除该档位"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={() => onChange([...arr, { name: '', price: '', desc: '' }])}
+          className="mt-2 inline-flex items-center gap-1 rounded-lg border border-dashed border-[var(--ink)]/40 px-3 py-1 text-xs text-[var(--ink-soft)] hover:bg-[var(--paper-light)]"
+        >
+          <Plus className="h-3 w-3" /> 加一档
+        </button>
       </div>
     );
   }
